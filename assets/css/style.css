@@ -1,123 +1,26 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #0e0e0e;
-  color: #f1f1f1;
-  line-height: 1.7;
-}
+/* style.css */
 
-header {
-  padding: 60px 20px 10px;
-  text-align: center;
-}
+body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0e0e1a; color: #f0f0f0; height: 100%; overflow-x: hidden; }
 
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-}
+canvas#neuron-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(ellipse at center, #0e0e1a 0%, #000010 100%); }
 
-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.3em;
-}
+header { text-align: center; padding: 80px 20px 20px; z-index: 10; }
 
-header h2 {
-  font-weight: 400;
-  font-size: 1.1rem;
-  color: #ccc;
-  margin-bottom: 0.5em;
-}
+header h1 { font-size: 2.8rem; color: #88ccff; margin-bottom: 0.4em; }
 
-.email-link {
-  display: inline-block;
-  font-size: 0.95rem;
-  color: #00bfff;
-  text-decoration: none;
-  margin-bottom: 1em;
-}
+header h2 { font-size: 1.2rem; color: #ccc; margin-bottom: 1em; }
 
-.container {
-  max-width: 750px;
-  margin: 0 auto;
-  padding: 20px;
-}
+nav { display: flex; justify-content: center; gap: 30px; margin-top: 10px; flex-wrap: wrap; }
 
-.card {
-  background-color: #1a1a1a;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-  transition: 0.3s;
-}
+nav a { color: #88ccff; text-decoration: none; font-weight: 500; transition: 0.3s; }
 
-.card:hover {
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-}
+nav a:hover { color: #ffffff; }
 
-a {
-  color: #00bfff;
-  text-decoration: none;
-}
+main { padding: 40px 20px; max-width: 800px; margin: auto; z-index: 10; }
 
-a:hover {
-  text-decoration: underline;
-}
+section { margin-bottom: 60px; }
 
-.socials {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 20px;
-  justify-content: center;
-}
+section h3 { font-size: 1.8rem; border-bottom: 2px solid #88ccff; padding-bottom: 8px; margin-bottom: 20px; }
 
-.socials a {
-  background-color: #2a2a2a;
-  padding: 10px 16px;
-  border-radius: 8px;
-  color: #fff;
-  transition: 0.3s;
-}
+section p { font-size: 1.05rem; line-height: 1.7; color: #ccc; }
 
-.socials a:hover {
-  background-color: #444;
-}
-
-.menu {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-
-.menu-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.8rem;
-  cursor: pointer;
-}
-
-.dropdown {
-  display: none;
-  position: absolute;
-  right: 0;
-  background-color: #1c1c1c;
-  border: 1px solid #333;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.dropdown a {
-  display: block;
-  padding: 12px 20px;
-  color: white;
-}
-
-.dropdown a:hover {
-  background-color: #333;
-}
