@@ -6,77 +6,161 @@
 <title>Matin Nemati</title>
 <style>
   :root{
-    /* theme */
-    --bg-1:#0e0e0e; --bg-2:#0b0b0b; --fg:#f1f1f1; --muted:#cccccc; --accent:#00bfff;
-    /* interactive vars (set by JS) */
-    --mx: 50vw; --my: 40vh;
+    --mx: 50vw;            /* updated by JS */
+    --my: 40vh;
+    --orb-size: 720px;     /* size of glow */
+
+    /* dark theme (your original tone) */
+    --bg-1:#0e0e0e;
+    --bg-2:#0b0b0b;
+    --fg:#f1f1f1;
+    --muted:#cccccc;
+    --accent:#00bfff;
   }
 
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0; font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color:var(--fg); line-height:1.7; background:var(--bg-1); overflow-x:hidden;
+    margin:0;
+    font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color:var(--fg); line-height:1.7; background:var(--bg-1);
+    overflow-x:hidden;
   }
 
-  /* Background: single elliptical glow + base tint (very light) */
+  /* ultra-light interactive background (single orb + subtle tint) */
   .interactive-bg{
     position:fixed; inset:0; z-index:-1;
     background:
-      radial-gradient(800px 420px at var(--mx) var(--my), rgba(0,191,255,.14), transparent 65%),
+      radial-gradient(var(--orb-size) var(--orb-size) at var(--mx) var(--my), rgba(0,191,255,.14), transparent 65%),
       linear-gradient(180deg, var(--bg-2), var(--bg-1));
     filter:saturate(112%);
   }
-  .neurons-layer{ position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.08; mix-blend-mode:screen; }
+  /* subtle neuron lines */
+  .neurons{
+    position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.08; mix-blend-mode:screen;
+  }
 
-  /* Top navbar with fixed fade hints (no moving chevrons) */
-  header{
+  /* top navbar: single-line, scrollable, with scroll hints */
+  .topbar{
     position:sticky; top:0; z-index:10;
     backdrop-filter: blur(10px) saturate(140%);
     background: rgba(10,10,10,.6);
     border-bottom:1px solid rgba(255,255,255,.06);
   }
-  .wrap{max-width:1100px; margin:0 auto; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px;}
-  .brand{display:flex; align-items:center; gap:10px; font-weight:800}
-  nav.tabs{position:relative; display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; white-space:nowrap; scrollbar-width:none;}
-  nav.tabs::-webkit-scrollbar{display:none}
-  nav.tabs::before, nav.tabs::after{
-    content:""; position:absolute; top:0; bottom:0; width:28px; pointer-events:none;
+  .topbar .wrap{
+    max-width:820px; margin:0 auto; padding:10px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
   }
-  nav.tabs::before{left:0;  background:linear-gradient(90deg, rgba(14,14,14,1), rgba(14,14,14,0));}
-  nav.tabs::after {right:0; background:linear-gradient(270deg, rgba(14,14,14,1), rgba(14,14,14,0));}
+  .brand{font-weight:700}
+
+  nav{
+    position:relative;
+    display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;
+    white-space:nowrap; scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  /* fade hints */
+  nav::before, nav::after{
+    content:""; position:absolute; top:0; bottom:0; width:32px; pointer-events:none;
+  }
+  nav::before{ left:0; background:linear-gradient(90deg, rgba(14,14,14,1), rgba(14,14,14,0)); }
+  nav::after{ right:0; background:linear-gradient(270deg, rgba(14,14,14,1), rgba(14,14,14,0)); }
+  /* chevrons to hint scroll */
+  .scroll-hint{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%);
+    font-weight:800; opacity:.6; user-select:none; pointer-events:none;
+  }
 
   nav a{
-    display:inline-block; color:var(--fg); text-decoration:none; font-weight:700;
+    display:inline-block; color:var(--fg); text-decoration:none; font-weight:600;
     padding:8px 10px; border-radius:10px; opacity:.9; margin:0 2px;
   }
-  nav a:hover, nav a.active{opacity:1; background:rgba(255,255,255,.06)}
+  nav a:hover{opacity:1; background:rgba(255,255,255,.06)}
 
-  /* Content */
-  main{max-width:1100px; margin:28px auto; padding:0 18px;}
-  section{scroll-margin-top:80px; margin:22px 0}
-  .hero{display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:center}
-  .hero h1{font-size:clamp(26px, 3.5vw, 44px); line-height:1.2}
-  .hero p{color:var(--muted); margin-top:8px}
-  .cta{display:flex; gap:10px; margin-top:14px}
-  .btn{border:0; padding:10px 14px; border-radius:12px; font-weight:800; cursor:pointer}
-  .btn.primary{background:linear-gradient(135deg, var(--accent), #06b6d4); color:#0b1220}
-  .btn.ghost{background:transparent; color:var(--fg); border:1px solid rgba(255,255,255,.12)}
+  /* header/content spacing */
+  header{ padding:44px 20px 6px; text-align:center; }
+  .avatar{
+    width:112px; height:112px; border-radius:50%; object-fit:cover; margin-bottom:10px;
+    box-shadow:0 0 10px rgba(255,255,255,.05);
+  }
+  header h1{ font-size:2.5rem; margin-bottom:.3em; }
+  header h2{ font-weight:400; font-size:1.1rem; color:#ccc; margin-bottom:.5em; }
 
-  .glass{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:18px; backdrop-filter: blur(10px) saturate(140%); box-shadow: 0 10px 32px rgba(0,0,0,.24); text-align:center; }
-  .cols{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .email-link{ display:inline-block; font-size:.95rem; color:var(--accent); text-decoration:none; margin-bottom:1em; }
+  .email-link:hover{ text-decoration:underline; }
 
-  footer{opacity:.7; text-align:center; font-size:14px; padding:28px 0}
+  .container{ max-width:750px; margin:0 auto; padding:10px 20px 20px; }
+  .card{
+    background:#1a1a1a; padding:24px; border-radius:16px;
+    box-shadow:0 0 30px rgba(255,255,255,.05);
+    transition: box-shadow .15s ease;   /* quicker hover */
+    text-align:center;
+  }
+  .card:hover{ box-shadow:0 0 40px rgba(255,255,255,.10); }
 
-  @media (max-width:900px){ .hero{grid-template-columns:1fr} }
-  @media (prefers-reduced-motion: reduce){ .interactive-bg{background: linear-gradient(180deg, var(--bg-2), var(--bg-1));} }
+  a{ color:var(--accent); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+
+  .socials{ display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px; }
+  .socials a{
+    background:#2a2a2a; padding:10px 16px; border-radius:8px; color:#fff; transition:background-color .25s ease;
+  }
+  .socials a:hover{ background:#444; }
+
+  /* areas where background must not move on hover */
+  .no-move{ /* marker class only */ }
+
+  @media (prefers-reduced-motion: reduce){
+    .interactive-bg{ background: linear-gradient(180deg, var(--bg-2), var(--bg-1)); }
+  }
 </style>
+<script>
+  // fluid-like pointer glow:
+  // - single orb
+  // - pauses when hovering .no-move areas
+  // - stops when settled (saves CPU)
+  (function(){
+    const root = document.documentElement;
+    let raf = null, tx = innerWidth*.5, ty = innerHeight*.4, x = tx, y = ty;
+    let idle = 0, paused = false;
+
+    function loop(){
+      if (paused) { cancelAnimationFrame(raf); raf=null; return; }
+      x += (tx - x) * 0.10;
+      y += (ty - y) * 0.10;
+      root.style.setProperty('--mx', x+'px');
+      root.style.setProperty('--my', y+'px');
+
+      if (Math.abs(tx-x) < .5 && Math.abs(ty-y) < .5){
+        if (++idle > 12){ cancelAnimationFrame(raf); raf=null; idle=0; return; }
+      } else idle = 0;
+
+      raf = requestAnimationFrame(loop);
+    }
+
+    // move only when pointer is NOT over .no-move
+    window.addEventListener('pointermove', e=>{
+      if (e.target.closest('.no-move')) { paused = true; return; }
+      paused = false;
+      tx = e.clientX; ty = e.clientY;
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, {passive:true});
+
+    // if user enters/leaves no-move areas via keyboard/touch
+    document.addEventListener('mouseenter', e=>{ if(e.target.closest('.no-move')) paused=true; }, true);
+    document.addEventListener('mouseleave', e=>{ if(e.target.closest('.no-move')) paused=false; }, true);
+  })();
+</script>
 </head>
 <body>
-  <!-- Background layers -->
+  <!-- interactive background -->
   <div class="interactive-bg" aria-hidden="true"></div>
-  <svg class="neurons-layer" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="wire" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs>
+  <svg class="neurons" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="wire" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#00bfff"/>
+      </linearGradient>
+    </defs>
     <g stroke="url(#wire)" stroke-width="1.2" fill="none">
       <path d="M50,700 C200,650 260,540 380,520 520,500 600,420 760,420 900,420 1020,500 1150,520"/>
       <path d="M80,120 C260,200 320,260 420,300 560,360 720,340 860,300 1000,260 1100,220 1180,180"/>
@@ -84,170 +168,49 @@
     </g>
   </svg>
 
-  <!-- Header (tabs) -->
-  <header>
+  <!-- top tabs -->
+  <div class="topbar no-move">
     <div class="wrap">
       <div class="brand">MatNemati</div>
-      <nav class="tabs" aria-label="Sections">
-        <a href="#home" class="active">Home</a>
-        <a href="#about">About</a>
-        <a href="#courses">Courses</a>
-        <a href="#teaching">Teaching</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
-        <a href="#contact">Contact</a>
+      <nav aria-label="Main tabs" class="no-move">
+        <span class="scroll-hint">›</span>
+        <a href="work">Work</a>
+        <a href="about">About</a>
+        <a href="projects">Projects</a>
+        <a href="certificates">Certificates</a>
+        <a href="courses_taken">Courses (taken)</a>
+        <a href="courses_taught">Courses (taught)</a>
+        <a href="grades">Grades</a>
+        <a href="contact">Contact</a>
       </nav>
     </div>
+  </div>
+
+  <!-- header -->
+  <header class="no-move">
+    <img src="IMG_20251001_131401.jpg" alt="Matin Nemati" class="avatar" />
+    <h1>Matin Nemati</h1>
+    <h2>BSc EE Student | Neuroscience & Neurotech</h2>
+    <a class="email-link" href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
   </header>
 
-  <!-- Main -->
-  <main>
-    <section id="home" class="hero">
-      <div class="glass">
-        <h1>Hi, I'm Mat Nemati — Neuroscience researcher.</h1>
-        <p>This is a lightweight glassy template with a fluid, inertial background interaction.</p>
-        <div class="cta">
-          <a class="btn primary" href="#projects">See Projects</a>
-          <a class="btn ghost" href="#contact">Contact</a>
-        </div>
+  <div class="container">
+    <div class="card no-move">
+      <p>
+        Hi! I'm Matin Nemati, an undergraduate Electrical Engineering student at Isfahan University of Technology, majoring in Bioelectrics. You can find me on most platforms with the handle <strong>MatNemati</strong>.
+      </p>
+      <p>
+        My academic interests focus on neuroscience, systems neuroscience, and emerging neurotechnologies. I thrive on solving complex problems that require algorithmic and creative thinking. I am also passionate about physics and signal processing and currently exploring possible connections between brain function and quantum phenomena.
+      </p>
+      <p><em>(Summer and Fall 2025)</em></p>
+      <div class="socials">
+        <a href="https://www.linkedin.com/in/MatNemati" target="_blank">LinkedIn</a>
+        <a href="https://x.com/MatNemati" target="_blank">X (Twitter)</a>
+        <a href="https://t.me/MatNemati" target="_blank">Telegram</a>
+        <a href="https://instagram.com/MatNemati" target="_blank">Instagram</a>
+        <a href="https://www.researchgate.net/profile/Matin-Nemati?ev=hdr_xprf" target="_blank">ResearchGate</a>
       </div>
-      <div class="glass">
-        <img alt="Profile" src="https://picsum.photos/seed/brain/640/420" style="width:100%;height:auto;border-radius:12px;display:block"/>
-        <p style="margin-top:10px;color:var(--muted);font-size:14px">Replace with your own photo/graphic.</p>
-      </div>
-    </section>
-
-    <section id="about" class="cols">
-      <div class="glass">
-        <h2>About</h2>
-        <p style="color:var(--muted);margin-top:8px">Short bio and research interests (EEG/MEG, fMRI, computational models, etc.).</p>
-      </div>
-      <div class="glass">
-        <h3>Quick info</h3>
-        <p class="muted">Email: <a href="mailto:you@example.com">you@example.com</a></p>
-        <p class="muted">Links: Scholar / GitHub / LinkedIn</p>
-      </div>
-    </section>
-
-    <section id="courses" class="glass">
-      <h2>Courses</h2>
-      <p style="color:var(--muted);margin-top:8px">Split into University/Open with filters; GPA badge on University.</p>
-    </section>
-
-    <section id="teaching" class="glass">
-      <h2>Teaching</h2>
-      <p class="muted">Timeline; pin active TA/courses on top.</p>
-    </section>
-
-    <section id="projects" class="glass">
-      <h2>Projects & Publications</h2>
-      <p class="muted">Items with status (in-progress / completed).</p>
-    </section>
-
-    <section id="skills" class="glass">
-      <h2>Skills</h2>
-      <p class="muted">Your neuroscience/data/dev skills.</p>
-    </section>
-
-    <section id="experience" class="glass">
-      <h2>Experience</h2>
-      <p class="muted">Timeline of roles, labs, internships.</p>
-    </section>
-
-    <section id="contact" class="glass">
-      <h2>Contact</h2>
-      <p class="muted">Reach out via platforms below or send a direct message.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px">
-        <a class="btn ghost" target="_blank" rel="noopener" href="https://github.com/MatNemati">GitHub</a>
-        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.linkedin.com/in/MatNemati">LinkedIn</a>
-        <a class="btn ghost" target="_blank" rel="noopener" href="https://t.me/MatNemati">Telegram</a>
-        <a class="btn ghost" target="_blank" rel="noopener" href="https://instagram.com/MatNemati">Instagram</a>
-        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.researchgate.net/profile/MatNemati">ResearchGate</a>
-        <a class="btn ghost" target="_blank" rel="noopener" href="https://x.com/MatNemati">X (Twitter)</a>
-      </div>
-      <form id="contactForm" style="margin-top:16px; display:grid; gap:10px" method="POST" action="https://formspree.io/f/REPLACE_FORM_ID">
-        <input required name="name" placeholder="Your name" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:var(--fg)">
-        <input required name="email" type="email" placeholder="Your email" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:var(--fg)">
-        <textarea required name="message" placeholder="Message" rows="4" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:var(--fg)"></textarea>
-        <div style="display:flex; gap:10px; align-items:center">
-          <button class="btn primary" type="submit">Send</button>
-          <small id="formMsg" style="color:var(--muted)"></small>
-        </div>
-      </form>
-    </section>
-  </main>
-
-  <footer>© <span id="year"></span> MatNemati</footer>
-
-<script>
-  // year
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Make tabs highlight based on scroll position
-  (function(){
-    const links = Array.from(document.querySelectorAll('nav a'));
-    const secs  = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const io = new IntersectionObserver((ents)=>{
-      ents.forEach(ent=>{
-        if(ent.isIntersecting){
-          const id = '#' + ent.target.id;
-          links.forEach(l=> l.classList.toggle('active', l.getAttribute('href')===id));
-        }
-      })
-    }, {rootMargin:'0px 0px -70% 0px'});
-    secs.forEach(s=> io.observe(s));
-    links.forEach(a=> a.addEventListener('click', e=>{
-      const id=a.getAttribute('href'), el=document.querySelector(id);
-      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-    }));
-  })();
-
-  // Fluid-ish interaction (inertial, not circular, very light):
-  (function(){
-    const root = document.documentElement;
-    let x = innerWidth*0.5, y = innerHeight*0.4;   // current
-    let vx = 0, vy = 0;                             // velocity
-    const ease = 0.2;                               // responsiveness
-    const friction = 0.88;                          // decay when no input
-
-    function tick(){
-      x += vx; y += vy;
-      vx *= friction; vy *= friction;
-      root.style.setProperty('--mx', x + 'px');
-      root.style.setProperty('--my', y + 'px');
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-
-    // update velocity only when NOT over header/tabs/glass (so boxes don't control it)
-    const blockSel = 'header, .glass';
-    window.addEventListener('pointermove', e=>{
-      if (e.target.closest(blockSel)) return;       // ignore inside boxes
-      const tx = e.clientX, ty = e.clientY;
-      vx += (tx - x) * ease * 0.1;
-      vy += (ty - y) * ease * 0.1;
-    }, {passive:true});
-
-    // keep subtle motion even if pointer stops (a tiny nudge)
-    setInterval(()=>{ vx *= 0.98; vy *= 0.98; }, 100);
-  })();
-
-  // Contact form (Formspree)
-  (function(){
-    const form = document.getElementById('contactForm');
-    if(!form) return;
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const msg = document.getElementById('formMsg');
-      msg.textContent = 'Sending…';
-      try{
-        const res = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} });
-        if(res.ok){ msg.textContent = 'Message sent. Thank you!'; form.reset(); }
-        else msg.textContent = 'Could not send. Please try again or use a social link.';
-      }catch{ msg.textContent = 'Network error. Please try again later.'; }
-    });
-  })();
-</script>
+    </div>
+  </div>
 </body>
 </html>
