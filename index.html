@@ -6,13 +6,12 @@
 <title>Matin Nemati</title>
 <style>
   :root{
-    /* updated by JS */
-    --mx: 50vw;
+    --mx: 50vw;            /* updated by JS */
     --my: 40vh;
-    --orb-size: 720px;
+    --orb-size: 720px;     /* size of glow */
 
-    /* colors */
-    --bg-1:#0e0e0e; /* same dark tone */
+    /* dark theme (your original tone) */
+    --bg-1:#0e0e0e;
     --bg-2:#0b0b0b;
     --fg:#f1f1f1;
     --muted:#cccccc;
@@ -21,30 +20,27 @@
 
   *{box-sizing:border-box}
   html,body{height:100%}
-  body {
-    margin: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--fg);
-    line-height: 1.7;
-    background: var(--bg-1);
+  body{
+    margin:0;
+    font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color:var(--fg); line-height:1.7; background:var(--bg-1);
     overflow-x:hidden;
   }
 
-  /* ultra-light interactive background */
+  /* ultra-light interactive background (single orb + subtle tint) */
   .interactive-bg{
-    position: fixed; inset: 0; z-index: -1;
+    position:fixed; inset:0; z-index:-1;
     background:
       radial-gradient(var(--orb-size) var(--orb-size) at var(--mx) var(--my), rgba(0,191,255,.14), transparent 65%),
-      radial-gradient(calc(var(--orb-size)*.7) calc(var(--orb-size)*.7) at 20% 80%, rgba(124,58,237,.08), transparent 60%),
       linear-gradient(180deg, var(--bg-2), var(--bg-1));
-    filter: saturate(112%);
+    filter:saturate(112%);
   }
-  /* subtle neuron-like lines */
+  /* subtle neuron lines */
   .neurons{
     position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.08; mix-blend-mode:screen;
   }
 
-  /* top navbar: single-line, scrollable */
+  /* top navbar: single-line, scrollable, with scroll hints */
   .topbar{
     position:sticky; top:0; z-index:10;
     backdrop-filter: blur(10px) saturate(140%);
@@ -52,85 +48,107 @@
     border-bottom:1px solid rgba(255,255,255,.06);
   }
   .topbar .wrap{
-    max-width: 820px; margin:0 auto; padding:10px 16px;
+    max-width:820px; margin:0 auto; padding:10px 16px;
     display:flex; align-items:center; justify-content:space-between; gap:12px;
   }
   .brand{font-weight:700}
 
-  nav{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; white-space:nowrap; scrollbar-width:none; }
-  nav::-webkit-scrollbar{ display:none }
+  nav{
+    position:relative;
+    display:block; overflow-x:auto; -webkit-overflow-scrolling:touch;
+    white-space:nowrap; scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  /* fade hints */
+  nav::before, nav::after{
+    content:""; position:absolute; top:0; bottom:0; width:32px; pointer-events:none;
+  }
+  nav::before{ left:0; background:linear-gradient(90deg, rgba(14,14,14,1), rgba(14,14,14,0)); }
+  nav::after{ right:0; background:linear-gradient(270deg, rgba(14,14,14,1), rgba(14,14,14,0)); }
+  /* chevrons to hint scroll */
+  .scroll-hint{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%);
+    font-weight:800; opacity:.6; user-select:none; pointer-events:none;
+  }
+
   nav a{
-    display:inline-block;
-    color: var(--fg); text-decoration:none; font-weight:600;
+    display:inline-block; color:var(--fg); text-decoration:none; font-weight:600;
     padding:8px 10px; border-radius:10px; opacity:.9; margin:0 2px;
   }
-  nav a:hover{opacity:1; background: rgba(255,255,255,.06)}
+  nav a:hover{opacity:1; background:rgba(255,255,255,.06)}
 
-  /* header/content (tweaked spacing) */
-  header { padding: 44px 20px 6px; text-align: center; }
-  .avatar {
-    width: 112px; height: 112px; border-radius: 50%;
-    object-fit: cover; margin-bottom: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  /* header/content spacing */
+  header{ padding:44px 20px 6px; text-align:center; }
+  .avatar{
+    width:112px; height:112px; border-radius:50%; object-fit:cover; margin-bottom:10px;
+    box-shadow:0 0 10px rgba(255,255,255,.05);
   }
-  header h1 { font-size: 2.5rem; margin-bottom: 0.3em; }
-  header h2 { font-weight: 400; font-size: 1.1rem; color: #ccc; margin-bottom: 0.5em; }
+  header h1{ font-size:2.5rem; margin-bottom:.3em; }
+  header h2{ font-weight:400; font-size:1.1rem; color:#ccc; margin-bottom:.5em; }
 
-  .email-link {
-    display: inline-block; font-size: 0.95rem; color: var(--accent);
-    text-decoration: none; margin-bottom: 1em;
+  .email-link{ display:inline-block; font-size:.95rem; color:var(--accent); text-decoration:none; margin-bottom:1em; }
+  .email-link:hover{ text-decoration:underline; }
+
+  .container{ max-width:750px; margin:0 auto; padding:10px 20px 20px; }
+  .card{
+    background:#1a1a1a; padding:24px; border-radius:16px;
+    box-shadow:0 0 30px rgba(255,255,255,.05);
+    transition: box-shadow .15s ease;   /* quicker hover */
+    text-align:center;
   }
-  .email-link:hover{ text-decoration: underline; }
+  .card:hover{ box-shadow:0 0 40px rgba(255,255,255,.10); }
 
-  .container { max-width: 750px; margin: 0 auto; padding: 10px 20px 20px; }
+  a{ color:var(--accent); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
 
-  .card {
-    background-color: #1a1a1a; padding: 24px; border-radius: 16px;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-    transition: box-shadow .25s ease;
-    text-align: center; /* keep centered vibe on all screens */
+  .socials{ display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px; }
+  .socials a{
+    background:#2a2a2a; padding:10px 16px; border-radius:8px; color:#fff; transition:background-color .25s ease;
   }
-  .card:hover { box-shadow: 0 0 40px rgba(255, 255, 255, 0.10); }
+  .socials a:hover{ background:#444; }
 
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  .socials { display: flex; flex-wrap: wrap; justify-content:center; gap: 15px; margin-top: 20px; }
-  .socials a {
-    background-color: #2a2a2a; padding: 10px 16px; border-radius: 8px; color: #fff;
-    transition: background-color .25s ease;
-  }
-  .socials a:hover { background-color: #444; }
+  /* areas where background must not move on hover */
+  .no-move{ /* marker class only */ }
 
   @media (prefers-reduced-motion: reduce){
     .interactive-bg{ background: linear-gradient(180deg, var(--bg-2), var(--bg-1)); }
   }
 </style>
 <script>
-  // lightweight pointer-driven glow
-  (function () {
+  // fluid-like pointer glow:
+  // - single orb
+  // - pauses when hovering .no-move areas
+  // - stops when settled (saves CPU)
+  (function(){
     const root = document.documentElement;
-    let raf = null, tx = innerWidth * .5, ty = innerHeight * .4, x = tx, y = ty;
-    let idleFrames = 0;
+    let raf = null, tx = innerWidth*.5, ty = innerHeight*.4, x = tx, y = ty;
+    let idle = 0, paused = false;
 
     function loop(){
+      if (paused) { cancelAnimationFrame(raf); raf=null; return; }
       x += (tx - x) * 0.10;
       y += (ty - y) * 0.10;
-      root.style.setProperty('--mx', x + 'px');
-      root.style.setProperty('--my', y + 'px');
+      root.style.setProperty('--mx', x+'px');
+      root.style.setProperty('--my', y+'px');
 
-      // stop when settled to keep CPU cool
-      if (Math.abs(tx - x) < 0.5 && Math.abs(ty - y) < 0.5) {
-        if (++idleFrames > 12) { cancelAnimationFrame(raf); raf = null; idleFrames = 0; return; }
-      } else { idleFrames = 0; }
+      if (Math.abs(tx-x) < .5 && Math.abs(ty-y) < .5){
+        if (++idle > 12){ cancelAnimationFrame(raf); raf=null; idle=0; return; }
+      } else idle = 0;
 
       raf = requestAnimationFrame(loop);
     }
 
-    window.addEventListener('pointermove', e => {
+    // move only when pointer is NOT over .no-move
+    window.addEventListener('pointermove', e=>{
+      if (e.target.closest('.no-move')) { paused = true; return; }
+      paused = false;
       tx = e.clientX; ty = e.clientY;
-      if(!raf) raf = requestAnimationFrame(loop);
+      if (!raf) raf = requestAnimationFrame(loop);
     }, {passive:true});
+
+    // if user enters/leaves no-move areas via keyboard/touch
+    document.addEventListener('mouseenter', e=>{ if(e.target.closest('.no-move')) paused=true; }, true);
+    document.addEventListener('mouseleave', e=>{ if(e.target.closest('.no-move')) paused=false; }, true);
   })();
 </script>
 </head>
@@ -151,10 +169,11 @@
   </svg>
 
   <!-- top tabs -->
-  <div class="topbar">
+  <div class="topbar no-move">
     <div class="wrap">
       <div class="brand">MatNemati</div>
-      <nav aria-label="Main tabs">
+      <nav aria-label="Main tabs" class="no-move">
+        <span class="scroll-hint">›</span>
         <a href="work">Work</a>
         <a href="about">About</a>
         <a href="projects">Projects</a>
@@ -168,7 +187,7 @@
   </div>
 
   <!-- header -->
-  <header>
+  <header class="no-move">
     <img src="IMG_20251001_131401.jpg" alt="Matin Nemati" class="avatar" />
     <h1>Matin Nemati</h1>
     <h2>BSc EE Student | Neuroscience & Neurotech</h2>
@@ -176,7 +195,7 @@
   </header>
 
   <div class="container">
-    <div class="card">
+    <div class="card no-move">
       <p>
         Hi! I'm Matin Nemati, an undergraduate Electrical Engineering student at Isfahan University of Technology, majoring in Bioelectrics. You can find me on most platforms with the handle <strong>MatNemati</strong>.
       </p>
