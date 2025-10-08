@@ -10,8 +10,10 @@
   --bg-1:#0e0e0e;
   --bg-2:#0b0b0b;
   --fg:#f1f1f1;
-  --muted:#cccccc;
+  --muted:#bfc6cc;
   --accent:#00bfff;
+  --link-soft:#67cfff;      /* softer cyan for links */
+  --note:#9fb0bb;           /* muted note text */
 }
 
 *{box-sizing:border-box}
@@ -22,28 +24,18 @@ body{
   overflow-x:hidden;
 }
 
-/* ----- Background gradient (same as index) ----- */
-.bg-gradient{
-  position:fixed;inset:0;z-index:-3;
-  background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
-}
-
-/* ----- Neural points canvas (same as index) ----- */
-#neural-bg{
-  position:fixed;inset:0;z-index:-2;pointer-events:none;
-}
-
-/* ----- Brain image with top-edge fade (same as index) ----- */
+/* ----- Background (identical to Home) ----- */
+.bg-gradient{position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,var(--bg-2),var(--bg-1));}
+#neural-bg{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 .bg-brain{
   position:fixed;z-index:-1;pointer-events:none;user-select:none;
   right:-8vw;top:12vh;width:min(52vw,900px);min-width:320px;
-  opacity:.10;mix-blend-mode:screen;
-  filter:saturate(1.05)contrast(1.05);
+  opacity:.10;mix-blend-mode:screen;filter:saturate(1.05)contrast(1.05);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
-/* ----- Navbar (same as index) ----- */
+/* ----- Navbar (identical to Home) ----- */
 .topbar{
   position:sticky;top:0;z-index:10;
   backdrop-filter:blur(10px) saturate(140%);
@@ -68,11 +60,11 @@ nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
   nav a{margin:0 6px;padding:8px 12px;font-size:.95rem;}
 }
 
-/* ----- Header (same spacing as index) ----- */
+/* ----- Header (identical spacing) ----- */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
-  width:112px;height:112px;border-radius:50%;object-fit:cover;margin-bottom:10px;
-  box-shadow:0 0 10px rgba(255,255,255,.05);
+  position:relative;width:112px;height:112px;border-radius:50%;object-fit:cover;
+  margin-bottom:10px;box-shadow:0 0 10px rgba(255,255,255,.05);
   -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
 }
@@ -81,39 +73,42 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 .email-link{display:inline-block;font-size:.95rem;color:var(--accent);text-decoration:none;margin-bottom:1em;}
 .email-link:hover{text-decoration:underline;}
 
-/* ----- Card (same look as index) ----- */
+/* ----- Container ----- */
 .container{max-width:750px;margin:0 auto;padding:10px 20px 20px;}
-.card{
-  background:#1a1a1a;padding:24px;border-radius:16px;
-  box-shadow:0 0 30px rgba(255,255,255,.05);
-  transition:box-shadow .15s ease;text-align:left;
-  will-change:transform,box-shadow;transform:translateZ(0);
-}
-.card:hover{box-shadow:0 0 40px rgba(255,255,255,.10);transform:translateY(-1px);}
 
-/* ----- Skills layout: clean, readable, minimal ----- */
-.section-title{
-  font-size:1.1rem;font-weight:800;letter-spacing:.2px;margin:8px 0 6px;
+/* ----- Grid of skill cards ----- */
+.grid{
+  display:grid; gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 }
-.skills-list{
-  list-style:none;margin:0 0 10px;padding:0;
-  display:grid;grid-template-columns:1fr;gap:8px;
+.skill-card{
+  background:#1a1a1a; border-radius:16px; padding:18px 18px 14px;
+  box-shadow:0 0 28px rgba(255,255,255,.05);
+  transition:box-shadow .15s ease, transform .15s ease;
 }
-.skill-item{
-  display:flex;gap:10px;align-items:baseline;
-}
-.skill-item strong{
-  font-weight:800;
-}
-.skill-item .note{
-  color:#bfc3c9;font-weight:500;font-size:.95rem;
+.skill-card:hover{ box-shadow:0 0 40px rgba(255,255,255,.10); transform:translateY(-1px); }
+
+/* Card header */
+.skill-card h3{
+  margin:0 0 10px;
+  font-size:1.06rem; font-weight:800; letter-spacing:.2px;
+  color:#eaf7ff;
+  border-bottom:1px solid rgba(0,191,255,.22);
+  padding-bottom:6px;
 }
 
-/* two-column for large screens to keep it compact */
-@media(min-width:900px){
-  .skills-list.two-col{grid-template-columns:1fr 1fr;}
-}
+/* Single-column list inside card */
+.slist{margin:0;padding:0;list-style:none;}
+.sitem{margin:8px 0;}
+.sname{font-weight:700;color:#ffffff; display:block;}
+.snote{font-size:.88rem;color:var(--note); display:block; margin-top:2px;}
+.snote::before{content:"(";}.snote::after{content:")";}
 
+/* Softer link color */
+a.soft-link{color:var(--link-soft); text-decoration:none;}
+a.soft-link:hover{color:#87daff; text-decoration:underline;}
+
+/* Mobile brain position like Home */
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
@@ -121,7 +116,7 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 </head>
 
 <body>
-<!-- Background layers (unchanged) -->
+<!-- Background layers -->
 <div class="bg-gradient" aria-hidden="true"></div>
 <canvas id="neural-bg" aria-hidden="true"></canvas>
 <img class="bg-brain" src="brain.png" alt="" aria-hidden="true" />
@@ -146,99 +141,104 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 <header>
   <img src="IMG_20251001_131401.jpg" alt="Matin Nemati" class="avatar" />
   <h1>Skills</h1>
-  <h2>Selected technical and academic skills.</h2>
+  <h2>Core technical and scientific strengths — concise and organized.</h2>
   <a class="email-link" href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
 </header>
 
-<!-- Main content -->
+<!-- Grid of categorized skill cards -->
 <div class="container">
-  <div class="card">
+  <div class="grid">
     <!-- Programming & Tools -->
-    <div class="section">
-      <div class="section-title">Programming & Tools</div>
-      <ul class="skills-list two-col">
-        <li class="skill-item">
-          <strong>Python</strong> <span class="note">TA for core course at IUT; scientific/data processing</span>
+    <div class="skill-card">
+      <h3>Programming & Tools</h3>
+      <ul class="slist">
+        <li class="sitem">
+          <span class="sname">Python</span>
+          <span class="snote">TA at IUT; scientific/data workflows</span>
         </li>
-        <li class="skill-item">
-          <strong>MATLAB</strong> <span class="note">used in university projects – <a href="https://github.com/MatNemati/EMG-Signal-Classification" target="_blank" rel="noopener">EMG Classification</a></span>
+        <li class="sitem">
+          <span class="sname">MATLAB</span>
+          <span class="snote">university projects; example: <a class="soft-link" href="https://github.com/MatNemati/EMG-Signal-Classification" target="_blank" rel="noopener">EMG Signal Classification</a></span>
         </li>
-        <li class="skill-item">
-          <strong>STM32CubeMX (HAL)</strong> <span class="note">familiar with MCU configuration & embedded setup</span>
+        <li class="sitem">
+          <span class="sname">STM32CubeMX (HAL)</span>
+          <span class="snote">familiar with MCU configuration & HAL basics</span>
         </li>
-        <li class="skill-item">
-          <strong>LaTeX</strong> <span class="note">academic typesetting</span>
+        <li class="sitem">
+          <span class="sname">OrCAD PSpice</span>
+          <span class="snote">coursework-level circuit simulation; needs refresh</span>
         </li>
-      </ul>
-    </div>
-
-    <!-- EDA & Simulation -->
-    <div class="section">
-      <div class="section-title">EDA & Simulation</div>
-      <ul class="skills-list two-col">
-        <li class="skill-item">
-          <strong>OrCAD PSpice</strong> <span class="note">coursework experience; needs quick refresh</span>
+        <li class="sitem">
+          <span class="sname">Proteus</span>
+          <span class="snote">electronics lab prototyping; needs refresh</span>
         </li>
-        <li class="skill-item">
-          <strong>Proteus</strong> <span class="note">university labs; needs quick refresh</span>
+        <li class="sitem">
+          <span class="sname">LaTeX</span>
+          <span class="snote">academic writing & reports</span>
         </li>
       </ul>
     </div>
 
     <!-- Signal Processing -->
-    <div class="section">
-      <div class="section-title">Signal Processing</div>
-      <ul class="skills-list">
-        <li class="skill-item">
-          <strong>Signal Processing</strong> <span class="note">foundations for analysis of electrical signals</span>
+    <div class="skill-card">
+      <h3>Signal Processing</h3>
+      <ul class="slist">
+        <li class="sitem">
+          <span class="sname">Core DSP</span>
+          <span class="snote">filtering, feature extraction, spectral analysis</span>
         </li>
-        <li class="skill-item">
-          <strong>Biomedical Signals</strong> <span class="note">ECG, EMG, EEG basics & applications</span>
+        <li class="sitem">
+          <span class="sname">Biomedical Signals</span>
+          <span class="snote">ECG, EMG, EEG processing & interpretation</span>
         </li>
       </ul>
     </div>
 
     <!-- Neuroscience -->
-    <div class="section">
-      <div class="section-title">Neuroscience</div>
-      <ul class="skills-list">
-        <li class="skill-item">
-          <strong>Neuroscience & Systems Neuroscience</strong> <span class="note">studying Kandel; ongoing deeper review</span>
+    <div class="skill-card">
+      <h3>Neuroscience</h3>
+      <ul class="slist">
+        <li class="sitem">
+          <span class="sname">Neuroscience & Systems Neuroscience</span>
+          <span class="snote">studied Kandel; continuing advanced review</span>
         </li>
-        <li class="skill-item">
-          <strong>Computational Neuroscience</strong> <span class="note">reading Wang’s <em>Theoretical Neuroscience: Understanding Cognition</em></span>
+        <li class="sitem">
+          <span class="sname">Computational Neuroscience</span>
+          <span class="snote">studying “Theoretical Neuroscience: Understanding Cognition” (X.-J. Wang)</span>
         </li>
       </ul>
     </div>
 
     <!-- Languages -->
-    <div class="section">
-      <div class="section-title">Languages</div>
-      <ul class="skills-list">
-        <li class="skill-item"><strong>Persian</strong> <span class="note">native</span></li>
-        <li class="skill-item"><strong>English</strong> <span class="note">intermediate; textbook reading, limited speaking</span></li>
+    <div class="skill-card">
+      <h3>Languages</h3>
+      <ul class="slist">
+        <li class="sitem">
+          <span class="sname">Persian</span>
+          <span class="snote">native</span>
+        </li>
+        <li class="sitem">
+          <span class="sname">English</span>
+          <span class="snote">intermediate reading; limited speaking</span>
+        </li>
       </ul>
     </div>
   </div>
 </div>
 
-<!-- Neural background animation (identical to index) -->
+<!-- Neural background animation (identical to Home) -->
 <script>
 const canvas = document.getElementById('neural-bg');
 const ctx = canvas.getContext('2d', { alpha: true });
 let w, h, points = [];
-const NUM = 70;          // identical to index
+const NUM = 70;
 const LINK_DIST2 = 12000;
 
-function resize(){
-  w = canvas.width = innerWidth;
-  h = canvas.height = innerHeight;
-}
+function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
 addEventListener('resize', resize, { passive: true });
 
 function init(){
-  resize();
-  points.length = 0;
+  resize(); points.length = 0;
   for(let i=0;i<NUM;i++){
     points.push({
       x: Math.random()*w,
@@ -267,12 +267,11 @@ function draw(){
     for(let j=i+1;j<NUM;j++){
       const b = points[j];
       const dx = a.x - b.x, dy = a.y - b.y, d2 = dx*dx + dy*dy;
-      if(d2 < LINK_DIST2){
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      }
+      if(d2 < LINK_DIST2){ ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
     }
   }
 }
+
 function loop(){ update(); draw(); requestAnimationFrame(loop); }
 init(); loop();
 </script>
