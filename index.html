@@ -87,6 +87,35 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
+/* === Desktop navbar: show all tabs in one line (no scroll) === */
+@media (min-width: 1024px) {
+  .topbar .wrap {
+    max-width: 1120px; /* adjust if you need more width */
+  }
+  .topbar nav {
+    overflow: visible;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: auto;
+  }
+  .topbar nav a {
+    margin: 0 6px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  .topbar .wrap::before,
+  .topbar .wrap::after,
+  .topbar .scroll-hint {
+    display: none !important;
+  }
+}
+@media (max-width: 1023px) {
+  .topbar nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 </style>
 </head>
 <body>
