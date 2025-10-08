@@ -12,7 +12,7 @@
   --fg:#f1f1f1;
   --muted:#cfd6dc;
   --accent:#00bfff;
-  --note:#9fb0bb;
+  --note:#9aa7b1;
 }
 
 *{box-sizing:border-box}
@@ -24,40 +24,23 @@ body{
 }
 
 /* ----- Background (identical to Home) ----- */
-.bg-gradient{
-  position:fixed;inset:0;z-index:-3;
-  background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
-}
-#neural-bg{
-  position:fixed;inset:0;z-index:-2;pointer-events:none;
-}
+.bg-gradient{position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,var(--bg-2),var(--bg-1));}
+#neural-bg{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 .bg-brain{
   position:fixed;z-index:-1;pointer-events:none;user-select:none;
   right:-8vw;top:12vh;width:min(52vw,900px);min-width:320px;
-  opacity:.10;mix-blend-mode:screen;
-  filter:saturate(1.05)contrast(1.05);
+  opacity:.10;mix-blend-mode:screen;filter:saturate(1.05)contrast(1.05);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
 /* ----- Navbar (identical to Home) ----- */
-.topbar{
-  position:sticky;top:0;z-index:10;
-  backdrop-filter:blur(10px) saturate(140%);
-  background:rgba(10,10,10,.6);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-.topbar .wrap{
-  position:relative;max-width:820px;margin:0 auto;
-  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
+.topbar{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px) saturate(140%);background:rgba(10,10,10,.6);border-bottom:1px solid rgba(255,255,255,.06);}
+.topbar .wrap{position:relative;max-width:820px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .brand{font-weight:700}
 nav{flex:1;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
-nav a{
-  display:inline-block;color:var(--fg);text-decoration:none;font-weight:600;
-  padding:8px 10px;border-radius:10px;opacity:.9;margin:0 2px;
-}
+nav a{display:inline-block;color:var(--fg);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:10px;opacity:.9;margin:0 2px;}
 nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
 @media (min-width:1024px){
   .topbar .wrap{max-width:1120px;}
@@ -68,8 +51,7 @@ nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
 /* ----- Header (identical spacing) ----- */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
-  position:relative;width:112px;height:112px;border-radius:50%;object-fit:cover;
-  margin-bottom:10px;box-shadow:0 0 10px rgba(255,255,255,.05);
+  position:relative;width:112px;height:112px;border-radius:50%;object-fit:cover;margin-bottom:10px;box-shadow:0 0 10px rgba(255,255,255,.05);
   -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
 }
@@ -81,54 +63,34 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 /* ----- Container ----- */
 .container{max-width:750px;margin:0 auto;padding:10px 20px 20px;}
 
-/* ----- Timeline layout ----- */
-.timeline{
-  position:relative;
-  margin:0; padding:6px 0 0 0;
-}
+/* ----- Timeline layout (subtle, professional) ----- */
+.timeline{position:relative;margin:0;padding:6px 0 0 0;}
 .timeline::before{
-  /* vertical dotted connector line */
-  content:""; position:absolute; left:18px; top:0; bottom:0;
-  border-left:2px dotted rgba(0,191,255,.28);
+  content:"";position:absolute;left:18px;top:0;bottom:0;border-left:2px dotted rgba(255,255,255,.14);
 }
 
 .exp-card{
-  position:relative;
-  background:#1a1a1a; border-radius:16px; padding:14px 16px 14px 46px;
-  box-shadow:0 0 28px rgba(255,255,255,.05);
-  transition:box-shadow .15s ease, transform .15s ease;
-  margin:0 0 14px 0;
+  position:relative;background:#171717;border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:14px 16px 14px 46px;margin:0 0 14px 0;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);transition:transform .15s ease, box-shadow .15s ease;
 }
-.exp-card:hover{ box-shadow:0 0 40px rgba(255,255,255,.10); transform:translateY(-1px); }
+.exp-card:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.28);}
 
-/* timeline dot */
+/* timeline dot (muted) */
 .exp-card::before{
-  content:""; position:absolute; left:12px; top:18px;
-  width:12px; height:12px; border-radius:50%;
-  background:rgba(0,191,255,1);
-  box-shadow:0 0 10px rgba(0,191,255,.6);
+  content:"";position:absolute;left:12px;top:18px;width:10px;height:10px;border-radius:50%;
+  background:#a6c6d6; /* subtle, not glowing */
+  box-shadow:none;
 }
 
-/* header row inside card: title left, duration right */
-.exp-head{
-  display:flex; align-items:baseline; gap:10px;
-}
-.exp-title{
-  font-weight:800; color:#eaf7ff; font-size:1.02rem; line-height:1.35;
-}
-.exp-dur{
-  margin-left:auto; font-weight:700;
-  color:#9ad8ef; font-size:.95rem; white-space:nowrap;
-}
-.exp-org{ color:#dfe7ec; font-weight:600; }
-.exp-note{
-  color:var(--note); font-size:.95rem; margin-top:6px;
-}
-
-/* extra subtle sub-note line */
-.exp-sub{
-  color:#b7c4cc; font-size:.88rem; margin-top:4px;
-}
+/* header row inside card */
+.exp-head{display:flex;align-items:baseline;gap:10px;}
+.exp-title{font-weight:800;color:#f1f1f1;font-size:1.02rem;line-height:1.35;}
+.exp-dur{margin-left:auto;font-weight:700;color:#c6d3da;font-size:.95rem;white-space:nowrap;}
+.exp-org{color:#d7dee3;font-weight:600;}
+.exp-note{color:var(--note);font-size:.95rem;margin-top:6px;}
+.exp-bullets{margin:6px 0 0 0;padding-left:18px;color:#a8b3bb;}
+.exp-bullets li{margin:4px 0;}
 
 /* Mobile brain position like Home */
 @media(max-width:880px){
@@ -171,55 +133,39 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 <div class="container">
   <div class="timeline">
 
-    <!-- Teaching: Physics & Math -->
+    <!-- Combined: Teaching & Academic Advising -->
     <div class="exp-card">
       <div class="exp-head">
-        <div class="exp-title">Physics & Math Tutor</div>
-        <div class="exp-dur">۱۳۹۹–اوایل ۱۴۰۳ <span class="exp-sub">(2020–early 2024)</span></div>
+        <div class="exp-title">Teaching & Academic Advising</div>
+        <div class="exp-dur">2020 – early 2024</div>
       </div>
-      <div class="exp-org">Private & group tutoring for high school and entrance exam students</div>
-      <div class="exp-note">Covered curriculum-focused problem solving and exam strategies.</div>
+      <div class="exp-org">Independent & Institutional</div>
+      <div class="exp-note">Focused on high-school curriculum, entrance exam preparation, and academic planning.</div>
+      <ul class="exp-bullets">
+        <li><strong>Physics & Math Tutor</strong> — group and one-on-one sessions for high-school and entrance exam students.</li>
+        <li><strong>Academic Advisor, Hiva Educational Counseling Center</strong> — Dec 2021 – Jun 2022; guidance on admissions, applications, and study plans.</li>
+        <li><strong>Private Academic Advisor</strong> — 2021 – 2024; personalized study roadmaps and application counseling.</li>
+      </ul>
     </div>
 
-    <!-- Hiva Educational Counseling Center -->
+    <!-- Contract: University Major Selection -->
     <div class="exp-card">
       <div class="exp-head">
-        <div class="exp-title">Academic Advisor</div>
-        <div class="exp-dur">دی ۱۴۰۰–خرداد ۱۴۰۱ <span class="exp-sub">(Dec 2021–Jun 2022)</span></div>
+        <div class="exp-title">Admissions Counselor (Contract) — University Major Selection</div>
+        <div class="exp-dur">Summer 2023</div>
       </div>
-      <div class="exp-org">Hiva Educational Counseling Center</div>
-      <div class="exp-note">Advised students across high school to PhD levels on admissions, applications, and study plans.</div>
-      <div class="exp-sub">Recognized as one of the largest online educational counseling centers in Iran.</div>
-    </div>
-
-    <!-- Private Academic Advising -->
-    <div class="exp-card">
-      <div class="exp-head">
-        <div class="exp-title">Private Academic Advisor</div>
-        <div class="exp-dur">۱۴۰۰–۱۴۰۳ <span class="exp-sub">(2021–2024)</span></div>
-      </div>
-      <div class="exp-org">Independent, one-on-one</div>
-      <div class="exp-note">Customized planning for study paths, exam preparation, and application guidance.</div>
-    </div>
-
-    <!-- Summer 1402: Major selection team -->
-    <div class="exp-card">
-      <div class="exp-head">
-        <div class="exp-title">University Major Selection Team (Contract)</div>
-        <div class="exp-dur">تابستان ۱۴۰۲ <span class="exp-sub">(Summer 2023)</span></div>
-      </div>
-      <div class="exp-org">Dr. Yaghoubi’s Team</div>
-      <div class="exp-note">Participated in counseling and selection workflow during national entrance placement.</div>
+      <div class="exp-org">Yaghubi Admissions Team</div>
+      <div class="exp-note">Supported candidates through program selection and preference ranking during national placement.</div>
     </div>
 
     <!-- Markets -->
     <div class="exp-card">
       <div class="exp-head">
         <div class="exp-title">Global Financial Markets (Part-time / Intermittent)</div>
-        <div class="exp-dur">since 2017</div>
+        <div class="exp-dur">since 2019</div>
       </div>
       <div class="exp-org">Crypto & Stocks</div>
-      <div class="exp-note">Intermittent participation; research-driven exposure rather than full-time trading.</div>
+      <div class="exp-note">Research-driven exposure; periodic participation rather than full-time trading.</div>
     </div>
 
   </div>
@@ -252,7 +198,7 @@ function update(){
   for(const p of points){
     p.x += p.vx; p.y += p.vy;
     if(p.x<0||p.x>w) p.vx *= -1;
-    if(p.y<0||p.y>h) p.vy *= -1;
+    if(p.y<0||p.y>h) pvy *= -1;
   }
 }
 
