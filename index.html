@@ -1,156 +1,166 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matin Nemati</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0e0e0e;
-      color: #f1f1f1;
-      line-height: 1.7;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Matin Nemati</title>
+<style>
+  :root{
+    /* pointer-based center (updated by JS) */
+    --mx: 50vw;
+    --my: 40vh;
+    /* colors */
+    --bg-1:#0e0e0e; /* same as your current */
+    --bg-2:#0b0b0b;
+    --fg:#f1f1f1;
+    --muted:#cccccc;
+    --accent:#00bfff;
+  }
+
+  /* --- reset / base --- */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--fg);
+    line-height: 1.7;
+    background: var(--bg-1);
+    overflow-x:hidden;
+  }
+
+  /* --- ultra-light interactive background (no canvas) --- */
+  .interactive-bg{
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(900px 900px at var(--mx) var(--my), rgba(0,191,255,.18), transparent 65%),
+      radial-gradient(650px 650px at calc(100% - var(--mx)) calc(100% - var(--my)), rgba(124,58,237,.12), transparent 60%),
+      linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    filter: saturate(115%);
+  }
+  /* thin neural-like lines layer (very subtle) */
+  .neurons{
+    position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.08; mix-blend-mode:screen;
+  }
+
+  /* --- top nav (replaces hamburger) --- */
+  .topbar{
+    position:sticky; top:0; z-index:10;
+    backdrop-filter: blur(10px) saturate(140%);
+    background: rgba(10,10,10,.6);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .topbar .wrap{
+    max-width: 820px; margin:0 auto; padding:10px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .brand{font-weight:700}
+  nav a{
+    color: var(--fg); text-decoration:none; font-weight:600;
+    padding:8px 10px; border-radius:10px; opacity:.85;
+  }
+  nav a:hover{opacity:1; background: rgba(255,255,255,.06)}
+  /* small screens: wrap links */
+  nav{display:flex; flex-wrap:wrap; gap:6px}
+
+  /* --- header (same layout as yours) --- */
+  header {
+    padding: 60px 20px 10px;
+    text-align: center;
+  }
+  .avatar {
+    width: 100px; height: 100px; border-radius: 50%;
+    object-fit: cover; margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  }
+  header h1 { font-size: 2.5rem; margin-bottom: 0.3em; }
+  header h2 { font-weight: 400; font-size: 1.1rem; color: #ccc; margin-bottom: 0.5em; }
+
+  .email-link {
+    display: inline-block; font-size: 0.95rem; color: var(--accent);
+    text-decoration: none; margin-bottom: 1em;
+  }
+  .email-link:hover{ text-decoration: underline; }
+
+  .container { max-width: 750px; margin: 0 auto; padding: 20px; }
+  .card {
+    background-color: #1a1a1a; padding: 30px; border-radius: 16px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+    transition: box-shadow .25s ease;
+  }
+  .card:hover { box-shadow: 0 0 40px rgba(255, 255, 255, 0.10); }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .socials { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+  .socials a {
+    background-color: #2a2a2a; padding: 10px 16px; border-radius: 8px; color: #fff;
+    transition: background-color .25s ease;
+  }
+  .socials a:hover { background-color: #444; }
+
+  /* accessibility: reduce animation */
+  @media (prefers-reduced-motion: reduce){
+    .interactive-bg{ background: linear-gradient(180deg, var(--bg-2), var(--bg-1)); }
+  }
+</style>
+<script>
+  // Lightweight pointer parallax: updates CSS variables only.
+  // Throttled with rAF to keep it smooth on low-end devices.
+  (function () {
+    const root = document.documentElement;
+    let raf = null, tx = innerWidth * .5, ty = innerHeight * .4, x = tx, y = ty;
+
+    function loop(){
+      x += (tx - x) * 0.12;
+      y += (ty - y) * 0.12;
+      root.style.setProperty('--mx', x + 'px');
+      root.style.setProperty('--my', y + 'px');
+      raf = requestAnimationFrame(loop);
     }
 
-    header {
-      padding: 60px 20px 10px;
-      text-align: center;
-    }
-
-    .avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.3em;
-    }
-
-    header h2 {
-      font-weight: 400;
-      font-size: 1.1rem;
-      color: #ccc;
-      margin-bottom: 0.5em;
-    }
-
-    .email-link {
-      display: inline-block;
-      font-size: 0.95rem;
-      color: #00bfff;
-      text-decoration: none;
-      margin-bottom: 1em;
-    }
-
-    .container {
-      max-width: 750px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .card {
-      background-color: #1a1a1a;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-    }
-
-    a {
-      color: #00bfff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .socials {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .socials a {
-      background-color: #2a2a2a;
-      padding: 10px 16px;
-      border-radius: 8px;
-      color: #fff;
-      transition: 0.3s;
-    }
-
-    .socials a:hover {
-      background-color: #444;
-    }
-
-    .menu {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-    }
-
-    .menu-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.8rem;
-      cursor: pointer;
-    }
-
-    .dropdown {
-      display: none;
-      position: absolute;
-      right: 0;
-      background-color: #1c1c1c;
-      border: 1px solid #333;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .dropdown a {
-      display: block;
-      padding: 12px 20px;
-      color: white;
-    }
-
-    .dropdown a:hover {
-      background-color: #333;
-    }
-  </style>
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById("dropdown");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
-  </script>
+    window.addEventListener('pointermove', e => {
+      tx = e.clientX; ty = e.clientY;
+      if(!raf) raf = requestAnimationFrame(loop);
+    }, {passive:true});
+  })();
+</script>
 </head>
 <body>
-  <div class="menu">
-    <button class="menu-button" onclick="toggleMenu()">&#9776;</button>
-    <div class="dropdown" id="dropdown">
-      <a href="work">Work experience</a>
-      <a href="about">About</a>
-      <a href="projects">Projects</a>
-      <a href="certificates">Certificates</a>
-      <a href="courses_taken">Courses(taken)</a>
-      <a href="courses_taught">Courses(taught)</a>
-      <a href="grades">grades</a>
-      
+  <!-- interactive background layers -->
+  <div class="interactive-bg" aria-hidden="true"></div>
+  <svg class="neurons" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="wire" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#00bfff"/>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#wire)" stroke-width="1.2" fill="none">
+      <path d="M50,700 C200,650 260,540 380,520 520,500 600,420 760,420 900,420 1020,500 1150,520"/>
+      <path d="M80,120 C260,200 320,260 420,300 560,360 720,340 860,300 1000,260 1100,220 1180,180"/>
+      <path d="M60,400 C240,380 340,360 480,380 640,410 740,500 900,540 1040,580 1120,620 1180,660"/>
+    </g>
+  </svg>
+
+  <!-- top navigation (quick access to your separate pages) -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">MatNemati</div>
+      <nav aria-label="Main tabs">
+        <a href="work">Work</a>
+        <a href="about">About</a>
+        <a href="projects">Projects</a>
+        <a href="certificates">Certificates</a>
+        <a href="courses_taken">Courses (taken)</a>
+        <a href="courses_taught">Courses (taught)</a>
+        <a href="grades">Grades</a>
+        <a href="contact">Contact</a>
+      </nav>
     </div>
   </div>
 
+  <!-- header (unchanged content) -->
   <header>
     <img src="IMG_20251001_131401.jpg" alt="Matin Nemati" class="avatar" />
     <h1>Matin Nemati</h1>
