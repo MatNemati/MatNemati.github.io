@@ -7,14 +7,12 @@
 
 <style>
 :root{
-  /* theme */
   --bg-1:#0e0e0e;
   --bg-2:#0b0b0b;
   --fg:#f1f1f1;
   --muted:#cccccc;
   --accent:#00bfff;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;padding:0}
 body{
@@ -23,30 +21,31 @@ body{
   overflow-x:hidden;
 }
 
-/* ---- Background gradient (same as Home) ---- */
+/* ---- Background gradient ---- */
 .bg-gradient{
   position:fixed;inset:0;z-index:-3;
   background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
 }
 
-/* ---- Lightweight neural points canvas ---- */
+/* ---- Neural network canvas ---- */
 #neural-bg{
-  position:fixed;inset:0;z-index:-2;
-  pointer-events:none;
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
 }
 
-/* ---- Brain image overlay ---- */
+/* ---- Brain image with fade ---- */
 .bg-brain{
   position:fixed;z-index:-1;pointer-events:none;user-select:none;
   right:-8vw;top:12vh;width:min(52vw,900px);min-width:320px;
   opacity:.10;mix-blend-mode:screen;
   filter:saturate(1.05)contrast(1.05);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
-/* ---- Top navbar (identical to Home) ---- */
+/* ---- Navbar ---- */
 .topbar{
   position:sticky;top:0;z-index:10;
-  backdrop-filter:blur(10px)saturate(140%);
+  backdrop-filter:blur(10px) saturate(140%);
   background:rgba(10,10,10,.6);
   border-bottom:1px solid rgba(255,255,255,.06);
 }
@@ -62,52 +61,49 @@ nav a{
   padding:8px 10px;border-radius:10px;opacity:.9;margin:0 2px;
 }
 nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
-
-/* ---- Desktop: show all tabs in one line (no scroll) ---- */
-@media (min-width: 1024px){
-  .topbar .wrap{ max-width:1120px; } /* adjust to 1180/1200 if needed */
-  .topbar nav{
-    overflow:visible; white-space:nowrap; -webkit-overflow-scrolling:auto;
-  }
-  .topbar nav a{
-    margin:0 6px; padding:8px 12px; font-size:.95rem;
-  }
+@media (min-width:1024px){
+  .topbar .wrap{max-width:1120px;}
+  .topbar nav{overflow:visible;white-space:nowrap;-webkit-overflow-scrolling:auto;}
+  .topbar nav a{margin:0 6px;padding:8px 12px;font-size:.95rem;}
+  .topbar .wrap::before,
+  .topbar .wrap::after,
+  .topbar .scroll-hint{display:none!important;}
 }
 
-/* ---- Content spacing & card (same as Home) ---- */
+/* ---- Header ---- */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
   width:112px;height:112px;border-radius:50%;object-fit:cover;margin-bottom:10px;
   box-shadow:0 0 10px rgba(255,255,255,.05);
+  -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
 }
 header h1{font-size:2.5rem;margin-bottom:.3em;}
 header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 .email-link{display:inline-block;font-size:.95rem;color:var(--accent);text-decoration:none;margin-bottom:1em;}
 .email-link:hover{text-decoration:underline;}
 
+/* ---- Contact card ---- */
 .container{max-width:750px;margin:0 auto;padding:10px 20px 20px;}
 .card{
   background:#1a1a1a;padding:24px;border-radius:16px;
   box-shadow:0 0 30px rgba(255,255,255,.05);
   transition:box-shadow .15s ease;text-align:center;
+  will-change:transform,box-shadow;transform:translateZ(0);
 }
-.card:hover{box-shadow:0 0 40px rgba(255,255,255,.10);}
-
-/* ---- Social links row ---- */
-.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:0 0 22px;}
+.card:hover{box-shadow:0 0 40px rgba(255,255,255,.10);transform:translateY(-1px);}
+.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:24px;}
 .socials a{
-  background:#2a2a2a;padding:10px 16px;border-radius:8px;color:#fff;
-  text-decoration:none;transition:background .25s ease;
+  background:#2a2a2a;padding:10px 16px;border-radius:8px;color:#fff;text-decoration:none;
+  transition:background .25s ease;will-change:transform,box-shadow;transform:translateZ(0);
 }
-.socials a:hover{background:#444;}
-
-/* ---- Contact form styling ---- */
+.socials a:hover{background:#444;transform:translateY(-1px);}
 form{
-  display:flex;flex-direction:column;gap:14px;
-  text-align:left;max-width:520px;margin:0 auto;
+  display:flex;flex-direction:column;gap:14px;text-align:left;
+  max-width:520px;margin:0 auto;
 }
 label{display:flex;flex-direction:column;font-weight:600;color:#ddd;}
-input, textarea{
+input,textarea{
   background:#0e0e0e;color:#fff;border:1px solid rgba(255,255,255,.1);
   border-radius:8px;padding:10px 12px;font-size:1rem;font-family:inherit;
 }
@@ -120,7 +116,6 @@ button{
 button:hover{background:#0096cc;}
 .success-message{margin-top:14px;color:#00bfff;font-weight:600;display:none;}
 
-/* ---- Mobile tweaks ---- */
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
@@ -128,135 +123,109 @@ button:hover{background:#0096cc;}
 </head>
 
 <body>
-  <!-- Background layers -->
-  <div class="bg-gradient" aria-hidden="true"></div>
-  <canvas id="neural-bg" aria-hidden="true"></canvas>
-  <img class="bg-brain" src="brain.png" alt="" aria-hidden="true" />
+<div class="bg-gradient" aria-hidden="true"></div>
+<canvas id="neural-bg" aria-hidden="true"></canvas>
+<img class="bg-brain" src="brain.png" alt="" aria-hidden="true" />
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="wrap">
-      <div class="brand">MatNemati</div>
-      <nav aria-label="Main tabs">
-        <a href="index.html">Home</a>
-        <a href="academics.html">Academics & Certificates</a>
-        <a href="research.html">Research & Projects</a>
-        <a href="teaching.html">Teaching</a>
-        <a href="experience.html">Experience</a>
-        <a href="skills.html">Skills</a>
-        <a href="contact.html" class="active">Contact</a>
-      </nav>
-    </div>
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">MatNemati</div>
+    <nav aria-label="Main tabs">
+      <a href="index.html">Home</a>
+      <a href="academics.html">Academics & Certificates</a>
+      <a href="research.html">Research & Projects</a>
+      <a href="teaching.html">Teaching</a>
+      <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
   </div>
+</div>
 
-  <!-- Header (kept for consistent spacing) -->
-  <header>
-    <img src="IMG_20251001_131401.jpg" alt="Matin Nemati" class="avatar" />
-    <h1>Contact Me</h1>
-    <h2>If you'd like to reach out, use the links below or send me a message directly.</h2>
-    <a class="email-link" href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
-  </header>
+<header>
+  <img src="IMG_20251001_131401.jpg" alt="Matin Nemati" class="avatar" />
+  <h1>Contact Me</h1>
+  <h2>If you'd like to reach out, use the links below or send me a message directly.</h2>
+  <a class="email-link" href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
+</header>
 
-  <!-- Main content -->
-  <div class="container">
-    <div class="card">
-      <!-- Social links -->
-      <div class="socials">
-        <a href="https://github.com/MatNemati" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://linkedin.com/in/MatNemati" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://x.com/MatNemati" target="_blank" rel="noopener">X (Twitter)</a>
-        <a href="https://t.me/MatNemati" target="_blank" rel="noopener">Telegram</a>
-        <a href="https://instagram.com/MatNemati" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.researchgate.net/profile/Matin-Nemati" target="_blank" rel="noopener">ResearchGate</a>
-      </div>
-
-      <!-- Contact form (Formspree) -->
-      <form action="https://formspree.io/f/xgvnldpo" method="POST">
-        <label>
-          Name (optional)
-          <input type="text" name="name" placeholder="Your name">
-        </label>
-        <label>
-          Contact Info (optional)
-          <input type="text" name="contact" placeholder="Email, Telegram, etc.">
-        </label>
-        <label>
-          Message
-          <textarea name="message" required placeholder="Write your message here..."></textarea>
-        </label>
-
-        <!-- Extra meta fields (auto-filled) -->
-        <input type="hidden" name="timestamp" id="ts">
-        <input type="hidden" name="userAgent" id="ua">
-        <input type="hidden" name="timezone" id="tz">
-        <input type="hidden" name="referrer" id="rf">
-
-        <button type="submit">Send Message</button>
-      </form>
-      <div class="success-message">✅ Message sent successfully!</div>
+<div class="container">
+  <div class="card">
+    <div class="socials">
+      <a href="https://github.com/MatNemati" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/MatNemati" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://x.com/MatNemati" target="_blank" rel="noopener">X (Twitter)</a>
+      <a href="https://t.me/MatNemati" target="_blank" rel="noopener">Telegram</a>
+      <a href="https://instagram.com/MatNemati" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.researchgate.net/profile/Matin-Nemati" target="_blank" rel="noopener">ResearchGate</a>
     </div>
-  </div>
 
-<!-- Lightweight neural background (same as Home) -->
+    <form action="https://formspree.io/f/xgvnldpo" method="POST">
+      <label>
+        Name (optional)
+        <input type="text" name="name" placeholder="Your name">
+      </label>
+      <label>
+        Contact Info (optional)
+        <input type="text" name="contact" placeholder="Email, Telegram, etc.">
+      </label>
+      <label>
+        Message
+        <textarea name="message" required placeholder="Write your message here..."></textarea>
+      </label>
+      <input type="hidden" name="timestamp" id="ts">
+      <input type="hidden" name="userAgent" id="ua">
+      <input type="hidden" name="timezone" id="tz">
+      <input type="hidden" name="referrer" id="rf">
+      <button type="submit">Send Message</button>
+    </form>
+    <div class="success-message">✅ Message sent successfully!</div>
+  </div>
+</div>
+
 <script>
+/* Neural background animation */
 const canvas=document.getElementById('neural-bg');
 const ctx=canvas.getContext('2d',{alpha:true});
 let w,h,points=[];
-const NUM=70; // adjust density if needed
-
-function resize(){ w=canvas.width=innerWidth; h=canvas.height=innerHeight; }
+const NUM=70,LINK_DIST2=12000;
+function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;}
 addEventListener('resize',resize,{passive:true});
-
 function init(){
-  resize(); points=[];
+  resize();points=[];
   for(let i=0;i<NUM;i++){
-    points.push({
-      x:Math.random()*w,
-      y:Math.random()*h,
-      vx:(Math.random()-.5)*0.3,
-      vy:(Math.random()-.5)*0.3
-    });
+    points.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*0.3,vy:(Math.random()-.5)*0.3});
   }
 }
-
+function update(){
+  for(const p of points){
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>w)p.vx*=-1;
+    if(p.y<0||p.y>h)p.vy*=-1;
+  }
+}
 function draw(){
   ctx.clearRect(0,0,w,h);
-  // dots
   ctx.fillStyle='rgba(0,191,255,0.6)';
-  for(const p of points){ ctx.beginPath(); ctx.arc(p.x,p.y,1.3,0,2*Math.PI); ctx.fill(); }
-  // lines
+  for(const p of points){ctx.beginPath();ctx.arc(p.x,p.y,1.3,0,Math.PI*2);ctx.fill();}
   ctx.strokeStyle='rgba(0,191,255,0.08)';
   for(let i=0;i<NUM;i++){
+    const a=points[i];
     for(let j=i+1;j<NUM;j++){
-      const a=points[i],b=points[j];
-      const dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
-      if(d<12000){
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      }
+      const b=points[j];
+      const dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
+      if(d2<LINK_DIST2){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
     }
   }
 }
+function loop(){update();draw();requestAnimationFrame(loop);}
+init();loop();
 
-function update(){
-  for(const p of points){
-    p.x+=p.vx; p.y+=p.vy;
-    if(p.x<0||p.x>w) p.vx*=-1;
-    if(p.y<0||p.y>h) p.vy*=-1;
-  }
-}
-
-function loop(){ update(); draw(); requestAnimationFrame(loop); }
-init(); loop();
-
-/* Fill extra meta fields for Formspree */
+/* Fill meta fields for Formspree */
 document.addEventListener('DOMContentLoaded',()=>{
-  const ts=document.getElementById('ts');
-  const ua=document.getElementById('ua');
-  const tz=document.getElementById('tz');
-  const rf=document.getElementById('rf');
-  const form=document.querySelector('form');
-  const ok=document.querySelector('.success-message');
-
+  const ts=document.getElementById('ts'),ua=document.getElementById('ua'),
+        tz=document.getElementById('tz'),rf=document.getElementById('rf'),
+        form=document.querySelector('form'),msg=document.querySelector('.success-message');
   function fillMeta(){
     ts.value=new Date().toISOString();
     ua.value=navigator.userAgent||'';
@@ -264,13 +233,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     rf.value=document.referrer||'';
   }
   fillMeta();
-
-  form.addEventListener('submit',async (e)=>{
+  form.addEventListener('submit',async e=>{
     e.preventDefault();
     fillMeta();
     const data=new FormData(form);
     const res=await fetch(form.action,{method:form.method,body:data,headers:{'Accept':'application/json'}});
-    if(res.ok){ form.reset(); ok.style.display='block'; setTimeout(()=>ok.style.display='none',5000); }
+    if(res.ok){form.reset();msg.style.display='block';setTimeout(()=>msg.style.display='none',5000);}
     else alert('Error sending message. Please try again.');
   });
 });
