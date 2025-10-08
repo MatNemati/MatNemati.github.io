@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Matin Nemati</title>
+
 <style>
 :root{
   --bg-1:#0e0e0e;
@@ -12,6 +13,7 @@
   --muted:#cccccc;
   --accent:#00bfff;
 }
+
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;padding:0}
 body{
@@ -26,7 +28,7 @@ body{
   background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
 }
 
-/* ---- Canvas for neural points ---- */
+/* ---- Neural network canvas ---- */
 #neural-bg{
   position:fixed;inset:0;z-index:-2;
   pointer-events:none;
@@ -60,26 +62,37 @@ nav a{
 }
 nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
 
+/* ---- Desktop navbar (no scroll) ---- */
+@media (min-width:1024px){
+  .topbar .wrap{max-width:1120px;}
+  .topbar nav{
+    overflow:visible;white-space:nowrap;-webkit-overflow-scrolling:auto;
+  }
+  .topbar nav a{
+    margin:0 6px;padding:8px 12px;font-size:.95rem;
+  }
+  .topbar .wrap::before,
+  .topbar .wrap::after,
+  .topbar .scroll-hint{display:none!important;}
+}
+
 /* ---- Content ---- */
 header{padding:44px 20px 6px;text-align:center;}
-.avatar {
-  position: relative;
-  width: 112px;
-  height: 112px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-  box-shadow: 0 0 10px rgba(255,255,255,.05);
+.avatar{
+  position:relative;
+  width:112px;height:112px;border-radius:50%;object-fit:cover;
+  margin-bottom:10px;
+  box-shadow:0 0 10px rgba(255,255,255,.05);
 
-  /* Smooth fade at the top edge */
+  /* Smooth fade on top edge */
   mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
-
 header h1{font-size:2.5rem;margin-bottom:.3em;}
 header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 .email-link{display:inline-block;font-size:.95rem;color:var(--accent);text-decoration:none;margin-bottom:1em;}
 .email-link:hover{text-decoration:underline;}
+
 .container{max-width:750px;margin:0 auto;padding:10px 20px 20px;}
 .card{
   background:#1a1a1a;padding:24px;border-radius:16px;
@@ -97,37 +110,9 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
-/* === Desktop navbar: show all tabs in one line (no scroll) === */
-@media (min-width: 1024px) {
-  .topbar .wrap {
-    max-width: 1120px; /* adjust if you need more width */
-  }
-  .topbar nav {
-    overflow: visible;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: auto;
-  }
-  .topbar nav a {
-    margin: 0 6px;
-    padding: 8px 12px;
-    font-size: 0.95rem;
-  }
-  .topbar .wrap::before,
-  .topbar .wrap::after,
-  .topbar .scroll-hint {
-    display: none !important;
-  }
-}
-@media (max-width: 1023px) {
-  .topbar nav {
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
 </style>
 </head>
+
 <body>
 <!-- Background layers -->
 <div class="bg-gradient" aria-hidden="true"></div>
@@ -178,12 +163,12 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
   </div>
 </div>
 
+<!-- Neural points animation -->
 <script>
-/* === Lightweight animated neural dots === */
 const canvas=document.getElementById('neural-bg');
 const ctx=canvas.getContext('2d');
 let w,h,points=[];
-const num=70; // number of dots (adjust for performance)
+const num=70;
 function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;}
 window.addEventListener('resize',resize);
 function init(){
@@ -209,10 +194,7 @@ function draw(){
       const a=points[i],b=points[j];
       const dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
       if(d<12000){
-        ctx.beginPath();
-        ctx.moveTo(a.x,a.y);
-        ctx.lineTo(b.x,b.y);
-        ctx.stroke();
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
       }
     }
   }
