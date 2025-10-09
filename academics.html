@@ -13,7 +13,7 @@
   --muted:#cfd6dc;
   --accent:#00bfff;
   --note:#9aa7b1;
-  --divider:rgba(255,255,255,.08);
+  --divider:rgba(255,255,255,.10);
   --chip-bg:#1a1f22;
   --chip-on:#11232b;
   --link:#67cfff;
@@ -24,11 +24,11 @@
 html,body{height:100%;margin:0;padding:0}
 body{
   font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
-  color:var(--fg);line-height:1.7;background:var(--bg-1);
+  color:var(--fg);line-height:1.65;background:var(--bg-1);
   overflow-x:hidden;
 }
 
-/* ----- Background (same as Home) ----- */
+/* Background (same as Home) */
 .bg-gradient{position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,var(--bg-2),var(--bg-1));}
 #neural-bg{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 .bg-brain{
@@ -39,7 +39,7 @@ body{
   mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
-/* ----- Navbar (same as Home) ----- */
+/* Navbar */
 .topbar{
   position:sticky;top:0;z-index:10;
   backdrop-filter:blur(10px) saturate(140%);
@@ -64,7 +64,7 @@ nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
   nav a{margin:0 6px;padding:8px 12px;font-size:.95rem;}
 }
 
-/* ----- Header (same spacing as Home) ----- */
+/* Header */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
   width:112px;height:112px;border-radius:50%;object-fit:cover;margin-bottom:10px;
@@ -73,17 +73,15 @@ header{padding:44px 20px 6px;text-align:center;}
   mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
 }
 header h1{font-size:2.5rem;margin-bottom:.3em;}
-header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
+header h2{font-weight:400;font-size:1.06rem;color:#cfcfcf;margin-bottom:.5em;}
 .email-link{display:inline-block;font-size:.95rem;color:var(--accent);text-decoration:none;margin-bottom:1em;}
 .email-link:hover{text-decoration:underline;}
 
-/* ----- Container ----- */
+/* Container */
 .container{max-width:750px;margin:0 auto;padding:10px 20px 24px;}
-.update-tag{
-  text-align:center;margin:-4px 0 12px;color:#b7c4cc;font-size:.95rem;
-}
+.update-tag{ text-align:center;margin:-4px 0 12px;color:#b7c4cc;font-size:.95rem; }
 
-/* ----- Switch chips ----- */
+/* Switch chips */
 .switch{
   display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;
 }
@@ -93,54 +91,62 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
   cursor:pointer;user-select:none;transition:transform .15s ease, background .2s ease, border-color .2s ease;
 }
 .chip:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.14);}
-.chip.active{background:var(--chip-on);border-color:rgba(0,191,255,.3);box-shadow:0 0 0 1px rgba(0,191,255,.15) inset;}
+.chip.active{background:var(--chip-on);border-color:rgba(0,191,255,.3);box-shadow:0 0 0 1px rgba(0,191,255,.12) inset;}
 
-/* ----- Cards ----- */
+/* Cards */
 .card{
-  background:#1a1a1a;padding:20px;border-radius:16px;
-  box-shadow:0 0 30px rgba(255,255,255,.05);
-  transition:box-shadow .15s ease, transform .15s ease;
+  background:#161616;border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:16px 16px 10px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+  transition:transform .15s ease, box-shadow .15s ease;
 }
-.card:hover{box-shadow:0 0 40px rgba(255,255,255,.10);transform:translateY(-1px);}
+.card:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.28);}
 .section-title{
-  margin:0 0 10px;font-size:1.06rem;font-weight:800;letter-spacing:.2px;
-  color:#eaf7ff;border-bottom:1px solid rgba(0,191,255,.22);padding-bottom:6px;
+  margin:0 0 8px;font-size:1.04rem;font-weight:800;letter-spacing:.2px;
+  color:#eaf7ff;border-bottom:1px solid rgba(0,191,255,.20);padding-bottom:6px;
 }
 .section-note{
   margin:-2px 0 10px;color:#b7c4cc;font-size:.95rem;
 }
 
-/* ----- GPA Accordion ----- */
+/* GPA minimal accordion */
 .gpa{
-  background:#171717;border:1px solid rgba(255,255,255,.06);
-  border-radius:12px; overflow:hidden; margin:8px 0 14px;
+  display:flex;justify-content:center;margin:4px 0 12px;
 }
 .gpa button{
-  width:100%;text-align:left;background:transparent;border:0;color:#eaf7ff;
-  font-weight:800;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;
+  background:#131313;border:1px solid rgba(255,255,255,.10);
+  color:#eaf7ff;font-weight:800;border-radius:999px;padding:8px 14px;
+  cursor:pointer;display:flex;align-items:center;gap:10px;
+  transition:background .2s ease,border-color .2s ease,transform .15s ease;
 }
-.gpa button:hover{background:rgba(255,255,255,.04);}
-.gpa .chev{margin-left:auto;transition:transform .2s ease;}
-.gpa.open .chev{transform:rotate(180deg);}
-.gpa .panel{display:none;border-top:1px solid var(--divider);padding:10px 12px;}
+.gpa button:hover{background:#171717;border-color:rgba(255,255,255,.16);transform:translateY(-1px);}
+.gpa .panel{
+  display:none;margin-top:10px;border-top:1px solid var(--divider);padding-top:8px;
+}
 .gpa.open .panel{display:block;}
 .gpa .row{display:flex;justify-content:space-between;padding:6px 0;color:#cdd6db;}
-.gpa .row span.badge{background:#0f2530;border:1px solid rgba(0,191,255,.28);color:#a7e3ff;font-weight:800;font-size:.82rem;border-radius:8px;padding:2px 8px;}
+.gpa .row .badge{
+  background:#0f2530;border:1px solid rgba(0,191,255,.28);color:#a7e3ff;
+  font-weight:800;font-size:.82rem;border-radius:8px;padding:2px 8px;
+}
 
-/* ----- Academics items ----- */
-.item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--divider);}
+/* Courses list */
+.item{
+  display:grid; grid-template-columns:1fr auto; gap:8px 10px;
+  align-items:center;padding:9px 0;border-bottom:1px solid var(--divider);
+}
 .item:last-child{border-bottom:none;}
-.item .info{flex:1;min-width:0}
-.item .title{font-weight:700;color:#fff;}
-.item .meta{font-size:.92rem;color:#b9c6ce;margin-top:2px;}
+.title{font-weight:700;color:#f5f7f9;}
+.meta{font-size:.92rem;color:#b9c6ce;}
 .badge{
+  justify-self:end; align-self:center;
   background:#0f2530;border:1px solid rgba(0,191,255,.28);
   color:#a7e3ff;font-weight:800;font-size:.82rem;border-radius:8px;padding:4px 8px;white-space:nowrap;
 }
 a.link{color:var(--link);text-decoration:none;}
 a.link:hover{color:var(--link-hover);text-decoration:underline;}
 
-/* ----- Certificates grid ----- */
+/* Certificates */
 .grid{
   display:grid;gap:14px;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -156,11 +162,11 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
 .c-link a{color:#67cfff;text-decoration:none;}
 .c-link a:hover{color:#87daff;text-decoration:underline;}
 
-/* ----- Visibility sections ----- */
+/* Visibility */
 .view{display:none;}
 .view.show{display:block;}
 
-/* Mobile brain position like Home */
+/* Mobile brain position */
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
@@ -210,112 +216,120 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
   <div id="academics" class="view show">
     <div class="card" style="margin-bottom:14px;">
       <div class="section-title">University Coursework</div>
-      <div class="section-note">I list the courses most relevant to my field that I personally value the most.</div>
+      <div class="section-note">
+        The list below highlights courses I selected because they're more aligned with my field and long-term interests. 
+        Other courses were completed as part of the curriculum, but I didn’t aim to go deep in them.
+      </div>
 
-      <!-- GPA accordion -->
+      <!-- Minimal GPA accordion (centered) -->
       <div class="gpa" id="gpaBox">
-        <button type="button" aria-expanded="false" aria-controls="gpaPanel">
-          GPA (click to expand)
-          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#cfe6f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="panel" id="gpaPanel">
-          <div class="row"><span>Specialty GPA</span><span class="badge" id="gpa-specialty">—</span></div>
-          <div class="row"><span>Overall B.Sc. GPA</span><span class="badge" id="gpa-overall">In progress</span></div>
-          <div class="row"><span>Last Two Semesters GPA</span><span class="badge" id="gpa-last2">—</span></div>
+        <div>
+          <div style="display:flex;justify-content:center;">
+            <button type="button" aria-expanded="false" aria-controls="gpaPanel">
+              GPA details
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#cfe6f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="panel" id="gpaPanel">
+            <div class="row"><span>Specialty GPA</span><span class="badge" id="gpa-specialty">—</span></div>
+            <div class="row"><span>Overall B.Sc. GPA</span><span class="badge" id="gpa-overall">In progress</span></div>
+            <div class="row"><span>Last Two Semesters GPA</span><span class="badge" id="gpa-last2">—</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- Courses (completed) -->
-      <div class="item">
-        <div class="info">
-          <div class="title">Fundamentals of Computer & Programming <span class="meta">(Python)</span></div>
-          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/khosravifard" target="_blank" rel="noopener">Dr. Mohammadali Khosravifard</a></div>
-        </div>
-        <div class="badge">Grade: 20 / 20</div>
-      </div>
-
-      <div class="item">
-        <div class="info">
-          <div class="title">Digital Systems Design II <span class="meta">(Computer Architecture & Processor Fundamentals)</span></div>
-          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/faculty/630/bpcontents" target="_blank" rel="noopener">[Instructor on page]</a></div>
-        </div>
-        <div class="badge">Grade: 18.10 / 20</div>
-      </div>
-
-      <div class="item">
-        <div class="info">
-          <div class="title">Modern Physics</div>
-          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/mirza" target="_blank" rel="noopener">Prof. Behrouz Mirza</a></div>
-        </div>
-        <div class="badge">Grade: 19 / 20</div>
-      </div>
-
-      <div class="item">
-        <div class="info">
-          <div class="title">Engineering Probability</div>
-          <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/fa/people/2748" target="_blank" rel="noopener">[Instructor on page]</a></div>
-        </div>
-        <div class="badge">Grade: 17 / 20</div>
-      </div>
-
-      <div class="item">
-        <div class="info">
-          <div class="title">Electronics</div>
-          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/meshkat" target="_blank" rel="noopener">Dr. Amin Meshkat</a></div>
-        </div>
-        <div class="badge">Grade: 18.06 / 20</div>
-      </div>
-
-      <div class="item">
-        <div class="info">
-          <div class="title">Biomedical Vital Signals Lab</div>
-          <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/en/people/2238" target="_blank" rel="noopener">Dr. Ehsan Rouhani</a></div>
-        </div>
-        <div class="badge">Grade: 19.5 / 20</div>
-      </div>
-
-      <div class="item">
-        <div class="info">
-          <div class="title">Economics & Industrial Management</div>
-          <div class="meta">Instructor: Saba Salimi</div>
-        </div>
-        <div class="badge">Grade: 20 / 20</div>
-      </div>
-    </div>
-
-    <!-- In-progress courses -->
-    <div class="card">
-      <div class="section-title">Currently Taking</div>
-
+      <!-- Courses (selected + currently taking at top with "In progress") -->
+      <!-- Currently taking -->
       <div class="item">
         <div class="info">
           <div class="title">Physiology</div>
           <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/en/people/2238" target="_blank" rel="noopener">Dr. Ehsan Rouhani</a></div>
         </div>
+        <div class="badge">In progress</div>
       </div>
-
       <div class="item">
         <div class="info">
           <div class="title">Computational Neuroscience</div>
           <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/zahabi" target="_blank" rel="noopener">Dr. Sayed Jalal Zahabi</a></div>
         </div>
+        <div class="badge">In progress</div>
       </div>
-
       <div class="item">
         <div class="info">
           <div class="title">Quantum Engineering</div>
-          <div class="meta">Instructors:
-            <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Dr. Zaker Hossein Firouzeh</a>,
+          <div class="meta">Instructors: 
+            <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Dr. Zaker Hossein Firouzeh</a>, 
             <a class="link" href="https://people.iut.ac.ir/en/mzarei" target="_blank" rel="noopener">Dr. Moslem Zarei</a>
           </div>
         </div>
+        <div class="badge">In progress</div>
       </div>
-
-      <div class="item">
+      <div class="item" style="margin-bottom:4px;">
         <div class="info">
           <div class="title">Medical Imaging Systems</div>
           <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/aakhavan" target="_blank" rel="noopener">Dr. Amir Akhavan</a></div>
         </div>
+        <div class="badge">In progress</div>
+      </div>
+
+      <!-- Completed -->
+      <div class="item">
+        <div class="info">
+          <div class="title">Fundamentals of Computer & Programming <span class="meta">(Python)</span></div>
+          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/khosravifard" target="_blank" rel="noopener">Dr. Mohammadali Khosravifard</a></div>
+        </div>
+        <div class="badge">20 / 20</div>
+      </div>
+      <div class="item">
+        <div class="info">
+          <div class="title">Digital Systems Design II <span class="meta">(Computer Architecture & Processor Fundamentals)</span></div>
+          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/faculty/630/bpcontents" target="_blank" rel="noopener">Dr. Vahid Ghafarinia</a></div>
+        </div>
+        <div class="badge">18.10 / 20</div>
+      </div>
+      <div class="item">
+        <div class="info">
+          <div class="title">Modern Physics</div>
+          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/mirza" target="_blank" rel="noopener">Prof. Behrouz Mirza</a></div>
+        </div>
+        <div class="badge">19 / 20</div>
+      </div>
+      <div class="item">
+        <div class="info">
+          <div class="title">Engineering Probability</div>
+          <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/fa/people/2748" target="_blank" rel="noopener">[Instructor profile]</a></div>
+        </div>
+        <div class="badge">17 / 20</div>
+      </div>
+      <div class="item">
+        <div class="info">
+          <div class="title">Electronics</div>
+          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/meshkat" target="_blank" rel="noopener">Dr. Amin Meshkat</a></div>
+        </div>
+        <div class="badge">18.06 / 20</div>
+      </div>
+      <div class="item">
+        <div class="info">
+          <div class="title">Biomedical Vital Signals Lab</div>
+          <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/en/people/2238" target="_blank" rel="noopener">Dr. Ehsan Rouhani</a></div>
+        </div>
+        <div class="badge">19.5 / 20</div>
+      </div>
+      <div class="item" style="border-bottom:none;">
+        <div class="info">
+          <div class="title">Economics & Industrial Management</div>
+          <div class="meta">Instructor: Dr. Saba Salimi — I included this here simply because I truly enjoyed it 🙂</div>
+        </div>
+        <div class="badge">20 / 20</div>
+      </div>
+    </div>
+
+    <!-- Notes card to shape the vibe -->
+    <div class="card" style="margin-top:12px;">
+      <div class="section-title">Notes</div>
+      <div class="section-note">
+        These items reflect where I invested more attention due to relevance to my field. 
+        I completed many other required courses as well, but I didn’t focus on going deep in them.
       </div>
     </div>
   </div>
@@ -325,33 +339,26 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
     <div class="card">
       <div class="section-title">Certificates</div>
       <div class="grid">
-
-        <!-- Udemy certificates (ordered as provided; update titles later if desired) -->
         <div class="c-card">
           <div class="c-name">Udemy Certificate</div>
           <div class="c-meta">Udemy — Year: —</div>
           <div class="c-link"><a href="https://www.udemy.com/certificate/UC-0914d378-3b74-4a31-9e73-ace591e0c3a9/" target="_blank" rel="noopener">View credential</a></div>
         </div>
-
         <div class="c-card">
           <div class="c-name">Udemy Certificate</div>
           <div class="c-meta">Udemy — Year: —</div>
           <div class="c-link"><a href="https://www.udemy.com/certificate/UC-43ace4c2-c366-432b-9d87-bad6caa02ca6/" target="_blank" rel="noopener">View credential</a></div>
         </div>
-
         <div class="c-card">
           <div class="c-name">Udemy Certificate</div>
           <div class="c-meta">Udemy — Year: —</div>
           <div class="c-link"><a href="https://www.udemy.com/certificate/UC-d1abbb31-966f-4d66-b8e5-33b407f018e9/" target="_blank" rel="noopener">View credential</a></div>
         </div>
-
-        <!-- IPM program (ongoing) -->
         <div class="c-card">
           <div class="c-name">Comprehensive Course on the Principles of Neuroscience</div>
           <div class="c-meta">Institute for Research in Fundamental Sciences (IPM) — Ongoing (6 months)</div>
           <div class="c-link"><a href="#" target="_blank" rel="noopener">—</a></div>
         </div>
-
       </div>
     </div>
   </div>
@@ -379,7 +386,6 @@ function init(){
     });
   }
 }
-
 function update(){
   for(const p of points){
     p.x += p.vx; p.y += p.vy;
@@ -387,7 +393,6 @@ function update(){
     if(p.y<0||p.y>h) p.vy *= -1;
   }
 }
-
 function draw(){
   ctx.clearRect(0,0,w,h);
   ctx.fillStyle = 'rgba(0,191,255,0.6)';
@@ -402,11 +407,10 @@ function draw(){
     }
   }
 }
-
 function loop(){ update(); draw(); requestAnimationFrame(loop); }
 init(); loop();
 
-/* Toggle between Academics and Certificates */
+/* Toggle views */
 document.addEventListener('DOMContentLoaded',()=>{
   const chips = document.querySelectorAll('.chip');
   const views = { academics: document.getElementById('academics'), certs: document.getElementById('certs') };
@@ -418,6 +422,15 @@ document.addEventListener('DOMContentLoaded',()=>{
       Object.values(views).forEach(el=>el.classList.remove('show'));
       views[v].classList.add('show');
     });
+  });
+
+  // GPA accordion
+  const gpaBox = document.getElementById('gpaBox');
+  const btn = gpaBox.querySelector('button');
+  const panel = document.getElementById('gpaPanel');
+  btn.addEventListener('click', ()=>{
+    const open = gpaBox.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 });
 </script>
