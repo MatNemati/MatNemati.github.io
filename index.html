@@ -22,30 +22,28 @@ body{
   overflow-x:hidden;
 }
 
-/* ----- Background gradient ----- */
+/* Background gradient */
 .bg-gradient{
   position:fixed;inset:0;z-index:-3;
   background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
 }
 
-/* ----- Lightweight neural points canvas ----- */
+/* Neural points canvas */
 #neural-bg{
   position:fixed;inset:0;z-index:-2;pointer-events:none;
 }
 
-/* ----- Brain image (with top-edge fade mask to remove seam) ----- */
+/* Brain image */
 .bg-brain{
   position:fixed;z-index:-1;pointer-events:none;user-select:none;
   right:-8vw;top:12vh;width:min(52vw,900px);min-width:320px;
   opacity:.10;mix-blend-mode:screen;
   filter:saturate(1.05)contrast(1.05);
-
-  /* fade the top edge to blend with page background (fixes visible line) */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
-/* ----- Top navbar ----- */
+/* Top navbar */
 .topbar{
   position:sticky;top:0;z-index:10;
   backdrop-filter:blur(10px) saturate(140%);
@@ -65,22 +63,20 @@ nav a{
 }
 nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
 
-/* ----- Desktop navbar: show all tabs in one row (no scroll) ----- */
+/* Desktop navbar: show all tabs in one row */
 @media (min-width:1024px){
-  .topbar .wrap{max-width:1120px;} /* adjust to 1180/1200 if you ever need more room */
+  .topbar .wrap{max-width:1120px;}
   .topbar nav{overflow:visible;white-space:nowrap;-webkit-overflow-scrolling:auto;}
   .topbar nav a{margin:0 6px;padding:8px 12px;font-size:.95rem;}
 }
 
-/* ----- Content ----- */
+/* Content */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
   position:relative;
   width:112px;height:112px;border-radius:50%;object-fit:cover;
   margin-bottom:10px;
   box-shadow:0 0 10px rgba(255,255,255,.05);
-
-  /* subtle top fade on avatar (optional cosmetic) */
   -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
 }
@@ -97,15 +93,105 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
   will-change:transform,box-shadow;transform:translateZ(0);
 }
 .card:hover{box-shadow:0 0 40px rgba(255,255,255,.10);transform:translateY(-1px);}
-.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-top:20px;}
-.socials a{
-  background:#2a2a2a;padding:10px 16px;border-radius:8px;color:#fff;
-  transition:background-color .25s ease;text-decoration:none;
-  will-change:transform,box-shadow;transform:translateZ(0);
+/* Mini drawer trigger + panel */
+.mini-wrap {
+  max-width: 520px;
+  margin: 10px auto 0;
+  text-align: left;
 }
-.socials a:hover{background:#444;transform:translateY(-1px);}
 
-/* ----- Mobile tweaks ----- */
+.mini-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03); /* even softer background */
+  border: 1px solid rgba(255, 255, 255, 0.10); /* softer border */
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: .95rem;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; 
+  user-select: none;
+  color: #f2f5f7; /* soft white */
+  letter-spacing: 0.2px;
+  transition: 
+    transform .15s ease, 
+    box-shadow .15s ease, 
+    border-color .2s ease, 
+    opacity .2s ease, 
+    background .2s ease,
+    color .2s ease;
+}
+
+.mini-trigger:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.06); /* slightly brighter hover */
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff; /* a bit brighter on hover */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.mini-trigger .chev {
+  font-weight: 800;
+  opacity: .85;
+  transform: translateY(-1px);
+}
+
+.mini-panel {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, .06);
+  background: #121212; /* slightly darker to match background */
+  border-radius: 12px;
+}
+
+.mini-panel.show {
+  display: block;
+}
+
+.mini-list {
+  display: grid;
+  gap: 6px;
+}
+
+.mini-list a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #f0f4f7;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: .93rem;
+  text-decoration: none;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, .05);
+  transition: background .15s ease, border-color .15s ease, transform .12s ease, color .2s ease;
+}
+
+.mini-list a:hover {
+  background: #1e1e1e;
+  border-color: rgba(0, 191, 255, .25);
+  color: #bfeaff;
+  transform: translateY(-1px);
+}
+
+.mini-note {
+  margin-top: 8px;
+  color: #bfc7ce;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: .9rem;
+  opacity: .82;
+}
+/* Last update */
+.last-update{
+  margin-top:12px;
+  font-size:.9rem;
+  color:#c9d2d8;
+  opacity:.95;
+}
+
+/* Mobile tweaks */
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
@@ -149,16 +235,30 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
       Hi! I'm Matin Nemati, an undergraduate Electrical Engineering student at Isfahan University of Technology, majoring in Bioelectrics. You can find me on most platforms with the handle <strong>MatNemati</strong>.
     </p>
     <p>
-      My academic interests focus on neuroscience, systems neuroscience, and emerging neurotechnologies. I thrive on solving complex problems that require algorithmic and creative thinking. I am also passionate about physics and signal processing and currently exploring possible connections between brain function and quantum phenomena.
+      My academic interests revolve around neuroscience, systems neuroscience, and emerging neurotechnologies. I’m deeply passionate about tackling algorithmic challenges — I enjoy engaging myself with complex, thought-provoking problems that require both analytical precision and creative thinking. I’m also intrigued by financial and economic topics, which I find both intellectually stimulating and enjoyable.
     </p>
-    <p><em>(Summer and Fall 2025)</em></p>
-    <div class="socials">
-      <a href="https://www.linkedin.com/in/MatNemati" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://x.com/MatNemati" target="_blank" rel="noopener">X (Twitter)</a>
-      <a href="https://t.me/MatNemati" target="_blank" rel="noopener">Telegram</a>
-      <a href="https://instagram.com/MatNemati" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.researchgate.net/profile/Matin-Nemati?ev=hdr_xprf" target="_blank" rel="noopener">ResearchGate</a>
+    <p>
+      I am also passionate about physics and signal processing and currently exploring possible connections between brain function and quantum phenomena.
+    </p>
+
+    <div class="mini-wrap">
+      <button class="mini-trigger" id="moreBtn" type="button" aria-expanded="false" aria-controls="miniPanel">
+        More Info </span>
+      </button>
+      <div class="mini-panel" id="miniPanel">
+        <div class="mini-list">
+          <a href="academics.html">Academics & Certificates</a>
+          <a href="research.html">Research & Projects</a>
+          <a href="teaching.html">Teaching</a>
+          <a href="experience.html">Experience</a>
+          <a href="skills.html">Skills</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="mini-note">You can also access these sections from the top navigation on any page.</div>
+      </div>
     </div>
+
+    <p class="last-update">Last update: Summer 2025</p>
   </div>
 </div>
 
@@ -167,8 +267,8 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 const canvas = document.getElementById('neural-bg');
 const ctx = canvas.getContext('2d', { alpha: true });
 let w, h, points = [];
-const NUM = 70;          // number of dots (tune 60–90)
-const LINK_DIST2 = 12000; // squared distance threshold for lines
+const NUM = 70;
+const LINK_DIST2 = 12000;
 
 function resize(){
   w = canvas.width = innerWidth;
@@ -199,12 +299,8 @@ function update(){
 
 function draw(){
   ctx.clearRect(0,0,w,h);
-
-  // draw dots
   ctx.fillStyle = 'rgba(0,191,255,0.6)';
   for(const p of points){ ctx.beginPath(); ctx.arc(p.x,p.y,1.3,0,Math.PI*2); ctx.fill(); }
-
-  // draw lines
   ctx.strokeStyle = 'rgba(0,191,255,0.08)';
   for(let i=0;i<NUM;i++){
     const a = points[i];
@@ -217,10 +313,16 @@ function draw(){
     }
   }
 }
-
 function loop(){ update(); draw(); requestAnimationFrame(loop); }
-
 init(); loop();
+
+/* mini drawer toggle */
+const moreBtn = document.getElementById('moreBtn');
+const miniPanel = document.getElementById('miniPanel');
+moreBtn.addEventListener('click',()=>{
+  const open = miniPanel.classList.toggle('show');
+  moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
 </script>
 </body>
 </html>
