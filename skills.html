@@ -12,8 +12,8 @@
   --fg:#f1f1f1;
   --muted:#bfc6cc;
   --accent:#00bfff;
-  --link-soft:#67cfff;      /* softer cyan for links */
-  --note:#9fb0bb;           /* muted note text */
+  --link-soft:#67cfff;
+  --note:#9fb0bb;
 }
 
 *{box-sizing:border-box}
@@ -24,7 +24,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ----- Background (identical to Home) ----- */
+/* Background */
 .bg-gradient{position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,var(--bg-2),var(--bg-1));}
 #neural-bg{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 .bg-brain{
@@ -35,7 +35,7 @@ body{
   mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
-/* ----- Navbar (identical to Home) ----- */
+/* Navbar */
 .topbar{
   position:sticky;top:0;z-index:10;
   backdrop-filter:blur(10px) saturate(140%);
@@ -56,15 +56,15 @@ nav a{
 nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
 @media (min-width:1024px){
   .topbar .wrap{max-width:1120px;}
-  nav{overflow:visible;white-space:nowrap;-webkit-overflow-scrolling:auto;}
+  nav{overflow:visible;white-space:nowrap;}
   nav a{margin:0 6px;padding:8px 12px;font-size:.95rem;}
 }
 
-/* ----- Header (identical spacing) ----- */
+/* Header */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
-  position:relative;width:112px;height:112px;border-radius:50%;object-fit:cover;
-  margin-bottom:10px;box-shadow:0 0 10px rgba(255,255,255,.05);
+  width:112px;height:112px;border-radius:50%;object-fit:cover;margin-bottom:10px;
+  box-shadow:0 0 10px rgba(255,255,255,.05);
   -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
 }
@@ -73,42 +73,42 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 .email-link{display:inline-block;font-size:.95rem;color:var(--accent);text-decoration:none;margin-bottom:1em;}
 .email-link:hover{text-decoration:underline;}
 
-/* ----- Container ----- */
+/* Container */
 .container{max-width:750px;margin:0 auto;padding:10px 20px 20px;}
 
-/* ----- Grid of skill cards ----- */
+/* Grid */
 .grid{
   display:grid; gap:16px;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 }
 .skill-card{
-  background:#1a1a1a; border-radius:16px; padding:18px 18px 14px;
+  background:#1a1a1a;border-radius:16px;padding:18px 18px 14px;
   box-shadow:0 0 28px rgba(255,255,255,.05);
-  transition:box-shadow .15s ease, transform .15s ease;
+  transition:box-shadow .15s ease,transform .15s ease;
 }
-.skill-card:hover{ box-shadow:0 0 40px rgba(255,255,255,.10); transform:translateY(-1px); }
+.skill-card:hover{box-shadow:0 0 40px rgba(255,255,255,.10);transform:translateY(-1px);}
 
 /* Card header */
 .skill-card h3{
   margin:0 0 10px;
-  font-size:1.06rem; font-weight:800; letter-spacing:.2px;
+  font-size:1.06rem;font-weight:800;letter-spacing:.2px;
   color:#eaf7ff;
   border-bottom:1px solid rgba(0,191,255,.22);
   padding-bottom:6px;
 }
 
-/* Single-column list inside card */
+/* Skill list */
 .slist{margin:0;padding:0;list-style:none;}
 .sitem{margin:8px 0;}
-.sname{font-weight:700;color:#ffffff; display:block;}
-.snote{font-size:.88rem;color:var(--note); display:block; margin-top:2px;}
+.sname{font-weight:700;color:#ffffff;display:block;}
+.snote{font-size:.88rem;color:var(--note);display:block;margin-top:2px;}
 .snote::before{content:"(";}.snote::after{content:")";}
 
-/* Softer link color */
-a.soft-link{color:var(--link-soft); text-decoration:none;}
-a.soft-link:hover{color:#87daff; text-decoration:underline;}
+/* Links */
+a.soft-link{color:var(--link-soft);text-decoration:none;}
+a.soft-link:hover{color:#87daff;text-decoration:underline;}
 
-/* Mobile brain position like Home */
+/* Mobile */
 @media(max-width:880px){
   .bg-brain{right:-14vw;top:16vh;width:68vw;opacity:.08;}
 }
@@ -116,7 +116,6 @@ a.soft-link:hover{color:#87daff; text-decoration:underline;}
 </head>
 
 <body>
-<!-- Background layers -->
 <div class="bg-gradient" aria-hidden="true"></div>
 <canvas id="neural-bg" aria-hidden="true"></canvas>
 <img class="bg-brain" src="brain.png" alt="" aria-hidden="true" />
@@ -145,9 +144,10 @@ a.soft-link:hover{color:#87daff; text-decoration:underline;}
   <a class="email-link" href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
 </header>
 
-<!-- Grid of categorized skill cards -->
+<!-- Skills grid -->
 <div class="container">
   <div class="grid">
+
     <!-- Programming & Tools -->
     <div class="skill-card">
       <h3>Programming & Tools</h3>
@@ -200,7 +200,7 @@ a.soft-link:hover{color:#87daff; text-decoration:underline;}
       <ul class="slist">
         <li class="sitem">
           <span class="sname">Neuroscience & Systems Neuroscience</span>
-          <span class="snote">studied Kandel; continuing advanced review</span>
+          <span class="snote">currently studying Kandel; continuing advanced review</span>
         </li>
         <li class="sitem">
           <span class="sname">Computational Neuroscience</span>
@@ -219,61 +219,50 @@ a.soft-link:hover{color:#87daff; text-decoration:underline;}
         </li>
         <li class="sitem">
           <span class="sname">English</span>
-          <span class="snote">intermediate reading; limited speaking</span>
+          <span class="snote">intermediate reading and communication</span>
         </li>
       </ul>
     </div>
+
+    <!-- Soft Skills -->
+    <div class="skill-card">
+    <h3>Soft Skills</h3>
+    <ul class="slist">
+        <li class="sitem"><span class="sname">Teaching</span></li>
+        <li class="sitem"><span class="sname">Mentoring</span></li>
+    </ul>
+    </div>
+
+
+
   </div>
 </div>
 
-<!-- Neural background animation (identical to Home) -->
 <script>
-const canvas = document.getElementById('neural-bg');
-const ctx = canvas.getContext('2d', { alpha: true });
-let w, h, points = [];
-const NUM = 70;
-const LINK_DIST2 = 12000;
-
-function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
-addEventListener('resize', resize, { passive: true });
-
+const canvas=document.getElementById('neural-bg');
+const ctx=canvas.getContext('2d',{alpha:true});
+let w,h,points=[];
+const NUM=70,LINK_DIST2=12000;
+function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;}
+addEventListener('resize',resize,{passive:true});
 function init(){
-  resize(); points.length = 0;
+  resize();points.length=0;
   for(let i=0;i<NUM;i++){
-    points.push({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      vx: (Math.random()-.5)*0.3,
-      vy: (Math.random()-.5)*0.3
-    });
+    points.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*0.3,vy:(Math.random()-.5)*0.3});
   }
 }
-
 function update(){
-  for(const p of points){
-    p.x += p.vx; p.y += p.vy;
-    if(p.x<0||p.x>w) p.vx *= -1;
-    if(p.y<0||p.y>h) p.vy *= -1;
-  }
+  for(const p of points){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
 }
-
 function draw(){
   ctx.clearRect(0,0,w,h);
-  ctx.fillStyle = 'rgba(0,191,255,0.6)';
-  for(const p of points){ ctx.beginPath(); ctx.arc(p.x,p.y,1.3,0,Math.PI*2); ctx.fill(); }
-  ctx.strokeStyle = 'rgba(0,191,255,0.08)';
-  for(let i=0;i<NUM;i++){
-    const a = points[i];
-    for(let j=i+1;j<NUM;j++){
-      const b = points[j];
-      const dx = a.x - b.x, dy = a.y - b.y, d2 = dx*dx + dy*dy;
-      if(d2 < LINK_DIST2){ ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
-    }
-  }
+  ctx.fillStyle='rgba(0,191,255,0.6)';
+  for(const p of points){ctx.beginPath();ctx.arc(p.x,p.y,1.3,0,Math.PI*2);ctx.fill();}
+  ctx.strokeStyle='rgba(0,191,255,0.08)';
+  for(let i=0;i<NUM;i++){const a=points[i];for(let j=i+1;j<NUM;j++){const b=points[j];const dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;if(d2<LINK_DIST2){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}}
 }
-
-function loop(){ update(); draw(); requestAnimationFrame(loop); }
-init(); loop();
+function loop(){update();draw();requestAnimationFrame(loop);}
+init();loop();
 </script>
 </body>
 </html>
