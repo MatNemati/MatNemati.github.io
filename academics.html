@@ -28,7 +28,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ----- Background (identical to Home) ----- */
+/* ----- Background (same as Home) ----- */
 .bg-gradient{position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,var(--bg-2),var(--bg-1));}
 #neural-bg{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 .bg-brain{
@@ -39,7 +39,7 @@ body{
   mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 100%);
 }
 
-/* ----- Navbar (identical to Home) ----- */
+/* ----- Navbar (same as Home) ----- */
 .topbar{
   position:sticky;top:0;z-index:10;
   backdrop-filter:blur(10px) saturate(140%);
@@ -64,7 +64,7 @@ nav a:hover{opacity:1;background:rgba(255,255,255,.06)}
   nav a{margin:0 6px;padding:8px 12px;font-size:.95rem;}
 }
 
-/* ----- Header (identical spacing to Home) ----- */
+/* ----- Header (same spacing as Home) ----- */
 header{padding:44px 20px 6px;text-align:center;}
 .avatar{
   width:112px;height:112px;border-radius:50%;object-fit:cover;margin-bottom:10px;
@@ -77,10 +77,13 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 .email-link{display:inline-block;font-size:.95rem;color:var(--accent);text-decoration:none;margin-bottom:1em;}
 .email-link:hover{text-decoration:underline;}
 
-/* ----- Container (same as Home) ----- */
+/* ----- Container ----- */
 .container{max-width:750px;margin:0 auto;padding:10px 20px 24px;}
+.update-tag{
+  text-align:center;margin:-4px 0 12px;color:#b7c4cc;font-size:.95rem;
+}
 
-/* ----- Switch chips (toggle sections) ----- */
+/* ----- Switch chips ----- */
 .switch{
   display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;
 }
@@ -114,8 +117,7 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 }
 .gpa button{
   width:100%;text-align:left;background:transparent;border:0;color:#eaf7ff;
-  font-weight:800;padding:10px 12px;cursor:pointer;
-  display:flex;align-items:center;gap:10px;
+  font-weight:800;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;
 }
 .gpa button:hover{background:rgba(255,255,255,.04);}
 .gpa .chev{margin-left:auto;transition:transform .2s ease;}
@@ -125,7 +127,7 @@ header h2{font-weight:400;font-size:1.1rem;color:#ccc;margin-bottom:.5em;}
 .gpa .row{display:flex;justify-content:space-between;padding:6px 0;color:#cdd6db;}
 .gpa .row span.badge{background:#0f2530;border:1px solid rgba(0,191,255,.28);color:#a7e3ff;font-weight:800;font-size:.82rem;border-radius:8px;padding:2px 8px;}
 
-/* ----- Academics list items ----- */
+/* ----- Academics items ----- */
 .item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--divider);}
 .item:last-child{border-bottom:none;}
 .item .info{flex:1;min-width:0}
@@ -196,6 +198,8 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
 </header>
 
 <div class="container">
+  <div class="update-tag">Last update: June 2025</div>
+
   <!-- Switch chips -->
   <div class="switch">
     <div class="chip active" data-view="academics">Academics</div>
@@ -216,7 +220,7 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
         </button>
         <div class="panel" id="gpaPanel">
           <div class="row"><span>Specialty GPA</span><span class="badge" id="gpa-specialty">—</span></div>
-          <div class="row"><span>Overall B.Sc. GPA</span><span class="badge" id="gpa-overall">—</span></div>
+          <div class="row"><span>Overall B.Sc. GPA</span><span class="badge" id="gpa-overall">In progress</span></div>
           <div class="row"><span>Last Two Semesters GPA</span><span class="badge" id="gpa-last2">—</span></div>
         </div>
       </div>
@@ -227,15 +231,15 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
           <div class="title">Fundamentals of Computer & Programming <span class="meta">(Python)</span></div>
           <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/khosravifard" target="_blank" rel="noopener">Dr. Mohammadali Khosravifard</a></div>
         </div>
-        <div class="badge">Grade: —</div>
+        <div class="badge">Grade: 20 / 20</div>
       </div>
 
       <div class="item">
         <div class="info">
           <div class="title">Digital Systems Design II <span class="meta">(Computer Architecture & Processor Fundamentals)</span></div>
-          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/faculty/630/bpcontents" target="_blank" rel="noopener">Dr. Vahid Ghafarinia</a></div>
+          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/faculty/630/bpcontents" target="_blank" rel="noopener">[Instructor on page]</a></div>
         </div>
-        <div class="badge">Grade: 18.10</div>
+        <div class="badge">Grade: 18.10 / 20</div>
       </div>
 
       <div class="item">
@@ -243,15 +247,15 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
           <div class="title">Modern Physics</div>
           <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/mirza" target="_blank" rel="noopener">Prof. Behrouz Mirza</a></div>
         </div>
-        <div class="badge">Grade: 19</div>
+        <div class="badge">Grade: 19 / 20</div>
       </div>
 
       <div class="item">
         <div class="info">
           <div class="title">Engineering Probability</div>
-          <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/fa/people/2748" target="_blank" rel="noopener">Dr. Niloufar Ahmadipour</a></div>
+          <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/fa/people/2748" target="_blank" rel="noopener">[Instructor on page]</a></div>
         </div>
-        <div class="badge">Grade: 17</div>
+        <div class="badge">Grade: 17 / 20</div>
       </div>
 
       <div class="item">
@@ -259,7 +263,7 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
           <div class="title">Electronics</div>
           <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/meshkat" target="_blank" rel="noopener">Dr. Amin Meshkat</a></div>
         </div>
-        <div class="badge">Grade: 18.06</div>
+        <div class="badge">Grade: 18.06 / 20</div>
       </div>
 
       <div class="item">
@@ -267,7 +271,7 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
           <div class="title">Biomedical Vital Signals Lab</div>
           <div class="meta">Instructor: <a class="link" href="https://ece.iut.ac.ir/en/people/2238" target="_blank" rel="noopener">Dr. Ehsan Rouhani</a></div>
         </div>
-        <div class="badge">Grade: 19.5</div>
+        <div class="badge">Grade: 19.5 / 20</div>
       </div>
 
       <div class="item">
@@ -275,7 +279,7 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
           <div class="title">Economics & Industrial Management</div>
           <div class="meta">Instructor: Saba Salimi</div>
         </div>
-        <div class="badge">Grade: 20</div>
+        <div class="badge">Grade: 20 / 20</div>
       </div>
     </div>
 
@@ -300,7 +304,10 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
       <div class="item">
         <div class="info">
           <div class="title">Quantum Engineering</div>
-          <div class="meta">Instructor: <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Dr. Zaker Hossein Firouzeh</a></div>
+          <div class="meta">Instructors:
+            <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Dr. Zaker Hossein Firouzeh</a>,
+            <a class="link" href="https://people.iut.ac.ir/en/mzarei" target="_blank" rel="noopener">Dr. Moslem Zarei</a>
+          </div>
         </div>
       </div>
 
@@ -318,23 +325,39 @@ a.link:hover{color:var(--link-hover);text-decoration:underline;}
     <div class="card">
       <div class="section-title">Certificates</div>
       <div class="grid">
-        <!-- Example cards (replace with real data) -->
+
+        <!-- Udemy certificates (ordered as provided; update titles later if desired) -->
         <div class="c-card">
-          <div class="c-name">[Certificate Title]</div>
-          <div class="c-meta">Issuer — Year</div>
-          <div class="c-link"><a href="#" target="_blank" rel="noopener">View credential</a></div>
+          <div class="c-name">Udemy Certificate</div>
+          <div class="c-meta">Udemy — Year: —</div>
+          <div class="c-link"><a href="https://www.udemy.com/certificate/UC-0914d378-3b74-4a31-9e73-ace591e0c3a9/" target="_blank" rel="noopener">View credential</a></div>
         </div>
+
         <div class="c-card">
-          <div class="c-name">[Certificate Title]</div>
-          <div class="c-meta">Issuer — Year</div>
-          <div class="c-link"><a href="#" target="_blank" rel="noopener">View credential</a></div>
+          <div class="c-name">Udemy Certificate</div>
+          <div class="c-meta">Udemy — Year: —</div>
+          <div class="c-link"><a href="https://www.udemy.com/certificate/UC-43ace4c2-c366-432b-9d87-bad6caa02ca6/" target="_blank" rel="noopener">View credential</a></div>
         </div>
+
+        <div class="c-card">
+          <div class="c-name">Udemy Certificate</div>
+          <div class="c-meta">Udemy — Year: —</div>
+          <div class="c-link"><a href="https://www.udemy.com/certificate/UC-d1abbb31-966f-4d66-b8e5-33b407f018e9/" target="_blank" rel="noopener">View credential</a></div>
+        </div>
+
+        <!-- IPM program (ongoing) -->
+        <div class="c-card">
+          <div class="c-name">Comprehensive Course on the Principles of Neuroscience</div>
+          <div class="c-meta">Institute for Research in Fundamental Sciences (IPM) — Ongoing (6 months)</div>
+          <div class="c-link"><a href="#" target="_blank" rel="noopener">—</a></div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- Background animation (identical to Home) -->
+<!-- Background animation (same as Home) -->
 <script>
 const canvas = document.getElementById('neural-bg');
 const ctx = canvas.getContext('2d', { alpha: true });
