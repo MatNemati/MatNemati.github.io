@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatNemati — ثبت‌نام</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Vazirmatn', sans-serif; background: #f5f5f7; min-height: 100vh; }
+  header { background: #000; padding: 14px 20px; }
+  header .logo { color: #fff; font-weight: 700; font-size: 15px; }
+  main { max-width: 420px; margin: 0 auto; padding: 28px 18px 60px; }
+  .intro { text-align: center; margin-bottom: 22px; }
+  .intro h1 { color: #1d1d1f; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .intro p { color: #7a7a7a; font-size: 13.5px; }
+  form { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid #e0e0e0;
+    font-family: 'Vazirmatn', sans-serif; font-size: 14.5px; color: #1d1d1f; background: #fff;
+  }
+  .row2 { display: flex; gap: 10px; }
+  .row2 .field { flex: 1; }
+  button[type=submit] {
+    margin-top: 4px; padding: 13px; border: none; border-radius: 999px; background: #0066cc; color: #fff;
+    font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  button[type=submit]:disabled { opacity: 0.5; }
+  .msg { font-size: 13.5px; text-align: center; margin-top: 14px; padding: 10px; border-radius: 10px; display: none; }
+  .msg.error { background: #fdecea; color: #c4402c; display: block; }
+  .msg.success { background: #eaf6ec; color: #1e7d34; display: block; }
+</style>
+</head>
+<body>
+
+<header><span class="logo">MatNemati</span></header>
+
+<main>
+  <div class="intro">
+    <h1>ثبت‌نام</h1>
+    <p>اطلاعات زیر برای ساخت پروفایلت لازمه — همه‌ی فیلدها اجباری‌ان.</p>
+  </div>
+
+  <form id="signupForm">
+    <div class="row2">
+      <div class="field"><label>نام</label><input type="text" id="firstName" required /></div>
+      <div class="field"><label>نام خانوادگی</label><input type="text" id="lastName" required /></div>
+    </div>
+
+    <div class="field"><label>ایمیل</label><input type="email" id="email" required /></div>
+    <div class="field"><label>رمز عبور</label><input type="password" id="password" minlength="6" required /></div>
+
+    <div class="row2">
+      <div class="field"><label>سن</label><input type="number" id="age" min="10" max="60" required /></div>
+      <div class="field"><label>شماره تماس</label><input type="tel" id="phone" required /></div>
+    </div>
+
+    <div class="field">
+      <label>رشته تحصیلی</label>
+      <select id="fieldOfStudy" required>
+        <option value="" disabled selected>انتخاب کن</option>
+        <option value="تجربی">تجربی</option>
+        <option value="ریاضی">ریاضی</option>
+        <option value="انسانی">انسانی</option>
+        <option value="هنر">هنر</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>پایه تحصیلی</label>
+      <select id="gradeLevel" required>
+        <option value="" disabled selected>انتخاب کن</option>
+        <option value="konkur">کنکوری</option>
+        <option value="twelfth">دوازدهمی</option>
+      </select>
+    </div>
+
+    <button type="submit" id="submitBtn">ثبت‌نام</button>
+    <div class="msg" id="msg"></div>
+  </form>
+</main>
+
+<script src="../auth.js"></script>
+<script>
+document.getElementById("signupForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("submitBtn");
+  const msg = document.getElementById("msg");
+  btn.disabled = true;
+  msg.className = "msg";
+  msg.textContent = "";
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const fields = {
+    firstName: document.getElementById("firstName").value.trim(),
+    lastName: document.getElementById("lastName").value.trim(),
+    age: parseInt(document.getElementById("age").value, 10),
+    phone: document.getElementById("phone").value.trim(),
+    fieldOfStudy: document.getElementById("fieldOfStudy").value,
+    gradeLevel: document.getElementById("gradeLevel").value,
+  };
+
+  const { data, error } = await signUpStudent(email, password, fields);
+
+  btn.disabled = false;
+  if (error) {
+    msg.className = "msg error";
+    msg.textContent = "خطا: " + error.message;
+    return;
+  }
+
+  msg.className = "msg success";
+  msg.textContent = "ثبت‌نام انجام شد! یه ایمیل تاییدیه برات فرستاده شد — بعد از تایید می‌تونی وارد بشی.";
+  document.getElementById("signupForm").reset();
+});
+</script>
+
+</body>
+</html>
