@@ -12,9 +12,17 @@
   header { background: #000; padding: 14px 20px; }
   header .logo { color: #fff; font-weight: 700; font-size: 15px; }
   main { max-width: 420px; margin: 0 auto; padding: 28px 18px 60px; }
-  .intro { text-align: center; margin-bottom: 22px; }
+  .intro { text-align: center; margin-bottom: 18px; }
   .intro h1 { color: #1d1d1f; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
   .intro p { color: #7a7a7a; font-size: 13.5px; }
+
+  .role-toggle { display: flex; background: #eceef1; border-radius: 999px; padding: 4px; margin-bottom: 18px; }
+  .role-toggle button {
+    flex: 1; padding: 10px; border: none; border-radius: 999px; font-family: 'Vazirmatn', sans-serif;
+    font-size: 13.5px; font-weight: 700; cursor: pointer; background: transparent; color: #7a7a7a;
+  }
+  .role-toggle button.active { background: #0066cc; color: #fff; }
+
   form { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
   .field label { display: block; font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 6px; }
   .field input, .field select {
@@ -23,6 +31,8 @@
   }
   .row2 { display: flex; gap: 10px; }
   .row2 .field { flex: 1; }
+  .academic-fields { display: flex; flex-direction: column; gap: 14px; }
+  .academic-fields.hidden { display: none; }
   button[type=submit] {
     margin-top: 4px; padding: 13px; border: none; border-radius: 999px; background: #0066cc; color: #fff;
     font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer;
@@ -31,6 +41,8 @@
   .msg { font-size: 13.5px; text-align: center; margin-top: 14px; padding: 10px; border-radius: 10px; display: none; }
   .msg.error { background: #fdecea; color: #c4402c; display: block; }
   .msg.success { background: #eaf6ec; color: #1e7d34; display: block; }
+  .switch-link { text-align: center; margin-top: 16px; font-size: 13px; color: #7a7a7a; }
+  .switch-link a { color: #0066cc; font-weight: 600; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -40,7 +52,12 @@
 <main>
   <div class="intro">
     <h1>ثبت‌نام</h1>
-    <p>اطلاعات زیر برای ساخت پروفایلت لازمه — همه‌ی فیلدها اجباری‌ان.</p>
+    <p id="introText">اطلاعات زیر برای ساخت پروفایلت لازمه.</p>
+  </div>
+
+  <div class="role-toggle">
+    <button type="button" id="btnStudent" class="active">دانش‌آموز</button>
+    <button type="button" id="btnAdvisor">مشاور</button>
   </div>
 
   <form id="signupForm">
@@ -51,59 +68,85 @@
 
     <div class="field"><label>ایمیل</label><input type="email" id="email" required /></div>
     <div class="field"><label>رمز عبور</label><input type="password" id="password" minlength="6" required /></div>
+    <div class="field"><label>شماره تماس</label><input type="tel" id="phone" required /></div>
 
-    <div class="row2">
-      <div class="field"><label>سن</label><input type="number" id="age" min="10" max="60" required /></div>
-      <div class="field"><label>شماره تماس</label><input type="tel" id="phone" required /></div>
-    </div>
-
-    <div class="field">
-      <label>رشته تحصیلی</label>
-      <select id="fieldOfStudy" required>
-        <option value="" disabled selected>انتخاب کن</option>
-        <option value="تجربی">تجربی</option>
-        <option value="ریاضی">ریاضی</option>
-        <option value="انسانی">انسانی</option>
-        <option value="هنر">هنر</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>پایه تحصیلی</label>
-      <select id="gradeLevel" required>
-        <option value="" disabled selected>انتخاب کن</option>
-        <option value="konkur">کنکوری</option>
-        <option value="twelfth">دوازدهمی</option>
-      </select>
+    <div class="academic-fields" id="academicFields">
+      <div class="row2">
+        <div class="field"><label>سن</label><input type="number" id="age" min="10" max="60" /></div>
+        <div class="field">
+          <label>رشته تحصیلی</label>
+          <select id="fieldOfStudy">
+            <option value="" disabled selected>انتخاب کن</option>
+            <option value="تجربی">تجربی</option>
+            <option value="ریاضی">ریاضی</option>
+            <option value="انسانی">انسانی</option>
+            <option value="هنر">هنر</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>پایه تحصیلی</label>
+        <select id="gradeLevel">
+          <option value="" disabled selected>انتخاب کن</option>
+          <option value="konkur">کنکوری</option>
+          <option value="twelfth">دوازدهمی</option>
+        </select>
+      </div>
     </div>
 
     <button type="submit" id="submitBtn">ثبت‌نام</button>
     <div class="msg" id="msg"></div>
   </form>
+
+  <div class="switch-link">حساب داری؟ <a href="../login/">وارد شو</a></div>
 </main>
 
 <script src="../auth.js"></script>
 <script>
+let mode = "student";
+const academicFields = document.getElementById("academicFields");
+const btnStudent = document.getElementById("btnStudent");
+const btnAdvisor = document.getElementById("btnAdvisor");
+const introText = document.getElementById("introText");
+const ageInput = document.getElementById("age");
+const fieldOfStudyInput = document.getElementById("fieldOfStudy");
+const gradeLevelInput = document.getElementById("gradeLevel");
+
+function setMode(newMode) {
+  mode = newMode;
+  const isStudent = mode === "student";
+  btnStudent.classList.toggle("active", isStudent);
+  btnAdvisor.classList.toggle("active", !isStudent);
+  academicFields.classList.toggle("hidden", !isStudent);
+  ageInput.required = isStudent;
+  fieldOfStudyInput.required = isStudent;
+  gradeLevelInput.required = isStudent;
+  introText.textContent = isStudent
+    ? "اطلاعات زیر برای ساخت پروفایلت لازمه."
+    : "ثبت‌نامت ثبت می‌شه؛ فعال‌سازی دسترسی مشاور رو خودمون بعداً از پنل انجام می‌دیم.";
+}
+btnStudent.onclick = () => setMode("student");
+btnAdvisor.onclick = () => setMode("advisor");
+
 document.getElementById("signupForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = document.getElementById("submitBtn");
   const msg = document.getElementById("msg");
   btn.disabled = true;
   msg.className = "msg";
-  msg.textContent = "";
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   const fields = {
     firstName: document.getElementById("firstName").value.trim(),
     lastName: document.getElementById("lastName").value.trim(),
-    age: parseInt(document.getElementById("age").value, 10),
     phone: document.getElementById("phone").value.trim(),
-    fieldOfStudy: document.getElementById("fieldOfStudy").value,
-    gradeLevel: document.getElementById("gradeLevel").value,
+    age: mode === "student" ? parseInt(ageInput.value, 10) : null,
+    fieldOfStudy: mode === "student" ? fieldOfStudyInput.value : null,
+    gradeLevel: mode === "student" ? gradeLevelInput.value : null,
   };
 
-  const { data, error } = await signUpStudent(email, password, fields);
+  const { data, error } = await signUpUser(email, password, fields);
 
   btn.disabled = false;
   if (error) {
@@ -113,7 +156,9 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   }
 
   msg.className = "msg success";
-  msg.textContent = "ثبت‌نام انجام شد! یه ایمیل تاییدیه برات فرستاده شد — بعد از تایید می‌تونی وارد بشی.";
+  msg.textContent = mode === "student"
+    ? "ثبت‌نام انجام شد! یه ایمیل تاییدیه برات فرستاده شد."
+    : "درخواستت ثبت شد! بعد از تایید تیم MatNemati، دسترسی مشاور فعال می‌شه.";
   document.getElementById("signupForm").reset();
 });
 </script>
