@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatNemati — لیست رشته‌ها و دانشگاه‌ها</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f5f7; --surface: #ffffff; --ink: #1d1d1f; --ink-muted: #7a7a7a;
+    --hairline: #e5e5e5; --primary: #0066cc; --primary-soft: #eaf2fd; --nav-bg: #000000;
+    --tag-bg: #f5f5f7; --cap-bg: #eaf6ec; --cap-ink: #1e7d34; --notes-ink: #c4402c;
+  }
+  [data-theme="dark"] {
+    --bg: #000000; --surface: #1c1c1e; --ink: #f5f5f7; --ink-muted: #9a9a9a;
+    --hairline: rgba(255,255,255,0.12); --primary: #2997ff; --primary-soft: rgba(41,151,255,0.14); --nav-bg: #000000;
+    --tag-bg: #2a2a2c; --cap-bg: rgba(46,160,67,0.18); --cap-ink: #6fd08a; --notes-ink: #ff8a75;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); min-height: 100vh; transition: background .3s ease; }
+
+  header { background: var(--nav-bg); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .menu-btn, .theme-btn { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; padding: 4px; }
+  header .logo { color: #fff; font-weight: 700; font-size: 16px; }
+  .auth-buttons { display: flex; align-items: center; gap: 8px; }
+  .auth-buttons a { text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 9px 18px; border-radius: 999px; }
+  .btn-login { color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+  .btn-signup { background: var(--primary); color: #fff; }
+
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 40; display: none; }
+  .overlay.open { display: block; }
+  .drawer {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 78%; max-width: 300px; background: var(--surface); z-index: 50;
+    transform: translateX(-100%); transition: transform .28s ease; display: flex; flex-direction: column; padding: 18px 0;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-header { padding: 0 18px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--hairline); margin-bottom: 8px; }
+  .drawer-header .title { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .drawer-header button { background: none; border: none; font-size: 18px; color: var(--ink-muted); cursor: pointer; }
+  .drawer-item {
+    display: flex; align-items: center; gap: 10px; padding: 13px 18px; font-size: 14.5px; color: var(--ink);
+    background: none; border: none; width: 100%; text-align: right; cursor: pointer; font-family: 'Vazirmatn', sans-serif; text-decoration: none;
+  }
+  .drawer-item.active { background: var(--primary-soft); color: var(--primary); font-weight: 700; }
+  .drawer-item.disabled { color: #9a9a9a; cursor: default; }
+  .drawer-item .soon { font-size: 11px; color: #9a9a9a; margin-right: auto; }
+
+  main { max-width: 720px; margin: 0 auto; padding: 16px 16px 60px; }
+  .intro-sub { text-align: center; margin-bottom: 16px; }
+  .intro-sub h1 { font-size: 19px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .intro-sub p { color: var(--ink-muted); font-size: 13px; }
+
+  .filters { background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .filters input[type=text] {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--hairline);
+    font-family: 'Vazirmatn', sans-serif; font-size: 14px; color: var(--ink); background: var(--surface);
+  }
+  .filters-row { display: flex; gap: 8px; }
+  .filters-row > * { flex: 1; min-width: 0; }
+  select#sortBy { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--hairline); font-family: 'Vazirmatn', sans-serif; font-size: 14px; background: var(--surface); color: var(--ink); }
+
+  .msel { position: relative; }
+  .msel-box { min-height: 42px; border: 1px solid var(--hairline); border-radius: 10px; padding: 6px 10px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; cursor: text; background: var(--surface); }
+  .msel-chip { background: var(--primary-soft); color: var(--primary); font-size: 12px; padding: 4px 8px; border-radius: 999px; display: flex; align-items: center; gap: 5px; }
+  .msel-chip button { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 12px; line-height: 1; }
+  .msel-box input { flex: 1; min-width: 60px; border: none; outline: none; font-family: 'Vazirmatn', sans-serif; font-size: 13.5px; padding: 4px; background: transparent; color: var(--ink); }
+  .msel-placeholder { color: var(--ink-muted); font-size: 13.5px; padding: 4px; }
+  .msel-dropdown { position: absolute; top: calc(100% + 4px); right: 0; left: 0; background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; max-height: 200px; overflow-y: auto; z-index: 20; box-shadow: 0 6px 20px rgba(0,0,0,0.15); display: none; }
+  .msel-dropdown.open { display: block; }
+  .msel-option { display: flex; align-items: center; gap: 8px; padding: 9px 12px; font-size: 13.5px; color: var(--ink); cursor: pointer; }
+  .msel-option:hover { background: var(--bg); }
+  .msel-option input { pointer-events: none; }
+  .msel-empty { padding: 10px 12px; font-size: 12.5px; color: var(--ink-muted); }
+
+  .meta-bar { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--ink-muted); margin-bottom: 10px; padding: 0 4px; }
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .card-top .name { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .card-top .code { font-size: 11px; color: var(--ink-muted); white-space: nowrap; }
+  .card-sub { font-size: 12.5px; color: var(--ink-muted); margin-bottom: 8px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--tag-bg); color: var(--ink); }
+  .tag.capacity { background: var(--cap-bg); color: var(--cap-ink); }
+  .notes { font-size: 11.5px; color: var(--notes-ink); margin-top: 6px; }
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 16px; }
+  .pagination button { padding: 9px 16px; border-radius: 999px; border: 1px solid var(--hairline); background: var(--surface); color: var(--ink); font-family: 'Vazirmatn', sans-serif; font-size: 13px; cursor: pointer; }
+  .pagination button:disabled { opacity: 0.4; cursor: default; }
+  .pagination span { font-size: 12.5px; color: var(--ink-muted); }
+  .empty { text-align: center; padding: 40px 20px; color: var(--ink-muted); font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-right">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <span class="logo">MatNemati</span>
+  </div>
+  <div class="auth-buttons">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <a href="../login/" class="btn-login">ورود</a>
+    <a href="../signup/" class="btn-signup">ثبت‌نام</a>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header"><span class="title">بخش‌ها</span><button id="closeDrawer">✕</button></div>
+  <a class="drawer-item" href="../">خانه</a>
+  <button class="drawer-item active" disabled>لیست رشته‌ها و دانشگاه‌ها</button>
+  <button class="drawer-item disabled" disabled>آزمون‌ها <span class="soon">به‌زودی</span></button>
+  <button class="drawer-item disabled" disabled>ویدیوها <span class="soon">به‌زودی</span></button>
+  <button class="drawer-item disabled" disabled>انتخاب رشته هوشمند <span class="soon">به‌زودی</span></button>
+  <button class="drawer-item disabled" disabled>وضعیت پرونده <span class="soon">به‌زودی</span></button>
+</div>
+
+<main>
+  <div class="intro-sub"><h1>لیست رشته‌ها و دانشگاه‌ها</h1><p>گروه ریاضی و فنی — کنکور سراسری ۱۴۰۴</p></div>
+
+  <div class="filters">
+    <input type="text" id="searchBox" placeholder="جستجوی نام رشته یا دانشگاه..." />
+    <div class="filters-row">
+      <div class="msel" id="msel-province" data-placeholder="همه‌ی استان‌ها"></div>
+      <div class="msel" id="msel-major" data-placeholder="همه‌ی رشته‌ها"></div>
+    </div>
+    <div class="filters-row">
+      <div class="msel" id="msel-zone" data-placeholder="همه‌ی انواع پذیرش"></div>
+      <div class="msel" id="msel-gender" data-placeholder="هر جنسیتی"></div>
+    </div>
+    <select id="sortBy">
+      <option value="default">مرتب‌سازی: پیش‌فرض</option>
+      <option value="capacity_desc">بیشترین ظرفیت</option>
+      <option value="name_asc">نام رشته (الفبا)</option>
+      <option value="university_asc">نام دانشگاه (الفبا)</option>
+    </select>
+  </div>
+
+  <div class="meta-bar"><span id="resultCount">در حال بارگذاری...</span></div>
+  <div id="results"></div>
+  <div class="pagination" id="pagination" style="display:none">
+    <button id="prevBtn">قبلی</button>
+    <span id="pageInfo"></span>
+    <button id="nextBtn">بعدی</button>
+  </div>
+</main>
+
+<script>
+// theme (shared across pages via localStorage)
+const themeBtn = document.getElementById('themeBtn');
+function applyTheme(t) { document.body.setAttribute('data-theme', t); themeBtn.textContent = t === 'dark' ? '☀️' : '🌙'; }
+applyTheme(localStorage.getItem('mn-theme') || 'light');
+themeBtn.onclick = () => {
+  const next = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('mn-theme', next); applyTheme(next);
+};
+
+// drawer
+const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay');
+document.getElementById('menuBtn').onclick = () => { drawer.classList.add('open'); overlay.classList.add('open'); };
+document.getElementById('closeDrawer').onclick = closeDrawer;
+overlay.onclick = closeDrawer;
+function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+
+// reusable multiselect
+function MultiSelect(containerId, options) {
+  const el = document.getElementById(containerId);
+  const placeholder = el.dataset.placeholder;
+  let selected = new Set();
+  let allOptions = options;
+  el.innerHTML = `<div class="msel-box" tabindex="0"><span class="msel-placeholder" id="${containerId}-ph">${placeholder}</span><input type="text" id="${containerId}-input" autocomplete="off" style="display:none" /></div><div class="msel-dropdown" id="${containerId}-dd"></div>`;
+  const box = el.querySelector('.msel-box'), input = el.querySelector('input'), ph = document.getElementById(containerId + '-ph'), dd = document.getElementById(containerId + '-dd');
+
+  function renderChips() {
+    box.querySelectorAll('.msel-chip').forEach(c => c.remove());
+    if (selected.size === 0) { ph.style.display = 'inline'; }
+    else {
+      ph.style.display = 'none';
+      [...selected].forEach(val => {
+        const chip = document.createElement('span'); chip.className = 'msel-chip';
+        chip.innerHTML = `${val} <button data-val="${val}">✕</button>`;
+        chip.querySelector('button').onclick = (e) => { e.stopPropagation(); selected.delete(val); renderChips(); renderDropdown(); el.dispatchEvent(new Event('change')); };
+        box.insertBefore(chip, input);
+      });
+    }
+  }
+  function renderDropdown(filterText = '') {
+    const filtered = allOptions.filter(o => o.includes(filterText));
+    if (filtered.length === 0) { dd.innerHTML = '<div class="msel-empty">چیزی پیدا نشد</div>'; return; }
+    dd.innerHTML = filtered.map(o => `<div class="msel-option" data-val="${o}"><input type="checkbox" ${selected.has(o) ? 'checked' : ''} /><span>${o}</span></div>`).join('');
+    dd.querySelectorAll('.msel-option').forEach(opt => {
+      opt.onclick = () => { const val = opt.dataset.val; if (selected.has(val)) selected.delete(val); else selected.add(val); renderChips(); renderDropdown(input.value); el.dispatchEvent(new Event('change')); };
+    });
+  }
+  box.addEventListener('click', () => { input.style.display = 'inline-block'; input.focus(); dd.classList.add('open'); renderDropdown(input.value); });
+  input.addEventListener('input', () => renderDropdown(input.value));
+  document.addEventListener('click', (e) => { if (!el.contains(e.target)) { dd.classList.remove('open'); if (selected.size === 0) input.style.display = 'none'; } });
+  renderChips(); renderDropdown();
+  return { getSelected: () => selected, addPreset: (val) => { if (allOptions.includes(val)) { selected.add(val); renderChips(); } } };
+}
+
+const PAGE_SIZE = 30;
+let ALL_ROWS = [], filteredRows = [], currentPage = 1;
+let provinceMsel, majorMsel, zoneMsel, genderMsel;
+
+const urlParams = new URLSearchParams(window.location.search);
+const presetQuery = urlParams.get('q') || '';
+if (presetQuery) document.getElementById('searchBox').value = presetQuery;
+
+Papa.parse("../majors-full-data.csv", {
+  download: true, header: true, skipEmptyLines: true,
+  complete: (res) => {
+    ALL_ROWS = res.data;
+    const provinces = [...new Set(ALL_ROWS.map(r => r.province).filter(Boolean))].sort();
+    const majors = [...new Set(ALL_ROWS.map(r => r.major_name).filter(Boolean))].sort();
+    provinceMsel = MultiSelect('msel-province', provinces);
+    majorMsel = MultiSelect('msel-major', majors);
+    zoneMsel = MultiSelect('msel-zone', ['کشوری','ناحیهای','استانی','قطبی']);
+    genderMsel = MultiSelect('msel-gender', ['هر دو','فقط زن','فقط مرد']);
+    ['msel-province','msel-major','msel-zone','msel-gender'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
+    applyFilters();
+  },
+  error: () => { document.getElementById("results").innerHTML = '<div class="empty">مشکلی در بارگذاری داده پیش اومد.</div>'; }
+});
+
+function applyFilters() {
+  const q = document.getElementById("searchBox").value.trim();
+  const provinces = provinceMsel.getSelected(), majors = majorMsel.getSelected(), zones = zoneMsel.getSelected(), genders = genderMsel.getSelected();
+  const sortBy = document.getElementById("sortBy").value;
+  filteredRows = ALL_ROWS.filter(r => {
+    if (q && !r.major_name.includes(q) && !r.university.includes(q)) return false;
+    if (provinces.size && !provinces.has(r.province)) return false;
+    if (majors.size && !majors.has(r.major_name)) return false;
+    if (zones.size && !zones.has(r.admission_zone_type)) return false;
+    if (genders.size && !genders.has(r.gender)) return false;
+    return true;
+  });
+  if (sortBy === "capacity_desc") filteredRows.sort((a,b) => (parseInt(b.capacity_1)||0) - (parseInt(a.capacity_1)||0));
+  else if (sortBy === "name_asc") filteredRows.sort((a,b) => a.major_name.localeCompare(b.major_name,'fa'));
+  else if (sortBy === "university_asc") filteredRows.sort((a,b) => a.university.localeCompare(b.university,'fa'));
+  currentPage = 1; render();
+}
+
+function render() {
+  const resultsEl = document.getElementById("results");
+  const total = filteredRows.length;
+  document.getElementById("resultCount").textContent = `${total.toLocaleString('fa-IR')} کد رشته پیدا شد`;
+  if (total === 0) { resultsEl.innerHTML = '<div class="empty">چیزی با این فیلترها پیدا نشد.</div>'; document.getElementById("pagination").style.display = "none"; return; }
+  const totalPages = Math.ceil(total / PAGE_SIZE), start = (currentPage - 1) * PAGE_SIZE, pageRows = filteredRows.slice(start, start + PAGE_SIZE);
+  resultsEl.innerHTML = pageRows.map(r => `
+    <div class="card">
+      <div class="card-top"><span class="name">${r.major_name}</span><span class="code">کد ${r.code}</span></div>
+      <div class="card-sub">${r.university} — ${r.province}</div>
+      <div class="tags">
+        <span class="tag">${r.admission_zone_type || 'نامشخص'}</span>
+        <span class="tag">${r.study_type}</span>
+        <span class="tag">${r.admission_type}</span>
+        <span class="tag">${r.gender}</span>
+        <span class="tag capacity">ظرفیت: ${r.capacity_1}</span>
+      </div>
+      ${r.notes ? `<div class="notes">${r.notes}</div>` : ''}
+    </div>`).join('');
+  document.getElementById("pagination").style.display = "flex";
+  document.getElementById("pageInfo").textContent = `صفحه ${currentPage} از ${totalPages}`;
+  document.getElementById("prevBtn").disabled = currentPage === 1;
+  document.getElementById("nextBtn").disabled = currentPage === totalPages;
+}
+
+document.getElementById("searchBox").addEventListener("input", debounce(applyFilters, 250));
+document.getElementById("sortBy").addEventListener("change", applyFilters);
+document.getElementById("prevBtn").addEventListener("click", () => { currentPage--; render(); window.scrollTo(0,0); });
+document.getElementById("nextBtn").addEventListener("click", () => { currentPage++; render(); window.scrollTo(0,0); });
+function debounce(fn, delay) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), delay); }; }
+</script>
+
+</body>
+</html>
