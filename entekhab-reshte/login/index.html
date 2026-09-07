@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatNemati — ورود</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Vazirmatn', sans-serif; background: #f5f5f7; min-height: 100vh; }
+  header { background: #000; padding: 14px 20px; }
+  header .logo { color: #fff; font-weight: 700; font-size: 15px; }
+  main { max-width: 400px; margin: 0 auto; padding: 40px 18px 60px; }
+  .intro { text-align: center; margin-bottom: 22px; }
+  .intro h1 { color: #1d1d1f; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .intro p { color: #7a7a7a; font-size: 13.5px; }
+  form { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 6px; }
+  .field input { width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid #e0e0e0; font-family: 'Vazirmatn', sans-serif; font-size: 14.5px; }
+  button[type=submit] { margin-top: 4px; padding: 13px; border: none; border-radius: 999px; background: #0066cc; color: #fff; font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; }
+  button[type=submit]:disabled { opacity: 0.5; }
+  .msg { font-size: 13.5px; text-align: center; margin-top: 14px; padding: 10px; border-radius: 10px; display: none; }
+  .msg.error { background: #fdecea; color: #c4402c; display: block; }
+  .msg.success { background: #eaf6ec; color: #1e7d34; display: block; }
+  .switch-link { text-align: center; margin-top: 16px; font-size: 13px; color: #7a7a7a; }
+  .switch-link a { color: #0066cc; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header><span class="logo">MatNemati</span></header>
+
+<main>
+  <div class="intro">
+    <h1>ورود</h1>
+    <p>با ایمیل و رمزت وارد شو — دانش‌آموز، مشاور یا مدیر، فرقی نداره.</p>
+  </div>
+
+  <form id="loginForm">
+    <div class="field"><label>ایمیل</label><input type="email" id="email" required /></div>
+    <div class="field"><label>رمز عبور</label><input type="password" id="password" required /></div>
+    <button type="submit" id="submitBtn">ورود</button>
+    <div class="msg" id="msg"></div>
+  </form>
+
+  <div class="switch-link">حساب نداری؟ <a href="../signup/">ثبت‌نام کن</a></div>
+</main>
+
+<script src="../auth.js"></script>
+<script>
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("submitBtn");
+  const msg = document.getElementById("msg");
+  btn.disabled = true;
+  msg.className = "msg";
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await signIn(email, password);
+
+  if (error) {
+    btn.disabled = false;
+    msg.className = "msg error";
+    msg.textContent = "خطا: " + (error.message.includes("Invalid") ? "ایمیل یا رمز اشتباهه" : error.message);
+    return;
+  }
+
+  const profile = await getCurrentUserProfile();
+  if (!profile) {
+    btn.disabled = false;
+    msg.className = "msg error";
+    msg.textContent = "ورود موفق بود ولی پروفایلت پیدا نشد. با پشتیبانی تماس بگیر.";
+    return;
+  }
+
+  msg.className = "msg success";
+  msg.textContent = `خوش اومدی! در حال انتقال به پنل ${profile.role === 'admin' ? 'مدیریت' : profile.role === 'advisor' ? 'مشاور' : 'دانش‌آموز'}...`;
+
+  // پنل‌های اختصاصی هر نقش هنوز ساخته نشدن — فعلاً بر اساس نقش مسیر می‌دیم
+  setTimeout(() => {
+    if (profile.role === 'admin') window.location.href = "../admin/";
+    else if (profile.role === 'advisor') window.location.href = "../advisor/";
+    else window.location.href = "../dashboard/";
+  }, 1200);
+});
+</script>
+
+</body>
+</html>
