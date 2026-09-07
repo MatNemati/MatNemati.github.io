@@ -6,9 +6,11 @@ const SUPABASE_KEY = "sb_publishable_rV7JPD8lcJIJV4BJhbgl3g_mhXiYluz";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ثبت‌نام دانش‌آموز جدید — نقشش خودکار «student» می‌شه (طبق trigger که ساختیم)
-async function signUpStudent(email, password, fields) {
-  // fields: { firstName, lastName, age, phone, fieldOfStudy, gradeLevel }
+// ثبت‌نام کاربر جدید (دانش‌آموز یا مشاور) — نقش همه اولش «student» می‌شه؛
+// ارتقا به advisor یا admin فقط دستی و توسط خودت از پنل Supabase انجام می‌شه
+async function signUpUser(email, password, fields) {
+  // fields: { firstName, lastName, phone, age, fieldOfStudy, gradeLevel }
+  // برای مشاور: age / fieldOfStudy / gradeLevel رو null بفرست
   const { data, error } = await supabaseClient.auth.signUp({
     email,
     password,
@@ -17,10 +19,10 @@ async function signUpStudent(email, password, fields) {
         full_name: `${fields.firstName} ${fields.lastName}`,
         first_name: fields.firstName,
         last_name: fields.lastName,
-        age: fields.age,
+        age: fields.age ?? null,
         phone: fields.phone,
-        field_of_study: fields.fieldOfStudy,
-        grade_level: fields.gradeLevel,
+        field_of_study: fields.fieldOfStudy ?? null,
+        grade_level: fields.gradeLevel ?? null,
       },
     },
   });
