@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatNemati — پنل مشاور</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root { --bg:#f5f5f7; --surface:#fff; --ink:#1d1d1f; --ink-muted:#7a7a7a; --hairline:#e5e5e5; --primary:#0066cc; --primary-soft:#eaf2fd; --nav-bg:#000; }
+  [data-theme="dark"] { --bg:#000; --surface:#1c1c1e; --ink:#f5f5f7; --ink-muted:#9a9a9a; --hairline:rgba(255,255,255,0.12); --primary:#2997ff; --primary-soft:rgba(41,151,255,0.14); --nav-bg:#000; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); min-height: 100vh; }
+  header { background: var(--nav-bg); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+  header .logo { color: #fff; font-weight: 700; font-size: 16px; }
+  .theme-btn { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
+  .logout-btn { background: none; border: 1px solid rgba(255,255,255,0.4); color: #fff; font-size: 13px; padding: 8px 16px; border-radius: 999px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; }
+
+  main { max-width: 640px; margin: 0 auto; padding: 20px 16px 60px; }
+  .welcome-card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 16px; padding: 20px; margin-bottom: 18px; }
+  .welcome-card .name { font-size: 17px; font-weight: 700; color: var(--ink); }
+  .welcome-card .sub { font-size: 12.5px; color: var(--ink-muted); margin-top: 4px; }
+
+  .section-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .card-top .name { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .card-top .badge { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); }
+  .card-sub { font-size: 12.5px; color: var(--ink-muted); line-height: 1.6; }
+  .targets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .target-tag { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--bg); color: var(--ink); border: 1px solid var(--hairline); }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--ink-muted); font-size: 13.5px; line-height: 1.8; }
+  .loading-screen { text-align: center; padding: 80px 20px; color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">MatNemati — مشاور</span>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="logout-btn" id="logoutBtn">خروج</button>
+  </div>
+</header>
+
+<main id="mainContent"><div class="loading-screen">در حال بارگذاری...</div></main>
+
+<script src="../auth.js"></script>
+<script>
+const themeBtn = document.getElementById('themeBtn');
+function applyTheme(t) { document.body.setAttribute('data-theme', t); themeBtn.textContent = t === 'dark' ? '☀️' : '🌙'; }
+applyTheme(localStorage.getItem('mn-theme') || 'light');
+themeBtn.onclick = () => { const n = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; localStorage.setItem('mn-theme', n); applyTheme(n); };
+document.getElementById('logoutBtn').onclick = async () => { await signOut(); window.location.href = "../login/"; };
+
+(async function init() {
+  const profile = await getCurrentUserProfile();
+  if (!profile) { window.location.href = "../login/"; return; }
+  if (profile.role !== 'advisor') { window.location.href = profile.role === 'admin' ? "../admin/" : "../dashboard/"; return; }
+
+  const { data, error } = await getAllProfiles(); // RLS خودش فقط دانش‌آموزهای اختصاصی + خود مشاور رو برمی‌گردونه
+  const main = document.getElementById('mainContent');
+  if (error) { main.innerHTML = `<div class="empty">خطا: ${error.message}</div>`; return; }
+
+  const myStudents = data.filter(p => p.role === 'student' && p.advisor_id === profile.id);
+
+  main.innerHTML = `
+    <div class="welcome-card">
+      <div class="name">سلام ${profile.first_name} 👋</div>
+      <div class="sub">${myStudents.length} دانش‌آموز به تو اختصاص داده شده</div>
+    </div>
+    <div class="section-title">دانش‌آموزهای من</div>
+    <div id="list"></div>
+  `;
+
+  const listEl = document.getElementById('list');
+  if (myStudents.length === 0) {
+    listEl.innerHTML = '<div class="empty">هنوز دانش‌آموزی بهت اختصاص داده نشده.<br>مدیر باید این کار رو از پنل مدیریت انجام بده.</div>';
+    return;
+  }
+
+  listEl.innerHTML = myStudents.map(s => `
+    <div class="card">
+      <div class="card-top">
+        <span class="name">${s.first_name || ''} ${s.last_name || ''}</span>
+        <span class="badge">${s.grade_level === 'konkur' ? 'کنکوری' : s.grade_level === 'twelfth' ? 'دوازدهمی' : '—'}</span>
+      </div>
+      <div class="card-sub">
+        ${s.email || '—'} · ${s.phone || '—'}<br>
+        ${s.field_of_study || '—'} ${s.city ? '· ' + s.city : ''} ${s.gpa ? '· معدل ' + s.gpa : ''} ${s.rank ? '· رتبه ' + s.rank : ''}
+      </div>
+      ${s.target_majors && s.target_majors.length ? `<div class="targets">${s.target_majors.map(m => `<span class="target-tag">${m}</span>`).join('')}</div>` : ''}
+    </div>
+  `).join('');
+})();
+</script>
+
+</body>
+</html>
