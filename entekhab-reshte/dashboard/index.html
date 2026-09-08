@@ -155,7 +155,7 @@ function renderPanel() {
           <div class="field"><label>رتبه</label><input type="number" min="1" id="rankInput" value="${currentProfile.rank ?? ''}" /></div>
         </div>
         <div class="row2">
-          <div class="field"><label>شهر</label><input type="text" id="cityInput" value="${currentProfile.city ?? ''}" /></div>
+          <div class="field"><label>شهر</label><input type="text" id="cityInput" autocomplete="address-level2" value="${currentProfile.city ?? ''}" /></div>
           <div class="field">
             <label>منطقه</label>
             <select id="regionInput">
