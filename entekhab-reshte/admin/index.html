@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatNemati — پنل مدیریت</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root { --bg:#f5f5f7; --surface:#fff; --ink:#1d1d1f; --ink-muted:#7a7a7a; --hairline:#e5e5e5; --primary:#0066cc; --primary-soft:#eaf2fd; --nav-bg:#000; }
+  [data-theme="dark"] { --bg:#000; --surface:#1c1c1e; --ink:#f5f5f7; --ink-muted:#9a9a9a; --hairline:rgba(255,255,255,0.12); --primary:#2997ff; --primary-soft:rgba(41,151,255,0.14); --nav-bg:#000; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); min-height: 100vh; }
+  header { background: var(--nav-bg); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .menu-btn, .theme-btn { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
+  header .logo { color: #fff; font-weight: 700; font-size: 16px; }
+  .logout-btn { background: none; border: 1px solid rgba(255,255,255,0.4); color: #fff; font-size: 13px; padding: 8px 16px; border-radius: 999px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; }
+
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 40; display: none; }
+  .overlay.open { display: block; }
+  .drawer { position: fixed; top: 0; bottom: 0; left: 0; width: 78%; max-width: 300px; background: var(--surface); z-index: 50; transform: translateX(-100%); transition: transform .28s ease; padding: 18px 0; }
+  .drawer.open { transform: translateX(0); }
+  .drawer-header { padding: 0 18px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--hairline); margin-bottom: 8px; }
+  .drawer-header .title { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .drawer-header button { background: none; border: none; font-size: 18px; color: var(--ink-muted); cursor: pointer; }
+  .drawer-item { display: flex; align-items: center; gap: 10px; padding: 13px 18px; font-size: 14.5px; color: var(--ink); background: none; border: none; width: 100%; text-align: right; cursor: pointer; font-family: 'Vazirmatn', sans-serif; }
+  .drawer-item.active { background: var(--primary-soft); color: var(--primary); font-weight: 700; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; }
+  .tab-content { display: none; } .tab-content.active { display: block; }
+
+  .stat-row { display: flex; gap: 10px; margin-bottom: 18px; }
+  .stat-card { flex: 1; background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px; padding: 16px; text-align: center; }
+  .stat-card .num { font-size: 20px; font-weight: 800; color: var(--primary); }
+  .stat-card .label { font-size: 11.5px; color: var(--ink-muted); margin-top: 4px; }
+
+  .search-box { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--hairline); font-family: 'Vazirmatn', sans-serif; font-size: 14px; background: var(--surface); color: var(--ink); margin-bottom: 14px; }
+
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .card-top .name { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .card-top .badge { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); }
+  .card-sub { font-size: 12.5px; color: var(--ink-muted); margin-bottom: 8px; line-height: 1.6; }
+  .card select { width: 100%; margin-top: 8px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--hairline); font-family: 'Vazirmatn', sans-serif; font-size: 13px; background: var(--bg); color: var(--ink); }
+  .assign-status { font-size: 11.5px; margin-top: 6px; display: none; }
+  .assign-status.show { display: block; }
+  .assign-status.success { color: #1e7d34; }
+  .assign-status.error { color: #c4402c; }
+
+  .empty { text-align: center; padding: 40px 20px; color: var(--ink-muted); font-size: 13.5px; }
+  .loading-screen { text-align: center; padding: 80px 20px; color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-right"><button class="menu-btn" id="menuBtn">☰</button><span class="logo">MatNemati</span></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="logout-btn" id="logoutBtn">خروج</button>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header"><span class="title">پنل مدیریت</span><button id="closeDrawer">✕</button></div>
+  <button class="drawer-item active" data-tab="students">دانش‌آموزها</button>
+  <button class="drawer-item" data-tab="advisors">مشاورها</button>
+</div>
+
+<main id="mainContent"><div class="loading-screen">در حال بارگذاری...</div></main>
+
+<script src="../auth.js"></script>
+<script>
+const themeBtn = document.getElementById('themeBtn');
+function applyTheme(t) { document.body.setAttribute('data-theme', t); themeBtn.textContent = t === 'dark' ? '☀️' : '🌙'; }
+applyTheme(localStorage.getItem('mn-theme') || 'light');
+themeBtn.onclick = () => { const n = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; localStorage.setItem('mn-theme', n); applyTheme(n); };
+
+const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay');
+document.getElementById('menuBtn').onclick = () => { drawer.classList.add('open'); overlay.classList.add('open'); };
+document.getElementById('closeDrawer').onclick = closeDrawer;
+overlay.onclick = closeDrawer;
+function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+
+document.getElementById('logoutBtn').onclick = async () => { await signOut(); window.location.href = "../login/"; };
+
+let allProfiles = [], students = [], advisors = [], activeTab = 'students';
+
+(async function init() {
+  const profile = await getCurrentUserProfile();
+  if (!profile) { window.location.href = "../login/"; return; }
+  if (profile.role !== 'admin') { window.location.href = profile.role === 'advisor' ? "../advisor/" : "../dashboard/"; return; }
+
+  const { data, error } = await getAllProfiles();
+  if (error) { document.getElementById('mainContent').innerHTML = `<div class="empty">خطا در بارگذاری: ${error.message}</div>`; return; }
+
+  allProfiles = data;
+  students = data.filter(p => p.role === 'student');
+  advisors = data.filter(p => p.role === 'advisor');
+  render();
+})();
+
+document.querySelectorAll('.drawer-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.drawer-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    render();
+    closeDrawer();
+  });
+});
+
+function render() {
+  const main = document.getElementById('mainContent');
+  if (activeTab === 'students') {
+    main.innerHTML = `
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">${students.length}</div><div class="label">دانش‌آموز</div></div>
+        <div class="stat-card"><div class="num">${advisors.length}</div><div class="label">مشاور</div></div>
+        <div class="stat-card"><div class="num">${students.filter(s=>s.advisor_id).length}</div><div class="label">اختصاص‌یافته</div></div>
+      </div>
+      <input type="text" class="search-box" id="searchBox" placeholder="جستجوی نام یا ایمیل..." />
+      <div id="studentList"></div>
+    `;
+    document.getElementById('searchBox').addEventListener('input', renderStudentList);
+    renderStudentList();
+  } else {
+    main.innerHTML = `
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">${advisors.length}</div><div class="label">مشاور فعال</div></div>
+      </div>
+      <div id="advisorList"></div>
+    `;
+    renderAdvisorList();
+  }
+}
+
+function renderStudentList() {
+  const q = (document.getElementById('searchBox')?.value || '').trim();
+  const filtered = students.filter(s => !q || `${s.first_name} ${s.last_name} ${s.email}`.includes(q));
+  const el = document.getElementById('studentList');
+  if (filtered.length === 0) { el.innerHTML = '<div class="empty">دانش‌آموزی پیدا نشد.</div>'; return; }
+
+  el.innerHTML = filtered.map(s => `
+    <div class="card">
+      <div class="card-top">
+        <span class="name">${s.first_name || ''} ${s.last_name || ''}</span>
+        <span class="badge">${s.grade_level === 'konkur' ? 'کنکوری' : s.grade_level === 'twelfth' ? 'دوازدهمی' : '—'}</span>
+      </div>
+      <div class="card-sub">
+        ${s.email || '—'} · ${s.phone || '—'}<br>
+        ${s.field_of_study || '—'} ${s.city ? '· ' + s.city : ''} ${s.gpa ? '· معدل ' + s.gpa : ''}
+      </div>
+      <select data-student="${s.id}">
+        <option value="">بدون مشاور</option>
+        ${advisors.map(a => `<option value="${a.id}" ${s.advisor_id === a.id ? 'selected' : ''}>${a.first_name} ${a.last_name}</option>`).join('')}
+      </select>
+      <div class="assign-status" id="status-${s.id}"></div>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('select').forEach(sel => {
+    sel.addEventListener('change', async () => {
+      const studentId = sel.dataset.student;
+      const statusEl = document.getElementById(`status-${studentId}`);
+      const { error } = await assignAdvisor(studentId, sel.value || null);
+      statusEl.classList.add('show');
+      if (error) { statusEl.className = 'assign-status show error'; statusEl.textContent = 'خطا: ' + error.message; }
+      else {
+        statusEl.className = 'assign-status show success'; statusEl.textContent = 'ذخیره شد';
+        const st = students.find(s => s.id === studentId); if (st) st.advisor_id = sel.value || null;
+      }
+    });
+  });
+}
+
+function renderAdvisorList() {
+  const el = document.getElementById('advisorList');
+  if (advisors.length === 0) { el.innerHTML = '<div class="empty">هنوز هیچ مشاوری تایید نشده. (بعد از ثبت‌نام مشاور، نقشش رو از پنل Supabase به advisor تغییر بده)</div>'; return; }
+  el.innerHTML = advisors.map(a => {
+    const count = students.filter(s => s.advisor_id === a.id).length;
+    return `
+      <div class="card">
+        <div class="card-top"><span class="name">${a.first_name || ''} ${a.last_name || ''}</span><span class="badge">${count} دانش‌آموز</span></div>
+        <div class="card-sub">${a.email || '—'} · ${a.phone || '—'}</div>
+      </div>
+    `;
+  }).join('');
+}
+</script>
+
+</body>
+</html>
