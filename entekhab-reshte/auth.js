@@ -79,3 +79,22 @@ function onAuthChange(callback) {
     callback(event, session);
   });
 }
+
+// (مدیر) گرفتن همه‌ی پروفایل‌ها — RLS خودش نتیجه رو بر اساس نقش محدود می‌کنه
+// مدیر: همه رو می‌گیره. مشاور: فقط خودش + دانش‌آموزهای اختصاص‌داده‌شده.
+async function getAllProfiles() {
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return { data, error };
+}
+
+// (مدیر) اختصاص یه مشاور به یه دانش‌آموز
+async function assignAdvisor(studentId, advisorId) {
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .update({ advisor_id: advisorId || null })
+    .eq("id", studentId);
+  return { data, error };
+}
