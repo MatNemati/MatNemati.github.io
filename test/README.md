@@ -1,61 +1,62 @@
-# Personal Website & Landing Page
+# Mat Nemati — Gemini Pro System Design Personal Site
 
-A minimal, high-performance personal landing page designed with a sleek dark mode aesthetic, glassmorphism cards, and smooth interactions.
-
-## ✨ Features
-
-- **Modern Glassmorphism UI**: Backdrop blur cards with gradient accent borders and ambient glow lights.
-- **Ultra Fast & Lightweight**: Pure HTML5, Tailwind CSS, and vanilla JavaScript with zero build steps or npm dependencies.
-- **Interactive Micro-interactions**:
-  - Click-to-copy email with animated toast notification.
-  - Interactive contact form that triggers direct mailto communication.
-  - Dynamic local time indicator and live year.
-  - Hover states and subtle depth animations.
-- **Fully Responsive**: Optimized for mobile screens, tablets, and desktop displays.
-- **Clean Semantic Markup**: SEO-friendly with Open Graph & Twitter meta tags ready.
+A high-performance personal portfolio and interactive system architecture playground built in the signature **Google Gemini Pro** aesthetic, featuring real-time mouse physics, draggable system topology, and an interactive AI terminal console.
 
 ---
 
-## 🚀 How to Run & Preview Locally
+## ✨ Features & Mouse Interactions
 
-Since this site is built with pure static web standards, you have two super simple options:
+### 1. 🖱️ Dynamic Mouse Particle Physics Canvas (`canvas-background.js`)
+- **Gravitational Pull**: Background neural constellations gravitationally attract towards the user's cursor within a 180px radius.
+- **Velocity Sparks**: Quick cursor movements emit a multi-color Gemini stardust spark trail (Google Blue, Cyan, Violet, Pink).
+- **Shockwave Ripple**: Mouse clicks emit expanding radial shockwaves that physically disperse surrounding particles with smooth spring damping.
 
-### Option 1: Built-in Python Server (Recommended)
-From inside the `personal-site` directory:
+### 2. 🧠 Interactive System Design Topology (`system-topology.js`)
+- **Draggable Distributed Nodes**: Click and drag any node (Client Mesh, Edge Ingress, API Gateway, Gemini Pro 2.0 MoE, Agentic DAG, Vector DB, Sharded Cache, Telemetry Bus) with organic spring physics.
+- **Mouse Proximity Probe**: When moving the cursor over the topology canvas, a dynamic dotted probe line connects the user's cursor to the nearest architectural node.
+- **Hover Telemetry Readout**: Hovering over any node highlights its upstream and downstream data conduits and updates the telemetry card with real-time throughput, P99 latency, and architectural specifications.
+- **Interactive Controls**:
+  - `Trace Flow`: Simulates end-to-end multimodal query traversal through the pipeline.
+  - `⚡ Stress Test`: Floods the mesh with high-velocity data packets.
+  - `↺ Reset`: Re-balances all nodes to their default layout.
+
+### 3. 🃏 3D Perspective Card Tilt
+- All project and capability cards feature dynamic 3D perspective physics (`perspective(1000px) rotateX(...) rotateY(...)`) that tilt towards the user's mouse coordinates.
+- Dynamic radial spotlight reflection tracks underneath the translucent glass surface.
+
+### 4. ⌨️ Gemini Pro Interactive System Console (`terminal.js`)
+- Full interactive shell with built-in commands:
+  - `arch` — Render high-level distributed topology diagram.
+  - `bench` — Run real-time P99 latency & cluster throughput diagnostics.
+  - `projects` — Enumerate production systems.
+  - `skills` — Inspect multi-tier architecture & tech stack.
+  - `probe` — Ping global mesh regions.
+  - `prompt <query>` — Real-time simulated token streaming from Gemini Pro 2.0 reasoning engine.
+  - `clear` — Clear terminal buffer.
+- One-click directive chips for instant execution.
+
+### 5. 🔊 Web Audio API Synthesizer
+- Zero audio asset dependencies: uses native browser oscillator nodes for tactile sci-fi sound feedback on button clicks and packet traces.
+- Mute/Unmute toggle in the top header.
+
+---
+
+## 🚀 How to Run & Preview
+
+### Local Python HTTP Server
+From within the `personal-site` directory:
 ```bash
 python3 -m http.server 8000
 ```
-Then open your browser to [http://localhost:8000](http://localhost:8000).
+Then open [http://localhost:8000](http://localhost:8000) in any browser.
 
-### Option 2: Direct File Open
-You can directly double-click or open `index.html` in any modern web browser (Chrome, Firefox, Safari, Edge).
-
----
-
-## 🎨 How to Customize
-
-All content is clearly labeled in `index.html`:
-
-1. **Name & Tagline**:
-   - Search for `Mat Nemati` in `index.html` and replace it with your own name.
-   - Edit the headline and bio paragraph in the About section.
-2. **Avatar**:
-   - By default, a stylish monogram (`MN`) is rendered.
-   - To use a photo, place an image (e.g. `avatar.jpg`) into this directory and uncomment the `<img>` tag inside the avatar container.
-3. **Social Links**:
-   - Update the `href` attributes in the **Connect** section with your actual GitHub, LinkedIn, and X (Twitter) profile URLs.
-   - Update the `data-email` attribute on the copy buttons to your personal email address.
-4. **Projects & Skills**:
-   - Edit the project titles, descriptions, tags, and links in the **Selected Projects** section.
-   - Add or remove skills from the **Tech Stack & Skills** section.
+### Direct File Open
+You can also open `index.html` directly in any modern browser (Chrome, Firefox, Safari, Edge).
 
 ---
 
-## 🌐 Free Deployment Options
-
-You can host this site for free in under 2 minutes:
-
-- **GitHub Pages**: Push this directory to a GitHub repository, go to `Settings > Pages`, and select `main` branch.
-- **Vercel**: Drag and drop the `personal-site` folder at [vercel.com/new](https://vercel.com/new).
-- **Netlify**: Drag and drop the folder at [app.netlify.com/drop](https://app.netlify.com/drop).
-- **Cloudflare Pages**: Connect your Git repo or upload the folder directly.
+## 🛠️ Tech Stack & Architecture
+- **HTML5 & Vanilla JavaScript**: Zero build steps, zero npm dependencies, instant loading.
+- **Tailwind CSS (CDN)**: Modern responsive utility classes.
+- **HTML5 2D Canvas**: 60fps hardware-accelerated particle engine and interactive graph renderer.
+- **Web Audio API**: Real-time synthesized acoustic micro-interactions.
