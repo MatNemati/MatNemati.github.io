@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mat Nemati — Personal Website</title>
+  <meta name="description" content="Personal landing page and portfolio of Mat Nemati — Engineer, Builder & Creator." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+            },
+            surface: {
+              900: '#07090e',
+              800: '#0b0f19',
+              700: '#111827',
+              600: '#1f293d',
+            }
+          },
+          animation: {
+            'blob-pulse': 'pulseGlow 8s ease-in-out infinite alternate',
+            'float-slow': 'floating 6s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%': { transform: 'scale(1) translate(0px, 0px)', opacity: '0.4' },
+              '50%': { transform: 'scale(1.15) translate(30px, -20px)', opacity: '0.65' },
+              '100%': { transform: 'scale(0.95) translate(-20px, 20px)', opacity: '0.4' },
+            },
+            floating: {
+              '0%': { transform: 'translateY(0px)' },
+              '100%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-surface-900 text-slate-200 font-sans min-h-screen relative overflow-x-hidden selection:bg-brand-500/30 selection:text-brand-100" id="top">
+
+  <!-- Ambient background glow elements -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="glow-sphere bg-indigo-600/20 top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full blur-[120px] animate-blob-pulse"></div>
+    <div class="glow-sphere bg-purple-600/15 top-[40%] right-[-5%] w-[450px] h-[450px] rounded-full blur-[130px] animate-blob-pulse" style="animation-delay: 3s;"></div>
+    <div class="glow-sphere bg-cyan-600/15 bottom-[-10%] left-[10%] w-[550px] h-[550px] rounded-full blur-[140px] animate-blob-pulse" style="animation-delay: 5s;"></div>
+    <!-- Subtle grid overlay -->
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] opacity-70"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="max-w-3xl mx-auto px-5 py-12 md:py-20 flex flex-col gap-12">
+
+    <!-- Top Navigation Bar -->
+    <header class="flex items-center justify-between py-2 border-b border-white/5 pb-4">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping opacity-75"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 -ml-4.5"></span>
+        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400/90 font-medium">Available for work</span>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <button id="copy-email-btn" data-email="hello@matnemati.dev" class="group relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-brand-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          <span>Copy Email</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Profile & Hero Section -->
+    <section class="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8 pt-2">
+      <!-- Avatar with subtle gradient border glow -->
+      <div class="relative group">
+        <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500 via-purple-500 to-cyan-400 opacity-60 blur-sm group-hover:opacity-100 transition duration-500"></div>
+        <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-surface-800 border border-white/15 flex items-center justify-center overflow-hidden shadow-2xl">
+          <!-- Default Stylized Monogram Avatar -->
+          <div class="text-2xl sm:text-3xl font-bold font-mono tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white via-slate-200 to-slate-400">
+            MN
+          </div>
+          <!-- Optional custom user avatar image tag (uncomment to use an image) -->
+          <!-- <img src="avatar.jpg" alt="Mat Nemati" class="w-full h-full object-cover" /> -->
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="flex-1 space-y-2">
+        <div class="flex flex-wrap items-center gap-2">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Mat Nemati
+          </h1>
+          <span class="text-xs font-mono px-2 py-0.5 rounded-md bg-brand-500/10 text-brand-400 border border-brand-500/20">
+            Developer &amp; Creator
+          </span>
+        </div>
+        <p class="text-base sm:text-lg text-slate-300 font-normal leading-relaxed">
+          Building thoughtful digital experiences, fast web applications, and modern developer tools.
+        </p>
+        <div class="flex items-center gap-4 text-xs font-mono text-slate-400 pt-1">
+          <span class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            Earth / Remote
+          </span>
+          <span class="flex items-center gap-1.5" id="live-time-container">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span id="live-time">12:00 UTC</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bio / Summary Section -->
+    <section class="glass-card p-6 rounded-2xl relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 rounded-full blur-2xl pointer-events-none"></div>
+      <h2 class="text-xs font-mono font-semibold tracking-wider text-brand-400 uppercase mb-3">About</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+        Hello! I'm Mat. I specialize in building performant, aesthetic web applications with clean architecture and delightful user interfaces. I love tinkering with modern web technologies, optimizing workflows, and turning complex ideas into intuitive software.
+      </p>
+      <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+        Currently exploring distributed architectures, modern front-end design systems, and agentic workflows. Always excited to collaborate on innovative projects.
+      </p>
+    </section>
+
+    <!-- Social & Quick Connect Links -->
+    <section class="space-y-3">
+      <h2 class="text-xs font-mono font-semibold tracking-wider text-slate-400 uppercase px-1">Connect</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        
+        <!-- GitHub -->
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="glass-card group p-4 rounded-xl flex flex-col justify-between hover:border-brand-500/40 hover:-translate-y-0.5 transition duration-200">
+          <div class="flex items-center justify-between mb-3">
+            <svg class="w-5 h-5 text-slate-300 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+            </svg>
+            <svg class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="text-sm font-semibold text-slate-200 group-hover:text-white">GitHub</div>
+            <div class="text-xs text-slate-400 font-mono">@matnemati</div>
+          </div>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="glass-card group p-4 rounded-xl flex flex-col justify-between hover:border-brand-500/40 hover:-translate-y-0.5 transition duration-200">
+          <div class="flex items-center justify-between mb-3">
+            <svg class="w-5 h-5 text-slate-300 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+            <svg class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="text-sm font-semibold text-slate-200 group-hover:text-white">LinkedIn</div>
+            <div class="text-xs text-slate-400 font-mono">/in/matnemati</div>
+          </div>
+        </a>
+
+        <!-- X (Twitter) -->
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="glass-card group p-4 rounded-xl flex flex-col justify-between hover:border-brand-500/40 hover:-translate-y-0.5 transition duration-200">
+          <div class="flex items-center justify-between mb-3">
+            <svg class="w-5 h-5 text-slate-300 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
+            <svg class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="text-sm font-semibold text-slate-200 group-hover:text-white">X / Twitter</div>
+            <div class="text-xs text-slate-400 font-mono">@matnemati</div>
+          </div>
+        </a>
+
+        <!-- Email -->
+        <button id="card-email-btn" data-email="hello@matnemati.dev" class="glass-card group p-4 rounded-xl flex flex-col justify-between text-left hover:border-brand-500/40 hover:-translate-y-0.5 transition duration-200 cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <svg class="w-5 h-5 text-slate-300 group-hover:text-brand-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            <span class="text-[10px] font-mono uppercase tracking-wider text-brand-400 group-hover:text-brand-300 transition">Copy</span>
+          </div>
+          <div>
+            <div class="text-sm font-semibold text-slate-200 group-hover:text-white">Email</div>
+            <div class="text-xs text-slate-400 font-mono truncate">hello@matnemati.dev</div>
+          </div>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- Selected Highlights / Projects -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-xs font-mono font-semibold tracking-wider text-slate-400 uppercase">Selected Projects</h2>
+        <span class="text-xs font-mono text-slate-500">2024 — Present</span>
+      </div>
+
+      <div class="space-y-3">
+        
+        <!-- Project 1 -->
+        <a href="#" class="project-card glass-card p-5 rounded-2xl block hover:border-brand-500/40 transition duration-200 group">
+          <div class="flex items-start justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-slate-100 group-hover:text-brand-300 transition">Quantum Engine</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Live</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                A high-performance algorithmic simulation tool built with Python & WebAssembly, featuring real-time data visualization.
+              </p>
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-500/20 group-hover:border-brand-500/40 transition">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-brand-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-3">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">Python</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">TypeScript</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">WebAssembly</span>
+          </div>
+        </a>
+
+        <!-- Project 2 -->
+        <a href="#" class="project-card glass-card p-5 rounded-2xl block hover:border-brand-500/40 transition duration-200 group">
+          <div class="flex items-start justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-slate-100 group-hover:text-brand-300 transition">Aura UI Kit</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20">Open Source</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                An accessible, dark-mode-first component library with glassmorphic styling and micro-interactions.
+              </p>
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-500/20 group-hover:border-brand-500/40 transition">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-brand-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-3">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">Tailwind CSS</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">JavaScript</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">Figma</span>
+          </div>
+        </a>
+
+        <!-- Project 3 -->
+        <a href="#" class="project-card glass-card p-5 rounded-2xl block hover:border-brand-500/40 transition duration-200 group">
+          <div class="flex items-start justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-slate-100 group-hover:text-brand-300 transition">Nexus CLI</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">Tool</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Developer productivity command-line utility for instant project scaffolding and environment configuration.
+              </p>
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-500/20 group-hover:border-brand-500/40 transition">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-brand-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-3">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">CLI</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">Automation</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400">Linux</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Skills & Technologies -->
+    <section class="space-y-3">
+      <h2 class="text-xs font-mono font-semibold tracking-wider text-slate-400 uppercase px-1">Tech Stack &amp; Skills</h2>
+      <div class="glass-card p-5 rounded-2xl flex flex-wrap gap-2">
+        <span class="skill-tag">JavaScript / ESNext</span>
+        <span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">HTML5 &amp; Modern CSS</span>
+        <span class="skill-tag">Tailwind CSS</span>
+        <span class="skill-tag">REST APIs &amp; GraphQL</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Git &amp; GitHub</span>
+        <span class="skill-tag">Linux / Bash</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">UI/UX Design</span>
+        <span class="skill-tag">Performance Optimization</span>
+      </div>
+    </section>
+
+    <!-- Interactive Contact Form / Message Box -->
+    <section class="glass-card p-6 rounded-2xl relative overflow-hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-white">Send a Message</h2>
+          <p class="text-xs text-slate-400">Got an interesting idea, question, or opportunity? Drop a note below.</p>
+        </div>
+        <div class="hidden sm:flex items-center gap-1 text-xs font-mono text-slate-500">
+          <span>⚡ Fast response</span>
+        </div>
+      </div>
+
+      <form id="contact-form" class="space-y-3 pt-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-mono text-slate-400 mb-1" for="user-name">Your Name</label>
+            <input type="text" id="user-name" required placeholder="Alice Smith" class="form-input w-full px-3.5 py-2 rounded-xl bg-surface-800/80 border border-white/10 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition" />
+          </div>
+          <div>
+            <label class="block text-xs font-mono text-slate-400 mb-1" for="user-email">Your Email</label>
+            <input type="email" id="user-email" required placeholder="alice@example.com" class="form-input w-full px-3.5 py-2 rounded-xl bg-surface-800/80 border border-white/10 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-slate-400 mb-1" for="user-message">Message</label>
+          <textarea id="user-message" rows="3" required placeholder="Hey Mat, I'd love to chat about..." class="form-input w-full px-3.5 py-2 rounded-xl bg-surface-800/80 border border-white/10 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition resize-none"></textarea>
+        </div>
+        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2 cursor-pointer">
+          <span>Send Message</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-6 pb-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
+      <div>
+        <span>&copy; <span id="current-year">2026</span> Mat Nemati. All rights reserved.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#top" class="hover:text-slate-300 transition">Back to top &uarr;</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast Notification for Copy / Form Submit -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-card px-4 py-3 rounded-xl border border-white/20 shadow-2xl flex items-center gap-3 bg-surface-800/95 text-sm">
+      <div id="toast-icon" class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">✓</div>
+      <span id="toast-message" class="text-slate-200 font-medium">Copied to clipboard!</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
