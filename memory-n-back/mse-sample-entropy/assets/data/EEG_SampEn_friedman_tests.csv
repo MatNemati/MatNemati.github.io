@@ -1,0 +1,7 @@
+region,n_participants,friedman_chi2,p_value,q_fdr_global,q_fdr_primary,significant_p05
+Central,26,2.7692,2.504201e-01,2.766814e-01,2.795786e-01,NO
+Frontal,26,9.3077,9.524897e-03,2.554404e-02,2.929355e-02,YES
+Occipital,26,9.0000,1.110900e-02,2.849699e-02,3.233511e-02,YES
+Parietal,26,7.4615,2.397439e-02,4.746607e-02,5.141875e-02,YES
+Temporal,26,1.6154,4.458858e-01,4.664409e-01,4.599962e-01,NO
+WholeBrain,26,2.7692,2.504201e-01,2.766814e-01,2.795786e-01,NO
