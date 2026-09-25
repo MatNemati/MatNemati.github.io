@@ -1,36 +1,417 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MatNemati — رزومه</title>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume | Matin Nemati</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Vazirmatn', sans-serif; background: #f5f5f7; min-height: 100vh; display: flex; flex-direction: column; }
-  header { background: #000; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
-  header .logo { color: #fff; font-weight: 700; font-size: 15px; }
-  header a { color: #fff; font-size: 13px; text-decoration: none; background: #0066cc; padding: 7px 14px; border-radius: 999px; }
-  .viewer-wrap { flex: 1; padding: 14px; }
-  iframe { width: 100%; height: 100%; min-height: 78vh; border: 1px solid #e0e0e0; border-radius: 12px; background: #fff; }
-  .fallback { text-align: center; padding: 20px; font-size: 13px; color: #7a7a7a; }
-  .fallback a { color: #0066cc; font-weight: 600; }
+  :root{
+    --cream:#faf7ef;
+    --navy:#22304d;
+    --ink:#33383f;
+    --gray:#6f7580;
+    --line:#e2ddce;
+    --shadow: rgba(34,48,77,0.10);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:9vh 6vw 8vh;
+    overflow-x:hidden;
+    position:relative;
+    perspective:1200px;
+  }
+
+  .stage{ width:100%; max-width:640px; }
+
+  @keyframes settleIn{
+    from{ opacity:0; transform:translateY(16px) rotateX(-6deg); }
+    to{ opacity:1; transform:translateY(0) rotateX(0deg); }
+  }
+
+  .top-link, .header, .download, .section, .footer{
+    opacity:0;
+    transform-origin:top center;
+    animation-name:settleIn;
+    animation-duration:1s;
+    animation-timing-function:cubic-bezier(.2,.7,.3,1);
+    animation-fill-mode:forwards;
+  }
+
+  .top-link{ text-align:center; animation-delay:0.1s; }
+  .top-link a{
+    text-decoration:none;
+    color:var(--gray);
+    font-size:0.8rem;
+    letter-spacing:0.04em;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.3s ease, color 0.3s ease;
+  }
+  .top-link a:hover{ color:var(--navy); border-color:var(--line); }
+
+  .header{ text-align:center; margin:24px 0 6px; animation-delay:0.3s; }
+  .header h1{
+    margin:0;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.9rem, 5vw, 2.4rem);
+    letter-spacing:-0.01em;
+    color:var(--navy);
+  }
+  .header .contact-line{
+    margin:10px 0 0;
+    font-size:0.85rem;
+    color:var(--gray);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px 14px;
+  }
+  .header .contact-line a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    transition:border-color 0.25s ease;
+  }
+  .header .contact-line a:hover{ border-color:var(--navy); }
+
+  .download{
+    text-align:center;
+    margin:22px 0 40px;
+    animation-delay:0.5s;
+  }
+  .download a{
+    display:inline-block;
+    text-decoration:none;
+    color:var(--navy);
+    font-size:0.92rem;
+    font-weight:500;
+    padding:12px 26px;
+    border:1px solid var(--line);
+    background:#ffffff;
+    box-shadow:0 10px 22px -14px var(--shadow);
+    transition:background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .download a:hover{
+    background:var(--navy);
+    color:var(--cream);
+    transform:translateY(-1px);
+  }
+
+  .section{ margin-bottom:38px; }
+  .section-title{
+    font-size:0.7rem;
+    font-weight:500;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .section p{ margin:0 0 8px; font-size:0.94rem; line-height:1.62; color:var(--ink); font-weight:300; }
+  .section p:last-child{ margin-bottom:0; }
+  .section p strong{ font-weight:500; color:var(--navy); }
+
+  .kv{ display:flex; gap:8px; font-size:0.9rem; margin:0 0 7px; line-height:1.5; }
+  .kv:last-child{ margin-bottom:0; }
+  .kv .k{ color:var(--navy); font-weight:500; min-width:150px; flex-shrink:0; }
+  .kv .v{ color:var(--ink); font-weight:300; }
+
+  .gpa-row{ display:flex; margin-top:6px; }
+  .gpa-item{ flex:1; text-align:center; padding:2px 8px; }
+  .gpa-item + .gpa-item{ border-left:1px solid var(--line); }
+  .gpa-num{ display:block; font-family:'Fraunces', serif; font-size:1.25rem; font-weight:500; color:var(--navy); }
+  .gpa-label{ display:block; margin-top:5px; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--gray); }
+
+  ul.plain{ margin:0; padding-left:18px; }
+  ul.plain li{ font-size:0.92rem; line-height:1.6; color:var(--ink); font-weight:300; margin-bottom:6px; }
+  ul.plain li:last-child{ margin-bottom:0; }
+
+  .entry{ padding:12px 0; border-bottom:1px solid var(--line); }
+  .entry:last-child{ border-bottom:none; }
+  .entry-head{ display:flex; justify-content:space-between; gap:14px; align-items:baseline; flex-wrap:wrap; }
+  .entry-title{ font-size:0.94rem; font-weight:500; color:var(--navy); }
+  .entry-date{ font-size:0.8rem; color:var(--gray); white-space:nowrap; }
+  .entry-sub{ font-size:0.84rem; color:var(--gray); margin-top:2px; }
+  .entry-desc{ font-size:0.9rem; color:var(--ink); font-weight:300; line-height:1.6; margin-top:6px; }
+
+  a.link{ color:var(--navy); text-decoration:none; border-bottom:1px solid var(--line); transition:border-color 0.25s ease; }
+  a.link:hover{ border-color:var(--navy); }
+
+  .muted{ color:var(--gray) !important; font-style:italic; font-size:0.85rem !important; }
+
+  .footer{
+    text-align:center;
+    margin-top:36px;
+    animation-delay:1.6s;
+    font-size:0.85rem;
+    color:var(--gray);
+  }
+  .footer b{ color:var(--navy); font-weight:500; }
+  .footer .contact{ margin-top:8px; }
+  .footer .contact a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:1px;
+    transition:border-color 0.3s ease;
+  }
+  .footer .contact a:hover{ border-color:var(--navy); }
+
+  /* ---------- roaming neuron ---------- */
+  .roam-wrap{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:56px;
+    pointer-events:none;
+    z-index:5;
+  }
+  .roam{
+    position:absolute;
+    top:16px;
+    left:-6%;
+    width:30px;
+    height:30px;
+    opacity:0;
+    filter:drop-shadow(0 2px 5px rgba(34,48,77,0.18));
+    animation:roam 13s cubic-bezier(.45,.05,.55,.95) infinite;
+  }
+
+  @keyframes roam{
+    0%   { left:-6%;  opacity:0; transform:translateY(6px) scale(.7); }
+    5%   { opacity:1; }
+    16%  { transform:translateY(-5px) scale(1); }
+    30%  { transform:translateY(3px) scale(1); }
+    45%  { left:45%;  transform:translateY(-4px) scale(1); }
+    60%  { transform:translateY(3px) scale(1); }
+    74%  { left:95%;  transform:translateY(-3px) scale(1); opacity:1; }
+    80%  { opacity:0; left:104%; transform:translateY(6px) scale(.7); }
+    100% { opacity:0; left:104%; transform:translateY(6px) scale(.7); }
+  }
+
+  @media (max-width: 640px){
+    .roam{ width:22px; height:22px; top:10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .top-link, .header, .download, .section, .footer, .roam{
+      animation:none !important;
+      opacity:1 !important;
+      transform:none !important;
+    }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <span class="logo">MatNemati</span>
-  <a href="resume.pdf" download>دانلود PDF</a>
-</header>
+  <div class="roam-wrap" aria-hidden="true">
+    <svg class="roam" viewBox="0 0 34 34">
+      <circle cx="17" cy="17" r="5" fill="#22304d"/>
+      <line x1="17" y1="17" x2="4" y2="8" stroke="#22304d" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="17" y1="17" x2="30" y2="9" stroke="#22304d" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="17" y1="17" x2="9" y2="29" stroke="#22304d" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="17" y1="17" x2="27" y2="27" stroke="#22304d" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2" fill="#22304d"/>
+      <circle cx="30" cy="9" r="2" fill="#22304d"/>
+      <circle cx="9" cy="29" r="2" fill="#22304d"/>
+      <circle cx="27" cy="27" r="2" fill="#22304d"/>
+    </svg>
+  </div>
 
-<div class="viewer-wrap">
-  <iframe src="resume.pdf"></iframe>
-</div>
+  <div class="stage">
+    <div class="top-link"><a href="https://matnemati.ir">Matin Nemati</a></div>
 
-<div class="fallback">
-  اگه فایل نمایش داده نشد، <a href="resume.pdf" target="_blank">اینجا مستقیم بازش کن</a>.
-</div>
+    <div class="header">
+      <h1>Matin Nemati</h1>
+      <div class="contact-line">
+        <span>Tehran, Iran</span>
+        <a href="tel:+989300821831">(+98) 930 082 1831</a>
+        <a href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
+        <a href="https://matnemati.ir" target="_blank" rel="noopener">MatNemati.ir</a>
+        <span>LinkedIn: MatNemati</span>
+      </div>
+    </div>
+
+    <div class="download">
+      <a href="resume.pdf" download>Download PDF</a>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Professional Summary</div>
+      <p>B.Sc. graduate in Electrical Engineering with a Minor in Computer Science (July 2026) from IUT. Interested in Statistical Analysis and Data Analysis in the fields of Finance, Business, and Neuroscience. Also interested in Neurotech, emerging technologies, and cutting-edge scientific innovations.</p>
+      <p>4+ years of experience in teaching and education. Open to pursuing an MBA in the future, driven by an interest in finance, management, and business.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Career Interests</div>
+      <p>Data Scientist, Data Analyst, Business Analyst, Financial Analyst, Research Assistant</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Education</div>
+      <div class="entry" style="border-bottom:none;">
+        <div class="entry-head">
+          <span class="entry-title">Isfahan University of Technology (IUT)</span>
+          <span class="entry-date">Sep. 2022 – Jul. 2026</span>
+        </div>
+        <div class="entry-sub">B.Sc. in Electrical Engineering (Bioelectricity &amp; Neuroscience)</div>
+        <div class="entry-sub">Minor in Computer Science</div>
+        <div class="gpa-row">
+          <div class="gpa-item"><span class="gpa-num">3.35 / 4.00</span><span class="gpa-label">Overall GPA</span></div>
+          <div class="gpa-item"><span class="gpa-num">18.02 / 20</span><span class="gpa-label">Final Year</span></div>
+          <div class="gpa-item"><span class="gpa-num">18.43 / 20</span><span class="gpa-label">Major GPA</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Skills</div>
+      <div class="kv"><span class="k">Programming</span><span class="v">Python (NumPy, Pandas, Matplotlib, OOP), MATLAB, R</span></div>
+      <div class="kv"><span class="k">Data Analysis</span><span class="v">Statistical Analysis (Hypothesis Testing, ANOVA, Regression, T-Test), Data Cleaning, EDA</span></div>
+      <div class="kv"><span class="k">Machine Learning</span><span class="v">Supervised &amp; Unsupervised Learning, Neural Networks, Regularization</span></div>
+      <div class="kv"><span class="k">Databases</span><span class="v">SQL (T-SQL)</span></div>
+      <div class="kv"><span class="k">Business Intelligence</span><span class="v">Power BI</span></div>
+      <div class="kv"><span class="k">Signal Processing</span><span class="v">Digital Signal Processing, EEG, ECG, EMG, Biomedical Signals</span></div>
+      <div class="kv"><span class="k">Neuroscience</span><span class="v">Neural Modeling, Systems and Computational Neuroscience</span></div>
+      <div class="kv"><span class="k">Simulation</span><span class="v">PSpice, Proteus</span></div>
+      <div class="kv"><span class="k">Tools</span><span class="v">Git, Microsoft Office Suite, LaTeX</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Soft Skills</div>
+      <p>ISTJ personality, with interests in mountaineering, volleyball, and exploring deep and real-world problems. Also passionate about teaching and knowledge sharing.</p>
+      <ul class="plain">
+        <li>Problem-Solving</li>
+        <li>Analytical Thinking</li>
+        <li>Attention to Detail</li>
+        <li>Independent Research &amp; Self-Learning</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Teaching &amp; Professional Experience</div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Mathematics, Physics &amp; Python Instructor</span>
+          <span class="entry-date">2020 – 2024</span>
+        </div>
+        <div class="entry-desc">Taught and mentored more than 100 students while designing structured study plans and problem-solving strategies.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Educational Team Lead &amp; Academic Advisor</span>
+          <span class="entry-date">2021 – 2025</span>
+        </div>
+        <div class="entry-desc">Started as an academic advisor at Heyva Group in 2021, and later led multiple educational teams between 2023 and 2025, providing academic planning and student guidance.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Teaching Assistant (Python) &amp; Programming Mentor</span>
+          <span class="entry-date">2022</span>
+        </div>
+        <div class="entry-sub">Isfahan University of Technology</div>
+        <div class="entry-desc">Teaching assistant for undergraduate students, mentoring in programming, debugging, and problem-solving.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Certifications, Academic Background &amp; Selected Coursework</div>
+      <p>For detailed information about my academic background, academic transcripts, certifications, and completed coursework, please visit my <a class="link" href="https://matnemati.ir/academics" target="_blank" rel="noopener">Academic Portfolio</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Research Interests</div>
+      <ul class="plain">
+        <li>Neuroscience (Clinical &amp; Computational)</li>
+        <li>Neuro &amp; Biomedical Devices</li>
+        <li>Emerging Technologies</li>
+        <li>Statistical Inference</li>
+        <li>Data Analysis</li>
+        <li>Financial Markets</li>
+        <li>Business Management &amp; Organizational Leadership</li>
+        <li>Financial Analysis</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Research Experience &amp; Projects</div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Quantum Phenomena in Biological Systems: Implications for Brain Function</span>
+          <span class="entry-date">B.Sc. Thesis — Fall 2025</span>
+        </div>
+        <div class="entry-sub">Isfahan University of Technology</div>
+        <div class="entry-desc">Conducted a systematic and critical review of theoretical models and experimental evidence investigating the possible role of quantum phenomena in the brain and nervous system, with emphasis on their biophysical feasibility and functional implications.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">EMG Signal Classification: Wrist vs. Arm</span>
+          <span class="entry-date">MATLAB</span>
+        </div>
+        <div class="entry-sub">Biomedical Signal Processing Laboratory</div>
+        <div class="entry-desc">Implemented a MATLAB-based pipeline for classifying EMG segments associated with wrist and arm movements using conventional signal processing and classification techniques. (GitHub Repository)</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Speaker Recognition Using Speech Signal Processing</span>
+          <span class="entry-date">MATLAB</span>
+        </div>
+        <div class="entry-sub">Academic Project</div>
+        <div class="entry-desc">Developing a speaker recognition pipeline based on speech signal processing, including windowing, feature extraction, and classification using a public speaker recognition dataset.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Autonomic Biomarkers, Self-Control, and Cognitive Behavior</span>
+          <span class="entry-date">R</span>
+        </div>
+        <div class="entry-sub">Statistical Analysis Project</div>
+        <div class="entry-desc">Investigating whether autonomic physiological biomarkers can explain individual differences in self-control and their association with cognitive behaviors using statistical inference methods on a large-scale public dataset.</div>
+      </div>
+      <p style="margin-top:10px;" class="muted" >The above list may not always reflect my latest research activities and projects.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">References</div>
+      <div class="entry">
+        <div class="entry-title">Dr. Sayed Jalal Zahabi</div>
+        <div class="entry-sub">Assistant Professor, Department of Electrical and Computer Engineering — Isfahan University of Technology</div>
+        <div class="entry-desc">Instructor of most of my undergraduate courses.</div>
+        <div class="entry-desc">Links: Google Scholar, <a class="link" href="https://people.iut.ac.ir/en/zahabi" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zahabi@iut.ac.ir">zahabi@iut.ac.ir</a></div>
+      </div>
+      <div class="entry">
+        <div class="entry-title">Dr. Zaker Hossein Firouzeh</div>
+        <div class="entry-sub">Assistant Professor, Department of Electrical and Computer Engineering — Isfahan University of Technology</div>
+        <div class="entry-desc">Supervisor of my B.Sc. thesis.</div>
+        <div class="entry-desc">Links: Google Scholar, <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zhfirouzeh@iut.ac.ir">zhfirouzeh@iut.ac.ir</a></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Usually going by <b>MatNemati</b> across platforms</div>
+      <div class="contact"><a href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a></div>
+    </div>
+  </div>
 
 </body>
 </html>
