@@ -43,7 +43,7 @@
     to{ opacity:1; transform:translateY(0); }
   }
 
-  .header, .download, .section, .footer{
+  .header, .section, .footer{
     opacity:0;
     animation-name:settleIn;
     animation-duration:1s;
@@ -57,16 +57,17 @@
     top:0;
     z-index:30;
     background:var(--cream);
-    padding:9vh 0 14px;
+    padding:9vh 0 22px;
     text-align:center;
     animation-delay:0.15s;
+    box-shadow:0 14px 22px -16px rgba(34,48,77,0.16);
   }
   .header::after{
     content:"";
     position:absolute;
     left:0; right:0;
-    bottom:-26px;
-    height:26px;
+    bottom:-40px;
+    height:40px;
     background:linear-gradient(to bottom, var(--cream), rgba(250,247,239,0));
     pointer-events:none;
   }
@@ -74,8 +75,8 @@
   #neuro-strip{
     display:block;
     width:100%;
-    height:34px;
-    margin-bottom:8px;
+    height:56px;
+    margin-bottom:10px;
     touch-action:none;
   }
 
@@ -111,24 +112,22 @@
   }
   .header .contact-line a:hover{ border-color:var(--navy); }
 
-  .download{
-    text-align:center;
-    margin:26px 0 40px;
-    animation-delay:0.4s;
+  .header .download{
+    margin-top:16px;
   }
-  .download a{
+  .header .download a{
     display:inline-block;
     text-decoration:none;
     color:var(--navy);
-    font-size:0.92rem;
+    font-size:0.86rem;
     font-weight:500;
-    padding:12px 26px;
+    padding:9px 22px;
     border:1px solid var(--line);
     background:#ffffff;
-    box-shadow:0 10px 22px -14px var(--shadow);
+    box-shadow:0 8px 18px -12px var(--shadow);
     transition:background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
   }
-  .download a:hover{
+  .header .download a:hover{
     background:var(--navy);
     color:var(--cream);
     transform:translateY(-1px);
@@ -197,7 +196,7 @@
   .footer .contact a:hover{ border-color:var(--navy); }
 
   @media (prefers-reduced-motion: reduce){
-    .header, .download, .section, .footer{
+    .header, .section, .footer{
       animation:none !important;
       opacity:1 !important;
       transform:none !important;
@@ -216,15 +215,14 @@
         <a href="tel:+989300821831">(+98) 930 082 1831</a>
         <a href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
         <a href="https://matnemati.ir" target="_blank" rel="noopener">MatNemati.ir</a>
-        <span>LinkedIn: MatNemati</span>
+        <a href="https://www.linkedin.com/in/matnemati" target="_blank" rel="noopener">LinkedIn: MatNemati</a>
+      </div>
+      <div class="download">
+        <a href="resume.pdf" download>Download PDF</a>
       </div>
     </div>
 
-    <div class="download">
-      <a href="resume.pdf" download>Download PDF</a>
-    </div>
-
-    <div class="section">
+    <div class="section" style="margin-top:56px;">
       <div class="section-title">Professional Summary</div>
       <p>B.Sc. graduate in Electrical Engineering with a Minor in Computer Science (July 2026) from IUT. Interested in Statistical Analysis and Data Analysis in the fields of Finance, Business, and Neuroscience. Also interested in Neurotech, emerging technologies, and cutting-edge scientific innovations.</p>
       <p>4+ years of experience in teaching and education. Open to pursuing an MBA in the future, driven by an interest in finance, management, and business.</p>
@@ -254,7 +252,7 @@
 
     <div class="section">
       <div class="section-title">Skills</div>
-      <div class="kv"><span class="k">Programming</span><span class="v">Python (NumPy, Pandas, Matplotlib, OOP), MATLAB, R</span></div>
+      <div class="kv"><span class="k">Programming</span><span class="v"><a class="link" href="https://quera.org/profile/MatNemati/activity" target="_blank" rel="noopener">Python</a> (NumPy, Pandas, Matplotlib, OOP), MATLAB, R</span></div>
       <div class="kv"><span class="k">Data Analysis</span><span class="v">Statistical Analysis (Hypothesis Testing, ANOVA, Regression, T-Test), Data Cleaning, EDA</span></div>
       <div class="kv"><span class="k">Machine Learning</span><span class="v">Supervised &amp; Unsupervised Learning, Neural Networks, Regularization</span></div>
       <div class="kv"><span class="k">Databases</span><span class="v">SQL (T-SQL)</span></div>
@@ -364,13 +362,13 @@
         <div class="entry-title">Dr. Sayed Jalal Zahabi</div>
         <div class="entry-sub">Assistant Professor, Department of Electrical and Computer Engineering — Isfahan University of Technology</div>
         <div class="entry-desc">Instructor of most of my undergraduate courses.</div>
-        <div class="entry-desc">Links: Google Scholar, <a class="link" href="https://people.iut.ac.ir/en/zahabi" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zahabi@iut.ac.ir">zahabi@iut.ac.ir</a></div>
+        <div class="entry-desc">Links: <a class="link" href="https://scholar.google.com/citations?user=xsY6VrEAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>, <a class="link" href="https://people.iut.ac.ir/en/zahabi" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zahabi@iut.ac.ir">zahabi@iut.ac.ir</a></div>
       </div>
       <div class="entry">
         <div class="entry-title">Dr. Zaker Hossein Firouzeh</div>
         <div class="entry-sub">Assistant Professor, Department of Electrical and Computer Engineering — Isfahan University of Technology</div>
         <div class="entry-desc">Supervisor of my B.Sc. thesis.</div>
-        <div class="entry-desc">Links: Google Scholar, <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zhfirouzeh@iut.ac.ir">zhfirouzeh@iut.ac.ir</a></div>
+        <div class="entry-desc">Links: <a class="link" href="https://scholar.google.com/citations?user=VxT2--QAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>, <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zhfirouzeh@iut.ac.ir">zhfirouzeh@iut.ac.ir</a></div>
       </div>
     </div>
 
@@ -404,17 +402,17 @@
 
   function buildNetwork(){
     nodes = [];
-    var count = Math.max(9, Math.min(18, Math.round(W / 42)));
+    var count = Math.max(20, Math.min(46, Math.round((W * H) / 900)));
     for (var i = 0; i < count; i++){
       nodes.push({
-        x: (i + 0.5) * (W / count) + (Math.random()-0.5) * (W/count)*0.5,
-        y: 6 + Math.random() * (H - 12),
-        vx: (Math.random()-0.5) * 0.06,
-        vy: (Math.random()-0.5) * 0.05
+        x: 4 + Math.random() * (W - 8),
+        y: 4 + Math.random() * (H - 8),
+        vx: (Math.random()-0.5) * 0.05,
+        vy: (Math.random()-0.5) * 0.04
       });
     }
     edges = [];
-    var maxDist = W / count * 1.9;
+    var maxDist = Math.max(34, Math.min(W, H*2.4) / Math.sqrt(count) * 2.1);
     for (var i = 0; i < nodes.length; i++){
       for (var j = i+1; j < nodes.length; j++){
         var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
