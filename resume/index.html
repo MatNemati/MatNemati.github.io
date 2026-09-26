@@ -75,7 +75,7 @@
   .brain-wrap{
     position:relative;
     width:100%;
-    max-width:420px;
+    max-width:280px;
     aspect-ratio:1/1;
     margin:0 auto 4px;
   }
@@ -118,7 +118,6 @@
     animation-iteration-count:infinite;
     animation-timing-function:ease-in-out;
   }
-  .mesh-node.minor{ --min-a:0.25; --max-a:0.55; }
   .mesh-node.major{ --min-a:0.55; --max-a:1; cursor:pointer; }
 
   .mesh-glow{
@@ -140,6 +139,7 @@
   .leader{
     stroke:var(--navy);
     stroke-width:1;
+    vector-effect:non-scaling-stroke;
     fill:none;
     opacity:0;
     transition:opacity 0.35s ease;
@@ -148,7 +148,7 @@
 
   .label-name{
     font-family:'Inter', sans-serif;
-    font-size:9.5px;
+    font-size:3px;
     font-weight:500;
     fill:var(--navy);
     opacity:0;
@@ -157,7 +157,7 @@
   }
   .label-desc{
     font-family:'Inter', sans-serif;
-    font-size:7.6px;
+    font-size:2.4px;
     font-weight:300;
     fill:var(--gray);
     opacity:0;
@@ -166,9 +166,7 @@
   .label-name.show, .label-desc.show{ opacity:1; }
 
   @media (max-width: 640px){
-    .brain-wrap{ max-width:360px; }
-    .label-name{ font-size:9px; }
-    .label-desc{ font-size:7px; }
+    .brain-wrap{ max-width:220px; }
   }
 
   .header h1{
@@ -480,26 +478,20 @@
   var svg = document.getElementById('brain-diagram');
   var layer = document.getElementById('mesh-layer');
 
-  // fixed, hand-placed regions -- deterministic, never regenerated at runtime
+  // fixed regions, positioned (in % of the square photo) to match real
+  // landmarks on brain.png -- deterministic, never regenerated at runtime
   var MAJOR = [
-    { id:'pfc',        x:110, y:55,  label:'Prefrontal Cortex', desc:'Planning, judgment, and decision-making.',            lx:18,  ly:38,  anchor:'end' },
-    { id:'broca',      x:150, y:98,  label:"Broca's Area",      desc:'Responsible for speech production.',                  lx:18,  ly:115, anchor:'end' },
-    { id:'motor',      x:235, y:33,  label:'Motor Cortex',      desc:'Controls voluntary movement.',                        lx:210, ly:10,  anchor:'middle' },
-    { id:'parietal',   x:335, y:38,  label:'Parietal Lobe',     desc:'Integrates sensory input and spatial awareness.',     lx:355, ly:10,  anchor:'middle' },
-    { id:'temporal',   x:235, y:122, label:'Temporal Lobe',     desc:'Processes sound, language, and memory.',              lx:150, ly:206, anchor:'middle' },
-    { id:'hippocampus',x:305, y:126, label:'Hippocampus',       desc:'Forms new long-term memories.',                       lx:330, ly:206, anchor:'middle' },
-    { id:'amygdala',   x:275, y:142, label:'Amygdala',          desc:'Processes emotion, especially fear.',                 lx:245, ly:206, anchor:'middle' },
-    { id:'occipital',  x:465, y:55,  label:'Occipital Lobe',    desc:'Handles visual processing.',                          lx:595, ly:35,  anchor:'start' },
-    { id:'cerebellum', x:500, y:150, label:'Cerebellum',        desc:'Coordinates balance and motor control.',              lx:595, ly:150, anchor:'start' },
-    { id:'brainstem',  x:436, y:180, label:'Brainstem',         desc:'Regulates breathing and heart rate.',                 lx:430, ly:206, anchor:'middle' }
+    { id:'pfc',        x:25, y:35, label:'Prefrontal Cortex', desc:'Planning, judgment, and decision-making.',        lx:3,  ly:22, anchor:'start' },
+    { id:'broca',      x:33, y:50, label:"Broca's Area",      desc:'Responsible for speech production.',              lx:3,  ly:64, anchor:'start' },
+    { id:'motor',      x:52, y:30, label:'Motor Cortex',      desc:'Controls voluntary movement.',                    lx:48, ly:7,  anchor:'middle' },
+    { id:'parietal',   x:62, y:32, label:'Parietal Lobe',     desc:'Integrates sensory input and spatial awareness.', lx:68, ly:7,  anchor:'middle' },
+    { id:'temporal',   x:42, y:58, label:'Temporal Lobe',     desc:'Processes sound, language, and memory.',          lx:20, ly:96, anchor:'middle' },
+    { id:'hippocampus',x:50, y:58, label:'Hippocampus',       desc:'Forms new long-term memories.',                   lx:58, ly:96, anchor:'middle' },
+    { id:'amygdala',   x:45, y:53, label:'Amygdala',          desc:'Processes emotion, especially fear.',             lx:39, ly:96, anchor:'middle' },
+    { id:'occipital',  x:68, y:38, label:'Occipital Lobe',    desc:'Handles visual processing.',                      lx:88, ly:22, anchor:'start' },
+    { id:'cerebellum', x:70, y:68, label:'Cerebellum',        desc:'Coordinates balance and motor control.',          lx:88, ly:66, anchor:'start' },
+    { id:'brainstem',  x:63, y:79, label:'Brainstem',         desc:'Regulates breathing and heart rate.',             lx:75, ly:96, anchor:'middle' }
   ];
-
-  var MINOR = [
-    {x:88,y:78},{x:140,y:38},{x:190,y:58},{x:260,y:68},{x:350,y:88},
-    {x:392,y:48},{x:432,y:118},{x:472,y:88},{x:517,y:110},{x:362,y:150}
-  ];
-  var MINOR_LINKS = [ [0,'pfc'],[1,'pfc'],[2,'motor'],[3,'motor'],[4,'parietal'],
-                      [5,'occipital'],[6,'cerebellum'],[7,'occipital'],[8,'cerebellum'],[9,'brainstem'] ];
 
   var EDGES = [
     ['pfc','broca'],['pfc','motor'],['broca','temporal'],['motor','parietal'],
@@ -524,7 +516,7 @@
     node.style.animationDelay = delay.toFixed(2) + 's';
   }
 
-  // major-major edges
+  // connections between labeled regions -- fixed, forms one connected mesh
   EDGES.forEach(function(pair, i){
     var a = byId[pair[0]], b = byId[pair[1]];
     var line = el('line', { class:'mesh-edge', x1:a.x, y1:a.y, x2:b.x, y2:b.y });
@@ -532,38 +524,24 @@
     layer.appendChild(line);
   });
 
-  // minor decorative nodes + their links
-  MINOR_LINKS.forEach(function(pair, i){
-    var m = MINOR[pair[0]], target = byId[pair[1]];
-    var line = el('line', { class:'mesh-edge', x1:m.x, y1:m.y, x2:target.x, y2:target.y });
-    anim(line, i + EDGES.length, 'edge');
-    layer.appendChild(line);
-  });
-
-  MINOR.forEach(function(m, i){
-    var c = el('circle', { class:'mesh-node minor', cx:m.x, cy:m.y, r:1.8 });
-    anim(c, i, 'node');
-    layer.appendChild(c);
-  });
-
   // major regions: glow + node + hit-area + leader + two-line label
   MAJOR.forEach(function(m, i){
     var group = el('g', { class:'region-group', 'data-region':m.id, tabindex:'0' });
 
-    var glow = el('circle', { class:'mesh-glow', cx:m.x, cy:m.y, r:13 });
+    var glow = el('circle', { class:'mesh-glow', cx:m.x, cy:m.y, r:2.8 });
     anim(glow, i, 'node');
 
-    var node = el('circle', { class:'mesh-node major', cx:m.x, cy:m.y, r:4.6 });
+    var node = el('circle', { class:'mesh-node major', cx:m.x, cy:m.y, r:1.1 });
     anim(node, i, 'node');
 
-    var hit = el('circle', { class:'hit-area', cx:m.x, cy:m.y, r:13 });
+    var hit = el('circle', { class:'hit-area', cx:m.x, cy:m.y, r:3.2 });
 
     var leader = el('line', { class:'leader', x1:m.x, y1:m.y, x2:m.lx, y2:m.ly });
 
-    var name = el('text', { class:'label-name', x:m.lx, y:m.ly - 4, 'text-anchor':m.anchor });
+    var name = el('text', { class:'label-name', x:m.lx, y:m.ly - 1.3, 'text-anchor':m.anchor });
     name.textContent = m.label;
 
-    var desc = el('text', { class:'label-desc', x:m.lx, y:m.ly + 7, 'text-anchor':m.anchor });
+    var desc = el('text', { class:'label-desc', x:m.lx, y:m.ly + 2.4, 'text-anchor':m.anchor });
     desc.textContent = m.desc;
 
     group.appendChild(glow);
