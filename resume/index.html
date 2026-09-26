@@ -1,821 +1,608 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-
-    name="viewport"
-
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-
->
-
-<title>Minimal 3D Brain</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume | Matin Nemati</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --cream:#faf7ef;
+    --navy:#22304d;
+    --ink:#33383f;
+    --gray:#6f7580;
+    --line:#e2ddce;
+    --shadow: rgba(34,48,77,0.10);
+  }
 
-    html,
+  *{ box-sizing:border-box; }
 
-    body {
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
 
-        width: 100%;
+  body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:0 6vw 8vh;
+    overflow-x:hidden;
+  }
 
-        height: 100%;
+  .stage{ width:100%; max-width:640px; }
 
-        margin: 0;
+  @keyframes settleIn{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
 
-        overflow: hidden;
+  .header, .section, .footer{
+    opacity:0;
+    animation-name:settleIn;
+    animation-duration:1s;
+    animation-timing-function:cubic-bezier(.2,.7,.3,1);
+    animation-fill-mode:forwards;
+  }
 
-        background: #f6f6f1;
+  /* ---------- sticky header ---------- */
+  .header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:var(--cream);
+    padding:9vh 0 22px;
+    text-align:center;
+    animation-delay:0.15s;
+    box-shadow:0 14px 22px -16px rgba(34,48,77,0.16);
+  }
+  .header::after{
+    content:"";
+    position:absolute;
+    left:0; right:0;
+    bottom:-40px;
+    height:40px;
+    background:linear-gradient(to bottom, var(--cream), rgba(250,247,239,0));
+    pointer-events:none;
+  }
 
+  .brain-wrap{
+    position:relative;
+    width:100%;
+    max-width:420px;
+    aspect-ratio:1/1;
+    margin:0 auto 4px;
+  }
+  .brain-photo{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+  #brain-diagram{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    overflow:visible;
+  }
+
+  @keyframes meshPulse{
+    0%, 100%{ opacity:var(--min-a, 0.2); }
+    50%{ opacity:var(--max-a, 0.6); }
+  }
+
+  .mesh-edge{
+    stroke:var(--navy);
+    stroke-width:1;
+    vector-effect:non-scaling-stroke;
+    stroke-linecap:round;
+    fill:none;
+    animation-name:meshPulse;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+    --min-a:0.14; --max-a:0.42;
+  }
+
+  .mesh-node{
+    fill:var(--navy);
+    animation-name:meshPulse;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+  }
+  .mesh-node.minor{ --min-a:0.25; --max-a:0.55; }
+  .mesh-node.major{ --min-a:0.55; --max-a:1; cursor:pointer; }
+
+  .mesh-glow{
+    fill:var(--navy);
+    filter:blur(3px);
+    animation-name:meshPulse;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+    --min-a:0.04; --max-a:0.16;
+    pointer-events:none;
+  }
+
+  .hit-area{ fill:transparent; cursor:pointer; }
+
+  .mesh-node.major.active,
+  .region-group.active .mesh-node.major{ opacity:1 !important; }
+  .region-group.active .mesh-glow{ opacity:0.3 !important; }
+
+  .leader{
+    stroke:var(--navy);
+    stroke-width:1;
+    fill:none;
+    opacity:0;
+    transition:opacity 0.35s ease;
+  }
+  .leader.show{ opacity:0.6; }
+
+  .label-name{
+    font-family:'Inter', sans-serif;
+    font-size:9.5px;
+    font-weight:500;
+    fill:var(--navy);
+    opacity:0;
+    letter-spacing:0.01em;
+    transition:opacity 0.35s ease;
+  }
+  .label-desc{
+    font-family:'Inter', sans-serif;
+    font-size:7.6px;
+    font-weight:300;
+    fill:var(--gray);
+    opacity:0;
+    transition:opacity 0.4s ease 0.1s;
+  }
+  .label-name.show, .label-desc.show{ opacity:1; }
+
+  @media (max-width: 640px){
+    .brain-wrap{ max-width:360px; }
+    .label-name{ font-size:9px; }
+    .label-desc{ font-size:7px; }
+  }
+
+  .header h1{
+    margin:0;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.9rem, 5vw, 2.4rem);
+    letter-spacing:-0.01em;
+  }
+  .header h1 a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.3s ease;
+  }
+  .header h1 a:hover{ border-color:var(--line); }
+
+  .header .contact-line{
+    margin:10px 0 0;
+    font-size:0.85rem;
+    color:var(--gray);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px 14px;
+  }
+  .header .contact-line a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    transition:border-color 0.25s ease;
+  }
+  .header .contact-line a:hover{ border-color:var(--navy); }
+
+  .header .download{
+    margin-top:16px;
+  }
+  .header .download a{
+    display:inline-block;
+    text-decoration:none;
+    color:var(--navy);
+    font-size:0.86rem;
+    font-weight:500;
+    padding:9px 22px;
+    border:1px solid var(--line);
+    background:#ffffff;
+    box-shadow:0 8px 18px -12px var(--shadow);
+    transition:background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .header .download a:hover{
+    background:var(--navy);
+    color:var(--cream);
+    transform:translateY(-1px);
+  }
+
+  .section{ margin-bottom:38px; }
+  .section-title{
+    font-size:0.7rem;
+    font-weight:500;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .section p{ margin:0 0 8px; font-size:0.94rem; line-height:1.62; color:var(--ink); font-weight:300; }
+  .section p:last-child{ margin-bottom:0; }
+  .section p strong{ font-weight:500; color:var(--navy); }
+
+  .kv{ display:flex; gap:8px; font-size:0.9rem; margin:0 0 7px; line-height:1.5; }
+  .kv:last-child{ margin-bottom:0; }
+  .kv .k{ color:var(--navy); font-weight:500; min-width:150px; flex-shrink:0; }
+  .kv .v{ color:var(--ink); font-weight:300; }
+
+  .gpa-row{ display:flex; margin-top:6px; }
+  .gpa-item{ flex:1; text-align:center; padding:2px 8px; }
+  .gpa-item + .gpa-item{ border-left:1px solid var(--line); }
+  .gpa-num{ display:block; font-family:'Fraunces', serif; font-size:1.25rem; font-weight:500; color:var(--navy); }
+  .gpa-label{ display:block; margin-top:5px; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--gray); }
+
+  ul.plain{ margin:0; padding-left:18px; }
+  ul.plain li{ font-size:0.92rem; line-height:1.6; color:var(--ink); font-weight:300; margin-bottom:6px; }
+  ul.plain li:last-child{ margin-bottom:0; }
+
+  .entry{ padding:12px 0; border-bottom:1px solid var(--line); }
+  .entry:last-child{ border-bottom:none; }
+  .entry-head{ display:flex; justify-content:space-between; gap:14px; align-items:baseline; flex-wrap:wrap; }
+  .entry-title{ font-size:0.94rem; font-weight:500; color:var(--navy); }
+  .entry-date{ font-size:0.8rem; color:var(--gray); white-space:nowrap; }
+  .entry-sub{ font-size:0.84rem; color:var(--gray); margin-top:2px; }
+  .entry-desc{ font-size:0.9rem; color:var(--ink); font-weight:300; line-height:1.6; margin-top:6px; }
+
+  a.link{ color:var(--navy); text-decoration:none; border-bottom:1px solid var(--line); transition:border-color 0.25s ease; }
+  a.link:hover{ border-color:var(--navy); }
+
+  .muted{ color:var(--gray) !important; font-style:italic; font-size:0.85rem !important; }
+
+  .footer{
+    text-align:center;
+    margin-top:36px;
+    animation-delay:1.4s;
+    font-size:0.85rem;
+    color:var(--gray);
+  }
+  .footer b{ color:var(--navy); font-weight:500; }
+  .footer .contact{ margin-top:8px; }
+  .footer .contact a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:1px;
+    transition:border-color 0.3s ease;
+  }
+  .footer .contact a:hover{ border-color:var(--navy); }
+
+  @media (prefers-reduced-motion: reduce){
+    .header, .section, .footer{
+      animation:none !important;
+      opacity:1 !important;
+      transform:none !important;
     }
-
-    body {
-
-        font-family: Arial, sans-serif;
-
-        touch-action: none;
-
-    }
-
-    #canvas {
-
-        width: 100%;
-
-        height: 100%;
-
-        display: block;
-
-    }
-
-    #loading {
-
-        position: fixed;
-
-        left: 50%;
-
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        color: #8c9698;
-
-        font-size: 14px;
-
-        letter-spacing: 1px;
-
-        pointer-events: none;
-
-    }
-
-    #error {
-
-        display: none;
-
-        position: fixed;
-
-        left: 50%;
-
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        width: min(80%, 500px);
-
-        text-align: center;
-
-        color: #777;
-
-        line-height: 1.6;
-
-    }
-
-    #credit {
-
-        position: fixed;
-
-        bottom: 12px;
-
-        left: 50%;
-
-        transform: translateX(-50%);
-
-        font-size: 10px;
-
-        color: rgba(100, 110, 110, 0.45);
-
-        pointer-events: none;
-
-    }
-
+  }
 </style>
-
 </head>
-
 <body>
 
-<canvas id="canvas"></canvas>
-
-<div id="loading">
-
-    LOADING BRAIN
-
-</div>
-
-<div id="error">
-
-    مدل مغز بارگذاری نشد.<br>
-
-    فایل HTML را با یک local server اجرا کن.
-
-</div>
-
-<div id="credit">
-
-    3D anatomy: Z-Anatomy / BodyParts3D
-
-</div>
-
-<script type="importmap">
-
-{
-
-    "imports": {
-
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-
-    }
-
-}
-
-</script>
-
-<script type="module">
-
-import * as THREE from "three";
-
-import { OrbitControls } from
-
-    "three/addons/controls/OrbitControls.js";
-
-import { GLTFLoader } from
-
-    "three/addons/loaders/GLTFLoader.js";
-
-import { DRACOLoader } from
-
-    "three/addons/loaders/DRACOLoader.js";
-
-/* --------------------------------------------------
-
-   BASIC SETUP
-
--------------------------------------------------- */
-
-const canvas = document.getElementById("canvas");
-
-const renderer = new THREE.WebGLRenderer({
-
-    canvas: canvas,
-
-    antialias: true,
-
-    alpha: true
-
-});
-
-renderer.setPixelRatio(
-
-    Math.min(window.devicePixelRatio, 2)
-
-);
-
-renderer.setSize(
-
-    window.innerWidth,
-
-    window.innerHeight
-
-);
-
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-
-renderer.toneMappingExposure = 1.15;
-
-/* --------------------------------------------------
-
-   SCENE
-
--------------------------------------------------- */
-
-const scene = new THREE.Scene();
-
-scene.background = new THREE.Color(0xf6f6f1);
-
-/* --------------------------------------------------
-
-   CAMERA
-
--------------------------------------------------- */
-
-const camera = new THREE.PerspectiveCamera(
-
-    35,
-
-    window.innerWidth / window.innerHeight,
-
-    0.01,
-
-    1000
-
-);
-
-camera.position.set(
-
-    0,
-
-    0.1,
-
-    3
-
-);
-
-/* --------------------------------------------------
-
-   CONTROLS
-
--------------------------------------------------- */
-
-const controls = new OrbitControls(
-
-    camera,
-
-    renderer.domElement
-
-);
-
-controls.enableDamping = true;
-
-controls.dampingFactor = 0.06;
-
-controls.enablePan = false;
-
-controls.minDistance = 0.8;
-
-controls.maxDistance = 7;
-
-controls.autoRotate = false;
-
-controls.autoRotateSpeed = 0.35;
-
-/* --------------------------------------------------
-
-   LIGHTING
-
--------------------------------------------------- */
-
-const ambient = new THREE.HemisphereLight(
-
-    0xffffff,
-
-    0xdfe3e3,
-
-    2.5
-
-);
-
-scene.add(ambient);
-
-const keyLight = new THREE.DirectionalLight(
-
-    0xffffff,
-
-    3
-
-);
-
-keyLight.position.set(
-
-    3,
-
-    5,
-
-    6
-
-);
-
-scene.add(keyLight);
-
-const fillLight = new THREE.DirectionalLight(
-
-    0xdde8eb,
-
-    1.5
-
-);
-
-fillLight.position.set(
-
-    -4,
-
-    1,
-
-    3
-
-);
-
-scene.add(fillLight);
-
-/* --------------------------------------------------
-
-   BRAIN GROUP
-
--------------------------------------------------- */
-
-const brainGroup = new THREE.Group();
-
-scene.add(brainGroup);
-
-/* --------------------------------------------------
-
-   GLTF + DRACO
-
--------------------------------------------------- */
-
-const loader = new GLTFLoader();
-
-const dracoLoader = new DRACOLoader();
-
-dracoLoader.setDecoderPath(
-
-    "https://www.gstatic.com/draco/versioned/decoders/1.5.7/"
-
-);
-
-loader.setDRACOLoader(dracoLoader);
-
-/*
-
-   Real anatomical brain model.
-
-   Z-Anatomy / BodyParts3D
-
-*/
-
-const BRAIN_URL =
-
-    "https://cdn.jsdelivr.net/gh/DrMuratAltun/beyin-simulatoru@main/brain.glb";
-
-/* --------------------------------------------------
-
-   NETWORK
-
--------------------------------------------------- */
-
-const networkGroup = new THREE.Group();
-
-brainGroup.add(networkGroup);
-
-/* --------------------------------------------------
-
-   LOAD BRAIN
-
--------------------------------------------------- */
-
-loader.load(
-
-    BRAIN_URL,
-
-    function (gltf) {
-
-        const brain = gltf.scene;
-
-        brainGroup.add(brain);
-
-        /*
-
-           Make anatomy clean and monochrome.
-
-        */
-
-        brain.traverse(function (object) {
-
-            if (!object.isMesh) {
-
-                return;
-
-            }
-
-            object.castShadow = true;
-
-            object.receiveShadow = true;
-
-            const material =
-
-                new THREE.MeshPhysicalMaterial({
-
-                    color: 0xe9eeee,
-
-                    roughness: 0.78,
-
-                    metalness: 0.0,
-
-                    transmission: 0.02,
-
-                    transparent: true,
-
-                    opacity: 0.88,
-
-                    clearcoat: 0.15,
-
-                    clearcoatRoughness: 0.7
-
-                });
-
-            object.material = material;
-
-        });
-
-        /*
-
-           Center the model.
-
-        */
-
-        const box =
-
-            new THREE.Box3().setFromObject(brain);
-
-        const center =
-
-            box.getCenter(new THREE.Vector3());
-
-        brain.position.sub(center);
-
-        /*
-
-           Scale model to a predictable size.
-
-        */
-
-        const size =
-
-            box.getSize(new THREE.Vector3());
-
-        const maxSize =
-
-            Math.max(
-
-                size.x,
-
-                size.y,
-
-                size.z
-
-            );
-
-        const scale =
-
-            2.25 / maxSize;
-
-        brain.scale.setScalar(scale);
-
-        /*
-
-           Build neural network after
-
-           the brain has been normalized.
-
-        */
-
-        createNetwork();
-
-        document.getElementById(
-
-            "loading"
-
-        ).style.display = "none";
-
-    },
-
-    undefined,
-
-    function (error) {
-
-        console.error(error);
-
-        document.getElementById(
-
-            "loading"
-
-        ).style.display = "none";
-
-        document.getElementById(
-
-            "error"
-
-        ).style.display = "block";
-
-    }
-
-);
-
-/* --------------------------------------------------
-
-   MINIMAL NEURAL NETWORK
-
--------------------------------------------------- */
-
-function createNetwork() {
-
-    /*
-
-       Coordinates are deliberately sparse.
-
-       They create a conceptual neural
-
-       connectivity layer rather than
-
-       covering the entire brain.
-
-    */
-
-    const nodes = [
-
-        [-0.78,  0.42,  0.30],
-
-        [-0.45,  0.62,  0.34],
-
-        [-0.05,  0.52,  0.38],
-
-        [ 0.32,  0.67,  0.34],
-
-        [ 0.70,  0.48,  0.30],
-
-        [-0.58,  0.05,  0.46],
-
-        [-0.18,  0.18,  0.51],
-
-        [ 0.25,  0.13,  0.48],
-
-        [ 0.63,  0.10,  0.40],
-
-        [-0.35, -0.25,  0.43],
-
-        [ 0.08, -0.20,  0.46],
-
-        [ 0.43, -0.23,  0.39]
-
-    ];
-
-    const connections = [
-
-        [0,1],
-
-        [1,2],
-
-        [2,3],
-
-        [3,4],
-
-        [0,5],
-
-        [1,6],
-
-        [2,6],
-
-        [2,7],
-
-        [3,7],
-
-        [4,8],
-
-        [5,6],
-
-        [6,7],
-
-        [7,8],
-
-        [5,9],
-
-        [6,9],
-
-        [6,10],
-
-        [7,10],
-
-        [8,11],
-
-        [9,10],
-
-        [10,11]
-
-    ];
-
-    /*
-
-       Lines
-
-    */
-
-    const lineMaterial =
-
-        new THREE.LineBasicMaterial({
-
-            color: 0xc6ced0,
-
-            transparent: true,
-
-            opacity: 0.65
-
-        });
-
-    connections.forEach(function (connection) {
-
-        const a =
-
-            nodes[connection[0]];
-
-        const b =
-
-            nodes[connection[1]];
-
-        const geometry =
-
-            new THREE.BufferGeometry();
-
-        geometry.setFromPoints([
-
-            new THREE.Vector3(
-
-                a[0],
-
-                a[1],
-
-                a[2]
-
-            ),
-
-            new THREE.Vector3(
-
-                b[0],
-
-                b[1],
-
-                b[2]
-
-            )
-
-        ]);
-
-        const line =
-
-            new THREE.Line(
-
-                geometry,
-
-                lineMaterial
-
-            );
-
-        networkGroup.add(line);
-
+  <div class="stage">
+    <div class="header">
+      <div class="brain-wrap">
+        <img class="brain-photo" src="brain.png" alt="" aria-hidden="true">
+        <svg id="brain-diagram" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <g id="mesh-layer"></g>
+        </svg>
+      </div>
+      <h1><a href="https://matnemati.ir">Matin Nemati</a></h1>
+      <div class="contact-line">
+        <span>Tehran, Iran</span>
+        <a href="tel:+989300821831">(+98) 930 082 1831</a>
+        <a href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a>
+        <a href="https://matnemati.ir" target="_blank" rel="noopener">MatNemati.ir</a>
+        <a href="https://www.linkedin.com/in/matnemati" target="_blank" rel="noopener">LinkedIn: MatNemati</a>
+      </div>
+      <div class="download">
+        <a href="resume.pdf" download>Download PDF</a>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:56px;">
+      <div class="section-title">Professional Summary</div>
+      <p>B.Sc. graduate in Electrical Engineering with a Minor in Computer Science (July 2026) from IUT. Interested in Statistical Analysis and Data Analysis in the fields of Finance, Business, and Neuroscience. Also interested in Neurotech, emerging technologies, and cutting-edge scientific innovations.</p>
+      <p>4+ years of experience in teaching and education. Open to pursuing an MBA in the future, driven by an interest in finance, management, and business.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Career Interests</div>
+      <p>Data Scientist, Data Analyst, Business Analyst, Financial Analyst, Research Assistant</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Education</div>
+      <div class="entry" style="border-bottom:none;">
+        <div class="entry-head">
+          <span class="entry-title">Isfahan University of Technology (IUT)</span>
+          <span class="entry-date">Sep. 2022 – Jul. 2026</span>
+        </div>
+        <div class="entry-sub">B.Sc. in Electrical Engineering (Bioelectricity &amp; Neuroscience)</div>
+        <div class="entry-sub">Minor in Computer Science</div>
+        <div class="gpa-row">
+          <div class="gpa-item"><span class="gpa-num">3.35 / 4.00</span><span class="gpa-label">Overall GPA</span></div>
+          <div class="gpa-item"><span class="gpa-num">18.02 / 20</span><span class="gpa-label">Final Year</span></div>
+          <div class="gpa-item"><span class="gpa-num">18.43 / 20</span><span class="gpa-label">Major GPA</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Skills</div>
+      <div class="kv"><span class="k">Programming</span><span class="v"><a class="link" href="https://quera.org/profile/MatNemati/activity" target="_blank" rel="noopener">Python</a> (NumPy, Pandas, Matplotlib, OOP), MATLAB, R</span></div>
+      <div class="kv"><span class="k">Data Analysis</span><span class="v">Statistical Analysis (Hypothesis Testing, ANOVA, Regression, T-Test), Data Cleaning, EDA</span></div>
+      <div class="kv"><span class="k">Machine Learning</span><span class="v">Supervised &amp; Unsupervised Learning, Neural Networks, Regularization</span></div>
+      <div class="kv"><span class="k">Databases</span><span class="v">SQL (T-SQL)</span></div>
+      <div class="kv"><span class="k">Business Intelligence</span><span class="v">Power BI</span></div>
+      <div class="kv"><span class="k">Signal Processing</span><span class="v">Digital Signal Processing, EEG, ECG, EMG, Biomedical Signals</span></div>
+      <div class="kv"><span class="k">Neuroscience</span><span class="v">Neural Modeling, Systems and Computational Neuroscience</span></div>
+      <div class="kv"><span class="k">Simulation</span><span class="v">PSpice, Proteus</span></div>
+      <div class="kv"><span class="k">Tools</span><span class="v">Git, Microsoft Office Suite, LaTeX</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Soft Skills</div>
+      <p>ISTJ personality, with interests in mountaineering, volleyball, and exploring deep and real-world problems. Also passionate about teaching and knowledge sharing.</p>
+      <ul class="plain">
+        <li>Problem-Solving</li>
+        <li>Analytical Thinking</li>
+        <li>Attention to Detail</li>
+        <li>Independent Research &amp; Self-Learning</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Teaching &amp; Professional Experience</div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Mathematics, Physics &amp; Python Instructor</span>
+          <span class="entry-date">2020 – 2024</span>
+        </div>
+        <div class="entry-desc">Taught and mentored more than 100 students while designing structured study plans and problem-solving strategies.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Educational Team Lead &amp; Academic Advisor</span>
+          <span class="entry-date">2021 – 2025</span>
+        </div>
+        <div class="entry-desc">Started as an academic advisor at Heyva Group in 2021, and later led multiple educational teams between 2023 and 2025, providing academic planning and student guidance.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Teaching Assistant (Python) &amp; Programming Mentor</span>
+          <span class="entry-date">2022</span>
+        </div>
+        <div class="entry-sub">Isfahan University of Technology</div>
+        <div class="entry-desc">Teaching assistant for undergraduate students, mentoring in programming, debugging, and problem-solving.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Certifications, Academic Background &amp; Selected Coursework</div>
+      <p>For detailed information about my academic background, academic transcripts, certifications, and completed coursework, please visit my <a class="link" href="https://matnemati.ir/academics" target="_blank" rel="noopener">Academic Portfolio</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Research Interests</div>
+      <ul class="plain">
+        <li>Neuroscience (Clinical &amp; Computational)</li>
+        <li>Neuro &amp; Biomedical Devices</li>
+        <li>Emerging Technologies</li>
+        <li>Statistical Inference</li>
+        <li>Data Analysis</li>
+        <li>Financial Markets</li>
+        <li>Business Management &amp; Organizational Leadership</li>
+        <li>Financial Analysis</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Research Experience &amp; Projects</div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Quantum Phenomena in Biological Systems: Implications for Brain Function</span>
+          <span class="entry-date">B.Sc. Thesis — Fall 2025</span>
+        </div>
+        <div class="entry-sub">Isfahan University of Technology</div>
+        <div class="entry-desc">Conducted a systematic and critical review of theoretical models and experimental evidence investigating the possible role of quantum phenomena in the brain and nervous system, with emphasis on their biophysical feasibility and functional implications.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">EMG Signal Classification: Wrist vs. Arm</span>
+          <span class="entry-date">MATLAB</span>
+        </div>
+        <div class="entry-sub">Biomedical Signal Processing Laboratory</div>
+        <div class="entry-desc">Implemented a MATLAB-based pipeline for classifying EMG segments associated with wrist and arm movements using conventional signal processing and classification techniques. (GitHub Repository)</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Speaker Recognition Using Speech Signal Processing</span>
+          <span class="entry-date">MATLAB</span>
+        </div>
+        <div class="entry-sub">Academic Project</div>
+        <div class="entry-desc">Developing a speaker recognition pipeline based on speech signal processing, including windowing, feature extraction, and classification using a public speaker recognition dataset.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Autonomic Biomarkers, Self-Control, and Cognitive Behavior</span>
+          <span class="entry-date">R</span>
+        </div>
+        <div class="entry-sub">Statistical Analysis Project</div>
+        <div class="entry-desc">Investigating whether autonomic physiological biomarkers can explain individual differences in self-control and their association with cognitive behaviors using statistical inference methods on a large-scale public dataset.</div>
+      </div>
+      <p style="margin-top:10px;" class="muted">The above list may not always reflect my latest research activities and projects.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">References</div>
+      <div class="entry">
+        <div class="entry-title">Dr. Sayed Jalal Zahabi</div>
+        <div class="entry-sub">Assistant Professor, Department of Electrical and Computer Engineering — Isfahan University of Technology</div>
+        <div class="entry-desc">Instructor of most of my undergraduate courses.</div>
+        <div class="entry-desc">Links: <a class="link" href="https://scholar.google.com/citations?user=xsY6VrEAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>, <a class="link" href="https://people.iut.ac.ir/en/zahabi" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zahabi@iut.ac.ir">zahabi@iut.ac.ir</a></div>
+      </div>
+      <div class="entry">
+        <div class="entry-title">Dr. Zaker Hossein Firouzeh</div>
+        <div class="entry-sub">Assistant Professor, Department of Electrical and Computer Engineering — Isfahan University of Technology</div>
+        <div class="entry-desc">Supervisor of my B.Sc. thesis.</div>
+        <div class="entry-desc">Links: <a class="link" href="https://scholar.google.com/citations?user=VxT2--QAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>, <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">Faculty Profile</a> · Email: <a class="link" href="mailto:zhfirouzeh@iut.ac.ir">zhfirouzeh@iut.ac.ir</a></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Usually going by <b>MatNemati</b> across platforms</div>
+      <div class="contact"><a href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a></div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('brain-diagram');
+  var layer = document.getElementById('mesh-layer');
+
+  // fixed, hand-placed regions -- deterministic, never regenerated at runtime
+  var MAJOR = [
+    { id:'pfc',        x:110, y:55,  label:'Prefrontal Cortex', desc:'Planning, judgment, and decision-making.',            lx:18,  ly:38,  anchor:'end' },
+    { id:'broca',      x:150, y:98,  label:"Broca's Area",      desc:'Responsible for speech production.',                  lx:18,  ly:115, anchor:'end' },
+    { id:'motor',      x:235, y:33,  label:'Motor Cortex',      desc:'Controls voluntary movement.',                        lx:210, ly:10,  anchor:'middle' },
+    { id:'parietal',   x:335, y:38,  label:'Parietal Lobe',     desc:'Integrates sensory input and spatial awareness.',     lx:355, ly:10,  anchor:'middle' },
+    { id:'temporal',   x:235, y:122, label:'Temporal Lobe',     desc:'Processes sound, language, and memory.',              lx:150, ly:206, anchor:'middle' },
+    { id:'hippocampus',x:305, y:126, label:'Hippocampus',       desc:'Forms new long-term memories.',                       lx:330, ly:206, anchor:'middle' },
+    { id:'amygdala',   x:275, y:142, label:'Amygdala',          desc:'Processes emotion, especially fear.',                 lx:245, ly:206, anchor:'middle' },
+    { id:'occipital',  x:465, y:55,  label:'Occipital Lobe',    desc:'Handles visual processing.',                          lx:595, ly:35,  anchor:'start' },
+    { id:'cerebellum', x:500, y:150, label:'Cerebellum',        desc:'Coordinates balance and motor control.',              lx:595, ly:150, anchor:'start' },
+    { id:'brainstem',  x:436, y:180, label:'Brainstem',         desc:'Regulates breathing and heart rate.',                 lx:430, ly:206, anchor:'middle' }
+  ];
+
+  var MINOR = [
+    {x:88,y:78},{x:140,y:38},{x:190,y:58},{x:260,y:68},{x:350,y:88},
+    {x:392,y:48},{x:432,y:118},{x:472,y:88},{x:517,y:110},{x:362,y:150}
+  ];
+  var MINOR_LINKS = [ [0,'pfc'],[1,'pfc'],[2,'motor'],[3,'motor'],[4,'parietal'],
+                      [5,'occipital'],[6,'cerebellum'],[7,'occipital'],[8,'cerebellum'],[9,'brainstem'] ];
+
+  var EDGES = [
+    ['pfc','broca'],['pfc','motor'],['broca','temporal'],['motor','parietal'],
+    ['parietal','occipital'],['temporal','hippocampus'],['hippocampus','amygdala'],
+    ['temporal','amygdala'],['occipital','cerebellum'],['cerebellum','brainstem'],
+    ['brainstem','hippocampus'],['motor','temporal'],['pfc','parietal']
+  ];
+
+  var byId = {};
+  MAJOR.forEach(function(m){ byId[m.id] = m; });
+
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function anim(node, i, kind){
+    var dur = (kind === 'edge' ? 4.6 : 4.2) + (i % 6) * 0.55;
+    var delay = -((i * 0.63) % dur);
+    node.style.animationDuration = dur.toFixed(2) + 's';
+    node.style.animationDelay = delay.toFixed(2) + 's';
+  }
+
+  // major-major edges
+  EDGES.forEach(function(pair, i){
+    var a = byId[pair[0]], b = byId[pair[1]];
+    var line = el('line', { class:'mesh-edge', x1:a.x, y1:a.y, x2:b.x, y2:b.y });
+    anim(line, i, 'edge');
+    layer.appendChild(line);
+  });
+
+  // minor decorative nodes + their links
+  MINOR_LINKS.forEach(function(pair, i){
+    var m = MINOR[pair[0]], target = byId[pair[1]];
+    var line = el('line', { class:'mesh-edge', x1:m.x, y1:m.y, x2:target.x, y2:target.y });
+    anim(line, i + EDGES.length, 'edge');
+    layer.appendChild(line);
+  });
+
+  MINOR.forEach(function(m, i){
+    var c = el('circle', { class:'mesh-node minor', cx:m.x, cy:m.y, r:1.8 });
+    anim(c, i, 'node');
+    layer.appendChild(c);
+  });
+
+  // major regions: glow + node + hit-area + leader + two-line label
+  MAJOR.forEach(function(m, i){
+    var group = el('g', { class:'region-group', 'data-region':m.id, tabindex:'0' });
+
+    var glow = el('circle', { class:'mesh-glow', cx:m.x, cy:m.y, r:13 });
+    anim(glow, i, 'node');
+
+    var node = el('circle', { class:'mesh-node major', cx:m.x, cy:m.y, r:4.6 });
+    anim(node, i, 'node');
+
+    var hit = el('circle', { class:'hit-area', cx:m.x, cy:m.y, r:13 });
+
+    var leader = el('line', { class:'leader', x1:m.x, y1:m.y, x2:m.lx, y2:m.ly });
+
+    var name = el('text', { class:'label-name', x:m.lx, y:m.ly - 4, 'text-anchor':m.anchor });
+    name.textContent = m.label;
+
+    var desc = el('text', { class:'label-desc', x:m.lx, y:m.ly + 7, 'text-anchor':m.anchor });
+    desc.textContent = m.desc;
+
+    group.appendChild(glow);
+    group.appendChild(node);
+    group.appendChild(leader);
+    group.appendChild(name);
+    group.appendChild(desc);
+    group.appendChild(hit);
+    layer.appendChild(group);
+  });
+
+  var groups = layer.querySelectorAll('.region-group');
+
+  function setActive(id, on){
+    var g = layer.querySelector('.region-group[data-region="' + id + '"]');
+    if (!g) return;
+    g.classList.toggle('active', on);
+    g.querySelector('.leader').classList.toggle('show', on);
+    g.querySelector('.label-name').classList.toggle('show', on);
+    g.querySelector('.label-desc').classList.toggle('show', on);
+  }
+
+  function clearAll(){
+    groups.forEach(function(g){ setActive(g.getAttribute('data-region'), false); });
+  }
+
+  groups.forEach(function(g){
+    var id = g.getAttribute('data-region');
+    g.addEventListener('click', function(e){
+      e.stopPropagation();
+      var isActive = g.classList.contains('active');
+      clearAll();
+      setActive(id, !isActive);
     });
+    g.addEventListener('focus', function(){ clearAll(); setActive(id, true); });
+  });
 
-    /*
-
-       Nodes
-
-    */
-
-    nodes.forEach(function (position, index) {
-
-        const geometry =
-
-            new THREE.SphereGeometry(
-
-                index % 4 === 0
-
-                    ? 0.035
-
-                    : 0.025,
-
-                16,
-
-                16
-
-            );
-
-        const material =
-
-            new THREE.MeshBasicMaterial({
-
-                color: 0xffffff,
-
-                transparent: true,
-
-                opacity: 0.95
-
-            });
-
-        const node =
-
-            new THREE.Mesh(
-
-                geometry,
-
-                material
-
-            );
-
-        node.position.set(
-
-            position[0],
-
-            position[1],
-
-            position[2]
-
-        );
-
-        networkGroup.add(node);
-
-    });
-
-}
-
-/* --------------------------------------------------
-
-   RESIZE
-
--------------------------------------------------- */
-
-window.addEventListener(
-
-    "resize",
-
-    function () {
-
-        camera.aspect =
-
-            window.innerWidth /
-
-            window.innerHeight;
-
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(
-
-            window.innerWidth,
-
-            window.innerHeight
-
-        );
-
-        renderer.setPixelRatio(
-
-            Math.min(window.devicePixelRatio, 2)
-
-        );
-
-    }
-
-);
-
-/* --------------------------------------------------
-
-   ANIMATION
-
--------------------------------------------------- */
-
-function animate() {
-
-    requestAnimationFrame(animate);
-
-    controls.update();
-
-    renderer.render(
-
-        scene,
-
-        camera
-
-    );
-
-}
-
-animate();
-
+  svg.addEventListener('click', clearAll);
+})();
 </script>
-
 </body>
-
 </html>
