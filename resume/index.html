@@ -72,12 +72,103 @@
     pointer-events:none;
   }
 
-  #neuro-strip{
-    display:block;
+  .brain-wrap{
     width:100%;
-    height:56px;
-    margin-bottom:10px;
-    touch-action:none;
+    max-width:600px;
+    margin:0 auto 6px;
+  }
+  #brain-diagram{ display:block; width:100%; height:auto; overflow:visible; }
+
+  .brain-outline{
+    fill:url(#brainGrad);
+    stroke:rgba(34,48,77,0.24);
+    stroke-width:1.2;
+  }
+  .brain-detail{
+    fill:none;
+    stroke:rgba(34,48,77,0.2);
+    stroke-width:1;
+  }
+  .brain-fissure{
+    fill:none;
+    stroke:rgba(34,48,77,0.16);
+    stroke-width:1;
+    stroke-dasharray:2 3;
+  }
+
+  @keyframes meshPulse{
+    0%, 100%{ opacity:var(--min-a, 0.2); }
+    50%{ opacity:var(--max-a, 0.6); }
+  }
+
+  .mesh-edge{
+    stroke:var(--navy);
+    stroke-width:1;
+    stroke-linecap:round;
+    fill:none;
+    animation-name:meshPulse;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+    --min-a:0.14; --max-a:0.42;
+  }
+
+  .mesh-node{
+    fill:var(--navy);
+    animation-name:meshPulse;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+  }
+  .mesh-node.minor{ --min-a:0.25; --max-a:0.55; }
+  .mesh-node.major{ --min-a:0.55; --max-a:1; cursor:pointer; }
+
+  .mesh-glow{
+    fill:var(--navy);
+    filter:blur(3px);
+    animation-name:meshPulse;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+    --min-a:0.04; --max-a:0.16;
+    pointer-events:none;
+  }
+
+  .hit-area{ fill:transparent; cursor:pointer; }
+
+  .mesh-node.major.active,
+  .region-group.active .mesh-node.major{ opacity:1 !important; }
+  .region-group.active .mesh-glow{ opacity:0.3 !important; }
+
+  .leader{
+    stroke:var(--navy);
+    stroke-width:1;
+    fill:none;
+    opacity:0;
+    transition:opacity 0.35s ease;
+  }
+  .leader.show{ opacity:0.6; }
+
+  .label-name{
+    font-family:'Inter', sans-serif;
+    font-size:9.5px;
+    font-weight:500;
+    fill:var(--navy);
+    opacity:0;
+    letter-spacing:0.01em;
+    transition:opacity 0.35s ease;
+  }
+  .label-desc{
+    font-family:'Inter', sans-serif;
+    font-size:7.6px;
+    font-weight:300;
+    fill:var(--gray);
+    opacity:0;
+    transition:opacity 0.4s ease 0.1s;
+  }
+  .label-name.show, .label-desc.show{ opacity:1; }
+
+  @media (max-width: 640px){
+    .brain-wrap{ max-width:360px; }
+    .label-name{ font-size:9px; }
+    .label-desc{ font-size:7px; }
   }
 
   .header h1{
@@ -208,7 +299,59 @@
 
   <div class="stage">
     <div class="header">
-      <canvas id="neuro-strip" aria-hidden="true"></canvas>
+      <div class="brain-wrap">
+        <svg id="brain-diagram" viewBox="0 0 660 210" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <radialGradient id="brainGrad" cx="38%" cy="30%" r="85%">
+              <stop offset="0%" stop-color="rgba(130,148,176,0.22)"/>
+              <stop offset="100%" stop-color="rgba(34,48,77,0.045)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- main cerebrum silhouette, bumpy cortical outline -->
+          <path class="brain-outline" d="M62 108
+            C 46 68, 72 32, 112 22
+            C 132 12, 152 27, 172 17
+            C 197 5, 217 17, 237 12
+            C 257 5, 277 17, 297 12
+            C 322 5, 342 17, 362 15
+            C 387 7, 407 22, 422 37
+            C 442 27, 462 37, 477 52
+            C 497 42, 517 52, 527 72
+            C 542 87, 537 107, 522 117
+            C 532 132, 522 147, 502 147
+            C 497 162, 477 165, 462 155
+            C 452 167, 432 165, 422 152
+            C 407 162, 387 159, 377 145
+            C 362 155, 342 152, 330 139
+            C 307 149, 282 145, 267 130
+            C 247 140, 222 135, 207 119
+            C 187 129, 162 123, 147 107
+            C 127 115, 107 109, 97 97
+            C 80 105, 67 102, 62 108 Z" />
+
+          <!-- sylvian fissure -->
+          <path class="brain-fissure" d="M120 108 C 150 121, 190 125, 228 114" />
+
+          <!-- temporal lobe -->
+          <path class="brain-outline" d="M128 112 C 148 132, 190 141, 222 129
+            C 216 148, 178 159, 146 150 C 120 143, 110 126, 128 112 Z" />
+
+          <!-- cerebellum -->
+          <path class="brain-outline" d="M478 142 C 466 156, 476 178, 502 182
+            C 528 185, 545 168, 537 149 C 530 134, 500 130, 478 142 Z" />
+          <path class="brain-detail" d="M488 150 C 498 158, 498 169, 489 177" />
+          <path class="brain-detail" d="M500 147 C 512 155, 512 170, 501 178" />
+          <path class="brain-detail" d="M513 146 C 525 154, 525 171, 513 180" />
+
+          <!-- brainstem -->
+          <path class="brain-outline" d="M432 152 C 426 165, 434 172, 429 185
+            C 426 193, 434 199, 430 206 L 442 206 C 446 197, 438 191, 442 183
+            C 446 172, 438 164, 444 152 Z" />
+
+          <g id="mesh-layer"></g>
+        </svg>
+      </div>
       <h1><a href="https://matnemati.ir">Matin Nemati</a></h1>
       <div class="contact-line">
         <span>Tehran, Iran</span>
@@ -380,147 +523,129 @@
 
 <script>
 (function(){
-  var canvas = document.getElementById('neuro-strip');
-  var ctx = canvas.getContext('2d');
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var W, H, nodes = [], edges = [];
-  var NAVY = '34,48,77';
-  var pointer = null; // {x,y} in css px, or null
-  var pulses = [];
-  var lastPulseTime = 0;
-  var startTime = performance.now();
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('brain-diagram');
+  var layer = document.getElementById('mesh-layer');
 
-  function resize(){
-    var rect = canvas.getBoundingClientRect();
-    W = rect.width;
-    H = rect.height;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    buildNetwork();
+  // fixed, hand-placed regions -- deterministic, never regenerated at runtime
+  var MAJOR = [
+    { id:'pfc',        x:110, y:55,  label:'Prefrontal Cortex', desc:'Planning, judgment, and decision-making.',            lx:18,  ly:38,  anchor:'end' },
+    { id:'broca',      x:150, y:98,  label:"Broca's Area",      desc:'Responsible for speech production.',                  lx:18,  ly:115, anchor:'end' },
+    { id:'motor',      x:235, y:33,  label:'Motor Cortex',      desc:'Controls voluntary movement.',                        lx:210, ly:10,  anchor:'middle' },
+    { id:'parietal',   x:335, y:38,  label:'Parietal Lobe',     desc:'Integrates sensory input and spatial awareness.',     lx:355, ly:10,  anchor:'middle' },
+    { id:'temporal',   x:235, y:122, label:'Temporal Lobe',     desc:'Processes sound, language, and memory.',              lx:150, ly:206, anchor:'middle' },
+    { id:'hippocampus',x:305, y:126, label:'Hippocampus',       desc:'Forms new long-term memories.',                       lx:330, ly:206, anchor:'middle' },
+    { id:'amygdala',   x:275, y:142, label:'Amygdala',          desc:'Processes emotion, especially fear.',                 lx:245, ly:206, anchor:'middle' },
+    { id:'occipital',  x:465, y:55,  label:'Occipital Lobe',    desc:'Handles visual processing.',                          lx:595, ly:35,  anchor:'start' },
+    { id:'cerebellum', x:500, y:150, label:'Cerebellum',        desc:'Coordinates balance and motor control.',              lx:595, ly:150, anchor:'start' },
+    { id:'brainstem',  x:436, y:180, label:'Brainstem',         desc:'Regulates breathing and heart rate.',                 lx:430, ly:206, anchor:'middle' }
+  ];
+
+  var MINOR = [
+    {x:88,y:78},{x:140,y:38},{x:190,y:58},{x:260,y:68},{x:350,y:88},
+    {x:392,y:48},{x:432,y:118},{x:472,y:88},{x:517,y:110},{x:362,y:150}
+  ];
+  var MINOR_LINKS = [ [0,'pfc'],[1,'pfc'],[2,'motor'],[3,'motor'],[4,'parietal'],
+                      [5,'occipital'],[6,'cerebellum'],[7,'occipital'],[8,'cerebellum'],[9,'brainstem'] ];
+
+  var EDGES = [
+    ['pfc','broca'],['pfc','motor'],['broca','temporal'],['motor','parietal'],
+    ['parietal','occipital'],['temporal','hippocampus'],['hippocampus','amygdala'],
+    ['temporal','amygdala'],['occipital','cerebellum'],['cerebellum','brainstem'],
+    ['brainstem','hippocampus'],['motor','temporal'],['pfc','parietal']
+  ];
+
+  var byId = {};
+  MAJOR.forEach(function(m){ byId[m.id] = m; });
+
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
   }
 
-  function buildNetwork(){
-    nodes = [];
-    var count = Math.max(20, Math.min(46, Math.round((W * H) / 900)));
-    for (var i = 0; i < count; i++){
-      nodes.push({
-        x: 4 + Math.random() * (W - 8),
-        y: 4 + Math.random() * (H - 8),
-        vx: (Math.random()-0.5) * 0.05,
-        vy: (Math.random()-0.5) * 0.04
-      });
-    }
-    edges = [];
-    var maxDist = Math.max(34, Math.min(W, H*2.4) / Math.sqrt(count) * 2.1);
-    for (var i = 0; i < nodes.length; i++){
-      for (var j = i+1; j < nodes.length; j++){
-        var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
-        if (Math.hypot(dx,dy) < maxDist) edges.push([i,j]);
-      }
-    }
+  function anim(node, i, kind){
+    var dur = (kind === 'edge' ? 4.6 : 4.2) + (i % 6) * 0.55;
+    var delay = -((i * 0.63) % dur);
+    node.style.animationDuration = dur.toFixed(2) + 's';
+    node.style.animationDelay = delay.toFixed(2) + 's';
   }
 
-  function distToSegment(px,py, ax,ay, bx,by){
-    var dx = bx-ax, dy = by-ay;
-    var len2 = dx*dx+dy*dy;
-    var t = len2 ? ((px-ax)*dx + (py-ay)*dy) / len2 : 0;
-    t = Math.max(0, Math.min(1, t));
-    var cx = ax + t*dx, cy = ay + t*dy;
-    return Math.hypot(px-cx, py-cy);
+  // major-major edges
+  EDGES.forEach(function(pair, i){
+    var a = byId[pair[0]], b = byId[pair[1]];
+    var line = el('line', { class:'mesh-edge', x1:a.x, y1:a.y, x2:b.x, y2:b.y });
+    anim(line, i, 'edge');
+    layer.appendChild(line);
+  });
+
+  // minor decorative nodes + their links
+  MINOR_LINKS.forEach(function(pair, i){
+    var m = MINOR[pair[0]], target = byId[pair[1]];
+    var line = el('line', { class:'mesh-edge', x1:m.x, y1:m.y, x2:target.x, y2:target.y });
+    anim(line, i + EDGES.length, 'edge');
+    layer.appendChild(line);
+  });
+
+  MINOR.forEach(function(m, i){
+    var c = el('circle', { class:'mesh-node minor', cx:m.x, cy:m.y, r:1.8 });
+    anim(c, i, 'node');
+    layer.appendChild(c);
+  });
+
+  // major regions: glow + node + hit-area + leader + two-line label
+  MAJOR.forEach(function(m, i){
+    var group = el('g', { class:'region-group', 'data-region':m.id, tabindex:'0' });
+
+    var glow = el('circle', { class:'mesh-glow', cx:m.x, cy:m.y, r:13 });
+    anim(glow, i, 'node');
+
+    var node = el('circle', { class:'mesh-node major', cx:m.x, cy:m.y, r:4.6 });
+    anim(node, i, 'node');
+
+    var hit = el('circle', { class:'hit-area', cx:m.x, cy:m.y, r:13 });
+
+    var leader = el('line', { class:'leader', x1:m.x, y1:m.y, x2:m.lx, y2:m.ly });
+
+    var name = el('text', { class:'label-name', x:m.lx, y:m.ly - 4, 'text-anchor':m.anchor });
+    name.textContent = m.label;
+
+    var desc = el('text', { class:'label-desc', x:m.lx, y:m.ly + 7, 'text-anchor':m.anchor });
+    desc.textContent = m.desc;
+
+    group.appendChild(glow);
+    group.appendChild(node);
+    group.appendChild(leader);
+    group.appendChild(name);
+    group.appendChild(desc);
+    group.appendChild(hit);
+    layer.appendChild(group);
+  });
+
+  var groups = layer.querySelectorAll('.region-group');
+
+  function setActive(id, on){
+    var g = layer.querySelector('.region-group[data-region="' + id + '"]');
+    if (!g) return;
+    g.classList.toggle('active', on);
+    g.querySelector('.leader').classList.toggle('show', on);
+    g.querySelector('.label-name').classList.toggle('show', on);
+    g.querySelector('.label-desc').classList.toggle('show', on);
   }
 
-  function maybeSpawnPulse(now){
-    if (edges.length === 0) return;
-    if (pulses.length < 2 && now - lastPulseTime > 900 + Math.random()*900){
-      var e = edges[Math.floor(Math.random()*edges.length)];
-      pulses.push({ edge:e, start: now, dur: 650 + Math.random()*350, dir: Math.random() < 0.5 });
-      lastPulseTime = now;
-    }
+  function clearAll(){
+    groups.forEach(function(g){ setActive(g.getAttribute('data-region'), false); });
   }
 
-  function draw(now){
-    var t = (now - startTime) / 1000;
-    ctx.clearRect(0,0,W,H);
+  groups.forEach(function(g){
+    var id = g.getAttribute('data-region');
+    g.addEventListener('click', function(e){
+      e.stopPropagation();
+      var isActive = g.classList.contains('active');
+      clearAll();
+      setActive(id, !isActive);
+    });
+    g.addEventListener('focus', function(){ clearAll(); setActive(id, true); });
+  });
 
-    // gentle drift
-    for (var i=0;i<nodes.length;i++){
-      var n = nodes[i];
-      n.x += n.vx; n.y += n.vy;
-      if (n.y < 4 || n.y > H-4) n.vy *= -1;
-      if (n.x < 2 || n.x > W-2) n.vx *= -1;
-    }
-
-    var baseAlpha = 0.14 + 0.22 * (0.5 + 0.5*Math.sin(t*0.55));
-
-    // edges
-    for (var i=0;i<edges.length;i++){
-      var a = nodes[edges[i][0]], b = nodes[edges[i][1]];
-      var hl = 0;
-      if (pointer){
-        var d = distToSegment(pointer.x,pointer.y, a.x,a.y, b.x,b.y);
-        if (d < 30) hl = (1 - d/30) * 0.6;
-      }
-      ctx.strokeStyle = 'rgba(' + NAVY + ',' + Math.min(1, baseAlpha + hl) + ')';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
-    }
-
-    // pulses (traveling signal)
-    pulses = pulses.filter(function(p){ return (now - p.start) < p.dur; });
-    for (var i=0;i<pulses.length;i++){
-      var p = pulses[i];
-      var prog = (now - p.start) / p.dur;
-      var a = nodes[p.edge[0]], b = nodes[p.edge[1]];
-      if (p.dir){ var tmp=a; a=b; b=tmp; }
-      var x = a.x + (b.x-a.x)*prog;
-      var y = a.y + (b.y-a.y)*prog;
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(' + NAVY + ',0.9)';
-      ctx.shadowColor = 'rgba(' + NAVY + ',0.6)';
-      ctx.shadowBlur = 5;
-      ctx.arc(x, y, 2.2, 0, Math.PI*2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-
-    // nodes
-    for (var i=0;i<nodes.length;i++){
-      var n = nodes[i];
-      var hl = 0;
-      if (pointer){
-        var d = Math.hypot(pointer.x-n.x, pointer.y-n.y);
-        if (d < 22) hl = (1 - d/22) * 0.7;
-      }
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(' + NAVY + ',' + Math.min(1, baseAlpha + 0.18 + hl) + ')';
-      ctx.arc(n.x, n.y, hl > 0.2 ? 2.6 : 1.8, 0, Math.PI*2);
-      ctx.fill();
-    }
-
-    maybeSpawnPulse(now);
-    requestAnimationFrame(draw);
-  }
-
-  function getPos(e){
-    var rect = canvas.getBoundingClientRect();
-    var p = (e.touches ? e.touches[0] : e);
-    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
-  }
-
-  canvas.addEventListener('mousemove', function(e){ pointer = getPos(e); });
-  canvas.addEventListener('mouseleave', function(){ pointer = null; });
-  canvas.addEventListener('touchstart', function(e){ pointer = getPos(e); }, {passive:true});
-  canvas.addEventListener('touchmove', function(e){ pointer = getPos(e); }, {passive:true});
-  canvas.addEventListener('touchend', function(){ pointer = null; });
-
-  window.addEventListener('resize', resize);
-  resize();
-  requestAnimationFrame(draw);
-})();
-</script>
-</body>
-</html>
+  svg.a
