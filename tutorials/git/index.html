@@ -142,8 +142,36 @@
         <h3 class="term">Source Control / Version Control</h3>
         <p class="def">سیستمی برای ثبت، مدیریت و پیگیری تغییرات فایل‌ها در طول زمان که امکان مشاهده تاریخچه، مقایسه نسخه‌ها، بازگشت به نسخه‌های قبلی و همکاری چند نفر روی یک پروژه را فراهم می‌کند. هدف اصلی آن جلوگیری از گم‌شدن یا خراب‌شدن تغییرات و مشخص بودن اینکه چه چیزی، چه زمانی و توسط چه کسی تغییر کرده است.</p>
       </div>
+      <div class="entry">
+  <h3 class="term">Diffing</h3>
+  <p class="def">فرایند مقایسه دو نسخه از یک فایل برای مشخص‌کردن تفاوت‌های آن‌هاست. در Git از Diff برای دیدن خطوط اضافه‌شده، حذف‌شده یا تغییرکرده استفاده می‌شود. در خروجی، <b>-</b> نشان‌دهنده خط حذف‌شده و <b>+</b> نشان‌دهنده خط اضافه‌شده است؛ خطوط بدون این علامت‌ها فقط برای نمایش context هستند.</p>
 
+  <div class="code-box">
+    <code>git diff
+git diff -u    # Unified Diff format
+git diff -w    # Ignore whitespace changes
+git diff -y    # Side-by-side comparison</code>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  </div>
+</div>
 
+<div class="entry">
+  <h3 class="term">KDiff3 / Meld</h3>
+  <p class="def">ابزارهای گرافیکی برای مقایسه و ادغام فایل‌ها؛ KDiff3 برای Linux و Meld برای macOS قابل استفاده است.</p>
+</div>
+
+<div class="entry">
+  <h3 class="term">Interpreting Diff Output</h3>
+  <p class="def">در خروجی Diff، خطی که با <b>-</b> شروع می‌شود از نسخه قبلی حذف شده و خطی که با <b>+</b> شروع می‌شود به نسخه جدید اضافه شده است. خطوط بدون این علامت‌ها تغییر نکرده‌اند و فقط برای نشان‌دادن context استفاده می‌شوند.</p>
+
+  <div class="code-box">
+    <code>- print("Hello")
++ print("Hello World")</code>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  </div>
+</div>
+
+      
 
       
     </div>
