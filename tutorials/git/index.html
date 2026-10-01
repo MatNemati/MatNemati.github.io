@@ -159,6 +159,37 @@ diff -u A B    # Unified Diff format</code>
   <p class="def">ابزارهای گرافیکی برای مقایسه و ادغام فایل‌ها؛ KDiff3 برای Linux و Meld برای macOS قابل استفاده است.</p>
 </div>
 
+      <div class="entry">
+  <h3 class="term">Patch / Patching</h3>
+  <p class="def"><b>Patch</b> فایلی است که تفاوت بین دو نسخه را ذخیره می‌کند و می‌توان از آن برای اعمال تغییرات روی فایل اولیه استفاده کرد. <b>Patching</b> فرایند اعمال این تغییرات روی فایل هدف برای تبدیل آن به نسخه جدیدتر است.</p>
+
+  <div class="code-box">
+    <code>diff -u A B > patch.diff
+patch A < patch.diff</code>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  </div>
+</div>
+
+<div class="entry">
+  <h3 class="term">Creating a Patch</h3>
+  <p class="def">با استفاده از <code>diff</code> و عملگر <code>&gt;</code>، خروجی تفاوت دو فایل در یک فایل جدید ذخیره می‌شود. این فایل همان Patch است و تغییرات لازم برای تبدیل فایل A به B را در خود دارد.</p>
+
+  <div class="code-box">
+    <code>diff -u A B > patch.diff</code>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  </div>
+</div>
+
+<div class="entry">
+  <h3 class="term">Applying a Patch</h3>
+  <p class="def">با دستور <code>patch</code> و عملگر <code>&lt;</code>، Patch روی فایل اولیه اعمال می‌شود. در نتیجه فایل A تغییر می‌کند و به محتوای نسخه B می‌رسد.</p>
+
+  <div class="code-box">
+    <code>patch A < patch.diff</code>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  </div>
+</div>
+
       
 
       
