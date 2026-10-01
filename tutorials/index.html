@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorials</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+  :root{
+    --cream:#faf7ef;
+    --card:#ffffff;
+    --navy:#22304d;
+    --ink:#33383f;
+    --gray:#6f7580;
+    --line:#e2ddce;
+    --shadow: rgba(34,48,77,0.10);
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Vazirmatn', sans-serif;
+  }
+  body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:8vh 6vw;
+  }
+  .stage{ width:100%; max-width:560px; }
+
+  .header{ margin-bottom:34px; }
+  .header h1{
+    margin:0;
+    font-weight:700;
+    font-size:1.7rem;
+    color:var(--navy);
+  }
+  .header p{
+    margin:8px 0 0;
+    font-size:0.92rem;
+    color:var(--gray);
+  }
+
+  .course-list{ display:flex; flex-direction:column; gap:14px; }
+
+  .course-card{
+    display:block;
+    text-decoration:none;
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:0 10px 22px -14px var(--shadow);
+    padding:18px 20px;
+    transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  }
+  .course-card:hover{
+    border-color:var(--navy);
+    transform:translateY(-1px);
+  }
+  .course-card h2{
+    margin:0 0 4px;
+    font-size:1.05rem;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .course-card p{
+    margin:0;
+    font-size:0.85rem;
+    color:var(--gray);
+  }
+
+  /*
+    برای افزودن یک دوره‌ی جدید، این بلاک رو کپی کن و داخل .course-list اضافه کن:
+
+    <a class="course-card" href="NAME-OF-FOLDER/index.html">
+      <h2>عنوان دوره</h2>
+      <p>توضیح خیلی کوتاه</p>
+    </a>
+  */
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="header">
+      <h1>Tutorials</h1>
+      <p>یادداشت‌های شخصی برای مرور سریع مفاهیم</p>
+    </div>
+
+    <div class="course-list">
+      <a class="course-card" href="git/index.html">
+        <h2>Git</h2>
+        <p>دستورات و مفاهیم پایه‌ی گیت</p>
+      </a>
+
+      <!-- دوره‌ی بعدی رو اینجا اضافه کن -->
+    </div>
+  </div>
+</body>
+</html>
