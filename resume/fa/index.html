@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>رزومه | متین نعمتی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#faf7ef;
+    --navy:#22304d;
+    --ink:#33383f;
+    --gray:#6f7580;
+    --line:#e2ddce;
+    --shadow: rgba(34,48,77,0.10);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:0 6vw 8vh;
+    overflow-x:hidden;
+  }
+
+  .stage{ width:100%; max-width:640px; }
+
+  @keyframes settleIn{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .header, .section, .footer{
+    opacity:0;
+    animation-name:settleIn;
+    animation-duration:1s;
+    animation-timing-function:cubic-bezier(.2,.7,.3,1);
+    animation-fill-mode:forwards;
+  }
+
+  /* ---------- sticky header ---------- */
+  .header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:var(--cream);
+    padding:9vh 0 22px;
+    text-align:center;
+    animation-delay:0.15s;
+    box-shadow:0 14px 22px -16px rgba(34,48,77,0.16);
+  }
+  .header::after{
+    content:"";
+    position:absolute;
+    left:0; right:0;
+    bottom:-40px;
+    height:40px;
+    background:linear-gradient(to bottom, var(--cream), rgba(250,247,239,0));
+    pointer-events:none;
+  }
+
+  #neuro-strip{
+    display:block;
+    width:100%;
+    height:64px;
+    margin-bottom:6px;
+    touch-action:none;
+  }
+
+  @media (max-width: 640px){
+    #neuro-strip{ height:50px; }
+  }
+
+  .header h1{
+    margin:0;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.9rem, 5vw, 2.4rem);
+    letter-spacing:-0.01em;
+  }
+  .header h1 a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.3s ease;
+  }
+  .header h1 a:hover{ border-color:var(--line); }
+
+  .header .contact-line{
+    margin:10px 0 0;
+    font-size:0.85rem;
+    color:var(--gray);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px 14px;
+  }
+  .header .contact-line a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    transition:border-color 0.25s ease;
+  }
+  .header .contact-line a:hover{ border-color:var(--navy); }
+
+  .header .download{
+    margin-top:16px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .header .download a.lang-switch{ background:transparent; box-shadow:none; }
+  .header .download a.lang-switch:hover{ background:var(--navy); color:var(--cream); }
+  .header .download a{
+    display:inline-block;
+    text-decoration:none;
+    color:var(--navy);
+    font-size:0.86rem;
+    font-weight:500;
+    padding:9px 22px;
+    border:1px solid var(--line);
+    background:#ffffff;
+    box-shadow:0 8px 18px -12px var(--shadow);
+    transition:background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .header .download a:hover{
+    background:var(--navy);
+    color:var(--cream);
+    transform:translateY(-1px);
+  }
+
+  .section{ margin-bottom:38px; }
+  .section-title{
+    font-size:0.7rem;
+    font-weight:500;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .section p{ margin:0 0 8px; font-size:0.94rem; line-height:1.62; color:var(--ink); font-weight:300; }
+  .section p:last-child{ margin-bottom:0; }
+  .section p strong{ font-weight:500; color:var(--navy); }
+
+  .kv{ display:flex; gap:8px; font-size:0.9rem; margin:0 0 7px; line-height:1.5; }
+  .kv:last-child{ margin-bottom:0; }
+  .kv .k{ color:var(--navy); font-weight:500; min-width:150px; flex-shrink:0; }
+  .kv .v{ color:var(--ink); font-weight:300; }
+
+  .gpa-row{ display:flex; margin-top:6px; }
+  .gpa-item{ flex:1; text-align:center; padding:2px 8px; }
+  .gpa-item + .gpa-item{ border-inline-start:1px solid var(--line); }
+  .gpa-num{ display:block; font-family:'Fraunces', serif; font-size:1.25rem; font-weight:500; color:var(--navy); }
+  .gpa-label{ display:block; margin-top:5px; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--gray); }
+
+  ul.plain{ margin:0; padding-inline-start:18px; }
+  ul.plain li{ font-size:0.92rem; line-height:1.6; color:var(--ink); font-weight:300; margin-bottom:6px; }
+  ul.plain li:last-child{ margin-bottom:0; }
+
+  .entry{ padding:12px 0; border-bottom:1px solid var(--line); }
+  .entry:last-child{ border-bottom:none; }
+  .entry-head{ display:flex; justify-content:space-between; gap:14px; align-items:baseline; flex-wrap:wrap; }
+  .entry-title{ font-size:0.94rem; font-weight:500; color:var(--navy); }
+  .entry-date{ font-size:0.8rem; color:var(--gray); white-space:nowrap; }
+  .entry-sub{ font-size:0.84rem; color:var(--gray); margin-top:2px; }
+  .entry-desc{ font-size:0.9rem; color:var(--ink); font-weight:300; line-height:1.6; margin-top:6px; }
+
+  a.link{ color:var(--navy); text-decoration:none; border-bottom:1px solid var(--line); transition:border-color 0.25s ease; }
+  a.link:hover{ border-color:var(--navy); }
+
+  .muted{ color:var(--gray) !important; font-style:italic; font-size:0.85rem !important; }
+
+  .footer{
+    text-align:center;
+    margin-top:36px;
+    animation-delay:1.4s;
+    font-size:0.85rem;
+    color:var(--gray);
+  }
+  .footer b{ color:var(--navy); font-weight:500; }
+  .footer .contact{ margin-top:8px; }
+  .footer .contact a{
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:1px;
+    transition:border-color 0.3s ease;
+  }
+  .footer .contact a:hover{ border-color:var(--navy); }
+
+  @media (prefers-reduced-motion: reduce){
+    .header, .section, .footer{
+      animation:none !important;
+      opacity:1 !important;
+      transform:none !important;
+    }
+  }
+
+  .entry-gpa{ font-size:0.8rem; color:var(--gray); margin-top:6px; }
+  .entry-tools{ font-size:0.8rem; color:var(--gray); margin-top:6px; line-height:1.5; }
+  .entry-title a.link{ color:var(--navy); }
+
+  /* ---------- Persian (RTL) ---------- */
+  html[lang="fa"], html[lang="fa"] body{ font-family:'Vazirmatn','Inter',sans-serif; }
+  html[lang="fa"] .header h1{ font-family:'Vazirmatn','Fraunces',serif; font-weight:600; letter-spacing:0; }
+  html[lang="fa"] .section-title{ text-transform:none; letter-spacing:0; font-size:0.84rem; }
+  html[lang="fa"] .muted{ font-style:normal; }
+  html[lang="fa"] .section p, html[lang="fa"] .entry-desc, html[lang="fa"] ul.plain li, html[lang="fa"] .kv{ line-height:1.95; }
+  html[lang="fa"] .entry-sub, html[lang="fa"] .entry-tools{ line-height:1.8; }
+  html[lang="fa"] .footer b{ font-weight:600; }
+  bdi{ unicode-bidi:isolate; }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="header">
+      <canvas id="neuro-strip" aria-hidden="true"></canvas>
+      <h1><a href="https://matnemati.ir">متین نعمتی</a></h1>
+      <div class="contact-line">
+        <span>تهران، ایران</span>
+        <a href="tel:+989300821831"><bdi>۰۹۳۰ ۰۸۲ ۱۸۳۱</bdi></a>
+        <a href="mailto:MatNemati@gmail.com"><bdi>MatNemati@gmail.com</bdi></a>
+        <a href="https://matnemati.ir" target="_blank" rel="noopener"><bdi>MatNemati.ir</bdi></a>
+        <a href="https://www.linkedin.com/in/matnemati" target="_blank" rel="noopener">لینکدین: <bdi>MatNemati</bdi></a>
+      </div>
+      <div class="download">
+        <a href="../resume.pdf" download>دانلود PDF</a>
+        <a class="lang-switch" href="../" hreflang="en">مشاهده نسخه انگلیسی · English</a>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:56px;">
+      <div class="section-title">خلاصه حرفه‌ای</div>
+      <p>بیش از ۵ سال تجربه در حوزه آموزش، شامل تدریس، مشاوره، منتورینگ و مدیریت آموزشی.</p>
+      <p>بیش از ۱ سال تجربه آکادمیک به‌عنوان دانشمند داده و تحلیلگر داده.</p>
+      <p>تحصیل در دو رشته مهندسی برق (نوروساینس) و علوم کامپیوتر (علم داده و هوش مصنوعی). گذراندن چند درس مقطع کارشناسی ارشد در کنار دروس کارشناسی، با توجه به سوابق تحصیلی.</p>
+      <p>علاقه‌مند به فرصت‌های تحلیل داده در حوزه‌های مختلف، با تمرکز بر کیفیت و دقت کار.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">زمینه‌های شغلی مورد علاقه</div>
+      <p>دانشمند داده، تحلیلگر داده، تحلیلگر کسب‌وکار، تحلیلگر مالی، دستیار پژوهشی</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">تحصیلات</div>
+      <div class="entry" style="border-bottom:none;">
+        <div class="entry-head">
+          <span class="entry-title">دانشگاه صنعتی اصفهان (IUT)</span>
+          <span class="entry-date">سپتامبر ۲۰۲۲ – ژوئیه ۲۰۲۶</span>
+        </div>
+        <div class="entry-sub">کارشناسی مهندسی برق (گرایش بیوالکتریک و علوم اعصاب)</div>
+        <div class="entry-sub">رشته دوم: علوم کامپیوتر</div>
+        <div class="entry-gpa">معدل کل: <bdi>۳٫۳۵ از ۴٫۰۰</bdi> · سال آخر: <bdi>۱۸٫۰۲ از ۲۰</bdi> · دروس تخصصی: <bdi>۱۸٫۴۳ از ۲۰</bdi></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">مهارت‌ها</div>
+      <div class="kv"><span class="k">برنامه‌نویسی</span><span class="v"><a class="link" href="https://quera.org/profile/MatNemati/activity" target="_blank" rel="noopener"><bdi>Python</bdi></a> (<bdi>NumPy, Pandas, Matplotlib</bdi>، برنامه‌نویسی شیءگرا)، <bdi>MATLAB</bdi>، <bdi>R</bdi></span></div>
+      <div class="kv"><span class="k">تحلیل داده</span><span class="v">تحلیل آماری (آزمون فرض، <bdi>ANOVA</bdi>، رگرسیون، آزمون <bdi>T</bdi>)، پاک‌سازی داده، تحلیل اکتشافی داده (<bdi>EDA</bdi>)</span></div>
+      <div class="kv"><span class="k">یادگیری ماشین</span><span class="v">یادگیری نظارت‌شده و بدون نظارت، شبکه‌های عصبی، منظم‌سازی (<bdi>Regularization</bdi>)</span></div>
+      <div class="kv"><span class="k">پایگاه داده</span><span class="v"><bdi>SQL (T-SQL)</bdi>، انبار داده (<bdi>Data Warehouse</bdi>)</span></div>
+      <div class="kv"><span class="k">هوش تجاری</span><span class="v"><bdi>Power BI</bdi></span></div>
+      <div class="kv"><span class="k">پردازش سیگنال</span><span class="v">پردازش سیگنال دیجیتال، <bdi>EEG</bdi>، <bdi>ECG</bdi>، <bdi>EMG</bdi>، سیگنال‌های زیست‌پزشکی</span></div>
+      <div class="kv"><span class="k">علوم اعصاب</span><span class="v">مدل‌سازی عصبی، علوم اعصاب سیستمی و محاسباتی</span></div>
+      <div class="kv"><span class="k">شبیه‌سازی</span><span class="v"><bdi>PSpice</bdi>، <bdi>Proteus</bdi></span></div>
+      <div class="kv"><span class="k">ابزارها</span><span class="v"><bdi>Git</bdi>، <bdi>Microsoft Office</bdi>، <bdi>LaTeX</bdi></span></div>
+      <div class="kv"><span class="k">ابزارهای هوش مصنوعی</span><span class="v">آشنایی و تجربه کار عملی با طیف گسترده‌ای از ابزارهای هوش مصنوعی، از جمله دستیارهای زبانی (<bdi>LLM</bdi>)، دستیارهای برنامه‌نویسی هوشمند و ابزارهای پژوهش و تحلیل داده مبتنی بر هوش مصنوعی</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">مهارت‌های نرم</div>
+      <p>تیپ شخصیتی <bdi>ISTJ</bdi>؛ علاقه‌مند به کوهنوردی، والیبال و پرداختن به مسائل عمیق و دنیای واقعی. همچنین مشتاق آموزش و اشتراک دانش.</p>
+      <ul class="plain">
+        <li>حل مسئله</li>
+        <li>تفکر تحلیلی</li>
+        <li>دقت در جزئیات</li>
+        <li>پژوهش مستقل و یادگیری خودراهبر</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">سوابق حرفه‌ای و آموزشی</div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">دانشمند داده و تحلیلگر داده (آکادمیک)</span>
+          <span class="entry-date">بیش از ۱ سال</span>
+        </div>
+        <div class="entry-sub">تجربه آکادمیک، خارج از صنعت</div>
+        <div class="entry-desc">به‌کارگیری تحلیل آماری، یادگیری ماشین و پردازش سیگنال روی داده‌های واقعی، با پشتوانه یک پیشینه ریاضی قوی. این سابقه شامل پروژه‌های فهرست‌شده در بخش «سوابق پژوهشی و پروژه‌ها» است.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">مدرس ریاضی، فیزیک، پایتون و هوش مصنوعی</span>
+          <span class="entry-date">۲۰۲۰ – ۲۰۲۶</span>
+        </div>
+        <div class="entry-desc">تدریس و راهنمایی بیش از ۱۰۰ دانش‌آموز و دانشجو، همراه با طراحی برنامه‌های مطالعاتی ساختاریافته و راهبردهای حل مسئله.</div>
+        <div class="entry-desc">تدریس دوره‌های هوش مصنوعی در آموزشگاه‌ها و مراکز آموزشی (تهران).</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">مدرس برنامه‌نویسی و هوش مصنوعی</span>
+          <span class="entry-date">۲۰۲۶</span>
+        </div>
+        <div class="entry-sub">آموزشگاه‌های فنی و حرفه‌ای — تهران</div>
+        <div class="entry-desc">تدریس دوره‌های برنامه‌نویسی و هوش مصنوعی.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">سرپرست تیم آموزشی و مشاور تحصیلی</span>
+          <span class="entry-date">۲۰۲۱ – ۲۰۲۵</span>
+        </div>
+        <div class="entry-desc">فعالیت را در سال ۲۰۲۱ به‌عنوان مشاور تحصیلی در گروه هیوا (<bdi>Heyva Group</bdi>) آغاز کردم و سپس بین سال‌های ۲۰۲۳ تا ۲۰۲۵ سرپرستی چند تیم آموزشی را بر عهده داشتم؛ از جمله برنامه‌ریزی تحصیلی و راهنمایی دانش‌آموزان.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">دستیار آموزشی (پایتون) و مربی برنامه‌نویسی</span>
+          <span class="entry-date">۲۰۲۲</span>
+        </div>
+        <div class="entry-sub">دانشگاه صنعتی اصفهان</div>
+        <div class="entry-desc">دستیار آموزشی دانشجویان کارشناسی؛ راهنمایی در برنامه‌نویسی، اشکال‌زدایی و حل مسئله.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">گواهینامه‌ها، سوابق تحصیلی و دروس منتخب</div>
+      <p>برای اطلاعات کامل درباره سوابق تحصیلی، ریزنمرات، گواهینامه‌ها و دروس گذرانده‌شده، لطفاً به <a class="link" href="https://matnemati.ir/academics" target="_blank" rel="noopener">پورتفولیوی آکادمیک</a> من مراجعه کنید.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">علایق پژوهشی</div>
+      <ul class="plain">
+        <li>علوم اعصاب (بالینی و محاسباتی)</li>
+        <li>دستگاه‌های عصبی و زیست‌پزشکی</li>
+        <li>فناوری‌های نوظهور</li>
+        <li>استنباط آماری</li>
+        <li>تحلیل داده</li>
+        <li>بازارهای مالی</li>
+        <li>مدیریت کسب‌وکار و رهبری سازمانی</li>
+        <li>تحلیل مالی</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">سوابق پژوهشی و پروژه‌ها</div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">پدیده‌های کوانتومی در سامانه‌های زیستی: پیامدها برای عملکرد مغز</span>
+          <span class="entry-date">پایان‌نامه کارشناسی — پاییز ۲۰۲۵</span>
+        </div>
+        <div class="entry-sub">دانشگاه صنعتی اصفهان</div>
+        <div class="entry-desc">مرور نظام‌مند و انتقادی مدل‌های نظری و شواهد تجربی درباره نقش احتمالی پدیده‌های کوانتومی در مغز و سیستم عصبی، با تأکید بر امکان‌پذیری زیست‌فیزیکی و پیامدهای عملکردی آن‌ها.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-03-human-activity-recognition" target="_blank" rel="noopener">شناسایی فعالیت انسان</a></span>
+          <span class="entry-date">بهار ۲۰۲۶ · <bdi>Python</bdi></span>
+        </div>
+        <div class="entry-sub">درس یادگیری ماشین</div>
+        <div class="entry-desc">به‌کارگیری کاهش ابعاد و خوشه‌بندی بدون نظارت (<bdi>PCA</bdi>، <bdi>K-Means</bdi>، <bdi>GMM</bdi>) روی داده‌های فعالیت انسان و مقایسه شش طبقه‌بند که با جست‌وجوی شبکه‌ای (<bdi>Grid Search</bdi>) و اعتبارسنجی متقابل تنظیم شده‌اند.</div>
+        <div class="entry-tools">ابزارها: <bdi>Jupyter, scikit-learn, pandas, matplotlib, seaborn</bdi></div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-04-sleep-hrv-analysis" target="_blank" rel="noopener">خواب و فعالیت سیستم عصبی خودمختار (<bdi>HRV</bdi>)</a></span>
+          <span class="entry-date">بهار ۲۰۲۶ · <bdi>R</bdi></span>
+        </div>
+        <div class="entry-sub">درس تحلیل آماری داده‌های زیست‌پزشکی</div>
+        <div class="entry-desc">مدل‌سازی رابطه بین خواب و فعالیت سیستم عصبی خودمختار با رگرسیون خطی چندگانه، شامل انتخاب پسرو متغیرها، بررسی مفروضات مدل و مدیریت داده‌های گمشده روی داده‌های چندوجهی با متغیرهای از انواع مختلف.</div>
+        <div class="entry-tools">ابزارها: <bdi>R, tidyverse, car, lmtest</bdi></div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-05-speaker-recognition" target="_blank" rel="noopener">شناسایی گوینده</a></span>
+          <span class="entry-date">بهار ۲۰۲۶ · <bdi>MATLAB</bdi></span>
+        </div>
+        <div class="entry-sub">آزمایشگاه پردازش سیگنال دیجیتال</div>
+        <div class="entry-desc">ساخت یک خط پردازش شناسایی گوینده شامل پیش‌پردازش گفتار، ویژگی‌های <bdi>MFCC</bdi> و زیر و بمی صدا (<bdi>Pitch</bdi>)، تحلیل <bdi>FFT</bdi> و اسپکتروگرام، و طبقه‌بندی با <bdi>KNN</bdi> و <bdi>SVM</bdi>.</div>
+        <div class="entry-tools">ابزارها: <bdi>MATLAB, Audio Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox</bdi></div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-02-emg-signal-classification" target="_blank" rel="noopener">طبقه‌بندی سیگنال <bdi>EMG</bdi>: مچ در برابر بازو</a></span>
+          <span class="entry-date">پاییز ۲۰۲۴ · <bdi>MATLAB</bdi></span>
+        </div>
+        <div class="entry-sub">آزمایشگاه بیوسیگنال</div>
+        <div class="entry-desc">طبقه‌بندی سیگنال‌های <bdi>EMG</bdi> با فیلتر کردن سیگنال، استخراج ویژگی و یک طبقه‌بند <bdi>KNN</bdi> که از ابتدا پیاده‌سازی شده و با اعتبارسنجی متقابل ارزیابی شده است.</div>
+        <div class="entry-tools">ابزارها: <bdi>MATLAB, Signal Processing Toolbox, Statistics and Machine Learning Toolbox</bdi></div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-01-financial-tracker" target="_blank" rel="noopener">ردیاب مالی</a></span>
+          <span class="entry-date">پاییز ۲۰۲۱ · <bdi>Python</bdi></span>
+        </div>
+        <div class="entry-sub">درس مبانی کامپیوتر و برنامه‌نویسی</div>
+        <div class="entry-desc">توسعه یک برنامه دسکتاپ برای ردیابی مالی با رابط گرافیکی <bdi>Tkinter</bdi>، ورود تاریخ مبتنی بر تقویم، کار با فایل، اعتبارسنجی ورودی و مدیریت خطا.</div>
+        <div class="entry-tools">ابزارها: <bdi>VS Code, Tkinter, tkcalendar, datetime</bdi></div>
+      </div>
+      <p style="margin-top:10px;" class="muted">فقط پروژه‌های منتخب آورده شده است. کدها و فهرست کامل در <a class="link" href="https://github.com/MatNemati/undergrad-projects" target="_blank" rel="noopener">مخزن گیت‌هاب</a> در دسترس است.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">معرف‌ها</div>
+      <div class="entry">
+        <div class="entry-title">دکتر سید جلال ذهبی</div>
+        <div class="entry-sub">استادیار گروه مهندسی برق و کامپیوتر — دانشگاه صنعتی اصفهان</div>
+        <div class="entry-desc">مدرس بیشتر دروس دوره کارشناسی من.</div>
+        <div class="entry-desc">پیوندها: <a class="link" href="https://scholar.google.com/citations?user=xsY6VrEAAAAJ&hl=en" target="_blank" rel="noopener">گوگل اسکالر</a>، <a class="link" href="https://people.iut.ac.ir/en/zahabi" target="_blank" rel="noopener">صفحه دانشگاهی</a> · ایمیل: <a class="link" href="mailto:zahabi@iut.ac.ir"><bdi>zahabi@iut.ac.ir</bdi></a></div>
+      </div>
+      <div class="entry">
+        <div class="entry-title">دکتر ذاکر حسین فیروزه</div>
+        <div class="entry-sub">استادیار گروه مهندسی برق و کامپیوتر — دانشگاه صنعتی اصفهان</div>
+        <div class="entry-desc">استاد راهنمای پایان‌نامه کارشناسی من.</div>
+        <div class="entry-desc">پیوندها: <a class="link" href="https://scholar.google.com/citations?user=VxT2--QAAAAJ&hl=en" target="_blank" rel="noopener">گوگل اسکالر</a>، <a class="link" href="https://people.iut.ac.ir/en/zhfirouzeh" target="_blank" rel="noopener">صفحه دانشگاهی</a> · ایمیل: <a class="link" href="mailto:zhfirouzeh@iut.ac.ir"><bdi>zhfirouzeh@iut.ac.ir</bdi></a></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>در شبکه‌های مختلف معمولاً با نام <b><bdi>MatNemati</bdi></b> شناخته می‌شوم</div>
+      <div class="contact"><a href="mailto:MatNemati@gmail.com"><bdi>MatNemati@gmail.com</bdi></a></div>
+    </div>
+
+  </div>
+
+<script>
+(function(){
+  var canvas = document.getElementById('neuro-strip');
+  var ctx = canvas.getContext('2d');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var NAVY = '34,48,77';
+  var W, H, nodes = [], edges = [];
+  var pointer = null;
+  var startTime = performance.now();
+
+  // Built ONCE from the strip's size at load time -- there is no resize
+  // listener, so nothing regenerates or jumps while scrolling.
+  function build(){
+    var rect = canvas.getBoundingClientRect();
+    W = rect.width;
+    H = rect.height;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    // deterministic layout (pure math, no Math.random) -- dense and wide
+    nodes = [];
+    var count = Math.max(24, Math.round(W / 24));
+    for (var i = 0; i < count; i++){
+      var t = i / count;
+      var x = t * W + Math.sin(i * 12.9898) * (W / count) * 0.5;
+      var y = H/2 + Math.sin(i * 2.13 + i*i*0.017) * (H * 0.4);
+      nodes.push({ x: x, y: Math.max(4, Math.min(H-4, y)), phase: (i * 0.9) % 6.28 });
+    }
+    edges = [];
+    var maxDist = Math.max(30, (W / count) * 2.3);
+    for (var i = 0; i < nodes.length; i++){
+      for (var j = i+1; j < nodes.length; j++){
+        var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+        if (Math.hypot(dx,dy) < maxDist) edges.push([i,j]);
+      }
+    }
+  }
+
+  function distToSegment(px,py, ax,ay, bx,by){
+    var dx = bx-ax, dy = by-ay;
+    var len2 = dx*dx+dy*dy;
+    var t = len2 ? ((px-ax)*dx + (py-ay)*dy) / len2 : 0;
+    t = Math.max(0, Math.min(1, t));
+    var cx = ax + t*dx, cy = ay + t*dy;
+    return Math.hypot(px-cx, py-cy);
+  }
+
+  function draw(now){
+    var t = (now - startTime) / 1000;
+    ctx.clearRect(0,0,W,H);
+
+    for (var i=0;i<edges.length;i++){
+      var a = nodes[edges[i][0]], b = nodes[edges[i][1]];
+      var base = 0.16 + 0.18 * (0.5 + 0.5*Math.sin(t*0.6 + a.phase));
+      var hl = 0;
+      if (pointer){
+        var d = distToSegment(pointer.x,pointer.y, a.x,a.y, b.x,b.y);
+        if (d < 32) hl = (1 - d/32) * 0.55;
+      }
+      ctx.strokeStyle = 'rgba(' + NAVY + ',' + Math.min(1, base + hl) + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    for (var i=0;i<nodes.length;i++){
+      var n = nodes[i];
+      var base = 0.35 + 0.35 * (0.5 + 0.5*Math.sin(t*0.6 + n.phase));
+      var hl = 0;
+      if (pointer){
+        var d = Math.hypot(pointer.x-n.x, pointer.y-n.y);
+        if (d < 26) hl = (1 - d/26) * 0.65;
+      }
+      var a = Math.min(1, base + hl);
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(' + NAVY + ',' + a + ')';
+      ctx.arc(n.x, n.y, hl > 0.2 ? 2.4 : 1.7, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  function getPos(e){
+    var rect = canvas.getBoundingClientRect();
+    var p = (e.touches ? e.touches[0] : e);
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+
+  canvas.addEventListener('mousemove', function(e){ pointer = getPos(e); });
+  canvas.addEventListener('mouseleave', function(){ pointer = null; });
+  canvas.addEventListener('touchstart', function(e){ pointer = getPos(e); }, {passive:true});
+  canvas.addEventListener('touchmove', function(e){ pointer = getPos(e); }, {passive:true});
+  canvas.addEventListener('touchend', function(){ pointer = null; });
+
+  build();
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

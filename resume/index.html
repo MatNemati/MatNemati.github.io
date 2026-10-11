@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Resume | Matin Nemati</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream:#faf7ef;
@@ -118,7 +118,13 @@
 
   .header .download{
     margin-top:16px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
   }
+  .header .download a.lang-switch{ background:transparent; box-shadow:none; }
+  .header .download a.lang-switch:hover{ background:var(--navy); color:var(--cream); }
   .header .download a{
     display:inline-block;
     text-decoration:none;
@@ -160,11 +166,11 @@
 
   .gpa-row{ display:flex; margin-top:6px; }
   .gpa-item{ flex:1; text-align:center; padding:2px 8px; }
-  .gpa-item + .gpa-item{ border-left:1px solid var(--line); }
+  .gpa-item + .gpa-item{ border-inline-start:1px solid var(--line); }
   .gpa-num{ display:block; font-family:'Fraunces', serif; font-size:1.25rem; font-weight:500; color:var(--navy); }
   .gpa-label{ display:block; margin-top:5px; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--gray); }
 
-  ul.plain{ margin:0; padding-left:18px; }
+  ul.plain{ margin:0; padding-inline-start:18px; }
   ul.plain li{ font-size:0.92rem; line-height:1.6; color:var(--ink); font-weight:300; margin-bottom:6px; }
   ul.plain li:last-child{ margin-bottom:0; }
 
@@ -206,6 +212,20 @@
       transform:none !important;
     }
   }
+
+  .entry-gpa{ font-size:0.8rem; color:var(--gray); margin-top:6px; }
+  .entry-tools{ font-size:0.8rem; color:var(--gray); margin-top:6px; line-height:1.5; }
+  .entry-title a.link{ color:var(--navy); }
+
+  /* ---------- Persian (RTL) ---------- */
+  html[lang="fa"], html[lang="fa"] body{ font-family:'Vazirmatn','Inter',sans-serif; }
+  html[lang="fa"] .header h1{ font-family:'Vazirmatn','Fraunces',serif; font-weight:600; letter-spacing:0; }
+  html[lang="fa"] .section-title{ text-transform:none; letter-spacing:0; font-size:0.84rem; }
+  html[lang="fa"] .muted{ font-style:normal; }
+  html[lang="fa"] .section p, html[lang="fa"] .entry-desc, html[lang="fa"] ul.plain li, html[lang="fa"] .kv{ line-height:1.95; }
+  html[lang="fa"] .entry-sub, html[lang="fa"] .entry-tools{ line-height:1.8; }
+  html[lang="fa"] .footer b{ font-weight:600; }
+  bdi{ unicode-bidi:isolate; }
 </style>
 </head>
 <body>
@@ -223,13 +243,16 @@
       </div>
       <div class="download">
         <a href="resume.pdf" download>Download PDF</a>
+        <a class="lang-switch" href="fa/" hreflang="fa">View in Persian · فارسی</a>
       </div>
     </div>
 
     <div class="section" style="margin-top:56px;">
       <div class="section-title">Professional Summary</div>
-      <p>B.Sc. graduate in Electrical Engineering with a Minor in Computer Science (July 2026) from IUT. Interested in Statistical Analysis and Data Analysis in the fields of Finance, Business, and Neuroscience. Also interested in Neurotech, emerging technologies, and cutting-edge scientific innovations.</p>
-      <p>4+ years of experience in teaching and education. Open to pursuing an MBA in the future, driven by an interest in finance, management, and business.</p>
+      <p>5+ years of experience in education, including teaching, academic advising, mentoring, and educational management.</p>
+      <p>1+ year of academic experience as a data scientist and data analyst.</p>
+      <p>Studied two fields: Electrical Engineering (Neuroscience) and Computer Science (Data Science &amp; AI). Completed several graduate-level courses alongside the undergraduate curriculum, based on academic standing.</p>
+      <p>Interested in data analysis roles across different fields, with a focus on quality and precision of work.</p>
     </div>
 
     <div class="section">
@@ -246,11 +269,7 @@
         </div>
         <div class="entry-sub">B.Sc. in Electrical Engineering (Bioelectricity &amp; Neuroscience)</div>
         <div class="entry-sub">Minor in Computer Science</div>
-        <div class="gpa-row">
-          <div class="gpa-item"><span class="gpa-num">3.35 / 4.00</span><span class="gpa-label">Overall GPA</span></div>
-          <div class="gpa-item"><span class="gpa-num">18.02 / 20</span><span class="gpa-label">Final Year</span></div>
-          <div class="gpa-item"><span class="gpa-num">18.43 / 20</span><span class="gpa-label">Major GPA</span></div>
-        </div>
+        <div class="entry-gpa">GPA: 3.35 / 4.00 overall · 18.02 / 20 final year · 18.43 / 20 major</div>
       </div>
     </div>
 
@@ -259,12 +278,13 @@
       <div class="kv"><span class="k">Programming</span><span class="v"><a class="link" href="https://quera.org/profile/MatNemati/activity" target="_blank" rel="noopener">Python</a> (NumPy, Pandas, Matplotlib, OOP), MATLAB, R</span></div>
       <div class="kv"><span class="k">Data Analysis</span><span class="v">Statistical Analysis (Hypothesis Testing, ANOVA, Regression, T-Test), Data Cleaning, EDA</span></div>
       <div class="kv"><span class="k">Machine Learning</span><span class="v">Supervised &amp; Unsupervised Learning, Neural Networks, Regularization</span></div>
-      <div class="kv"><span class="k">Databases</span><span class="v">SQL (T-SQL)</span></div>
+      <div class="kv"><span class="k">Databases</span><span class="v">SQL (T-SQL), Data Warehouse</span></div>
       <div class="kv"><span class="k">Business Intelligence</span><span class="v">Power BI</span></div>
       <div class="kv"><span class="k">Signal Processing</span><span class="v">Digital Signal Processing, EEG, ECG, EMG, Biomedical Signals</span></div>
       <div class="kv"><span class="k">Neuroscience</span><span class="v">Neural Modeling, Systems and Computational Neuroscience</span></div>
       <div class="kv"><span class="k">Simulation</span><span class="v">PSpice, Proteus</span></div>
       <div class="kv"><span class="k">Tools</span><span class="v">Git, Microsoft Office Suite, LaTeX</span></div>
+      <div class="kv"><span class="k">AI Tools</span><span class="v">Hands-on experience with a range of AI tools, including LLM assistants, AI coding assistants, and AI-powered research and data analysis tools</span></div>
     </div>
 
     <div class="section">
@@ -279,13 +299,30 @@
     </div>
 
     <div class="section">
-      <div class="section-title">Teaching &amp; Professional Experience</div>
+      <div class="section-title">Professional &amp; Teaching Experience</div>
       <div class="entry">
         <div class="entry-head">
-          <span class="entry-title">Mathematics, Physics &amp; Python Instructor</span>
-          <span class="entry-date">2020 – 2024</span>
+          <span class="entry-title">Data Scientist &amp; Data Analyst (Academic)</span>
+          <span class="entry-date">1+ year</span>
+        </div>
+        <div class="entry-sub">Academic experience outside industry</div>
+        <div class="entry-desc">Applied statistical analysis, machine learning, and signal processing to real datasets, supported by a strong mathematical background. This work includes the projects listed under Research Experience &amp; Projects.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Mathematics, Physics, Python &amp; Artificial Intelligence Instructor</span>
+          <span class="entry-date">2020 – 2026</span>
         </div>
         <div class="entry-desc">Taught and mentored more than 100 students while designing structured study plans and problem-solving strategies.</div>
+        <div class="entry-desc">Taught artificial intelligence courses at training institutes and centers (Tehran).</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Programming &amp; Artificial Intelligence Instructor</span>
+          <span class="entry-date">2026</span>
+        </div>
+        <div class="entry-sub">Technical and vocational training institutes — Tehran</div>
+        <div class="entry-desc">Teaching programming and artificial intelligence courses.</div>
       </div>
       <div class="entry">
         <div class="entry-head">
@@ -335,29 +372,50 @@
       </div>
       <div class="entry">
         <div class="entry-head">
-          <span class="entry-title">EMG Signal Classification: Wrist vs. Arm</span>
-          <span class="entry-date">MATLAB</span>
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-03-human-activity-recognition" target="_blank" rel="noopener">Human Activity Recognition</a></span>
+          <span class="entry-date">Spring 2026 · Python</span>
         </div>
-        <div class="entry-sub">Biomedical Signal Processing Laboratory</div>
-        <div class="entry-desc">Implemented a MATLAB-based pipeline for classifying EMG segments associated with wrist and arm movements using conventional signal processing and classification techniques. (GitHub Repository)</div>
+        <div class="entry-sub">Machine Learning course</div>
+        <div class="entry-desc">Applied dimensionality reduction and unsupervised clustering (PCA, K-Means, GMM) to human activity data, then compared six classifiers tuned with grid search and cross-validation.</div>
+        <div class="entry-tools">Tools: Jupyter, scikit-learn, pandas, matplotlib, seaborn</div>
       </div>
       <div class="entry">
         <div class="entry-head">
-          <span class="entry-title">Speaker Recognition Using Speech Signal Processing</span>
-          <span class="entry-date">MATLAB</span>
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-04-sleep-hrv-analysis" target="_blank" rel="noopener">Sleep and Autonomic Nervous System Activity (HRV)</a></span>
+          <span class="entry-date">Spring 2026 · R</span>
         </div>
-        <div class="entry-sub">Academic Project</div>
-        <div class="entry-desc">Developing a speaker recognition pipeline based on speech signal processing, including windowing, feature extraction, and classification using a public speaker recognition dataset.</div>
+        <div class="entry-sub">Statistical Analysis of Biomedical Data course</div>
+        <div class="entry-desc">Modeled the relationship between sleep and autonomic activity using multiple linear regression with backward selection, assumption checking, and missing-data handling on multimodal data with mixed variable types.</div>
+        <div class="entry-tools">Tools: R, tidyverse, car, lmtest</div>
       </div>
       <div class="entry">
         <div class="entry-head">
-          <span class="entry-title">Autonomic Biomarkers, Self-Control, and Cognitive Behavior</span>
-          <span class="entry-date">R</span>
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-05-speaker-recognition" target="_blank" rel="noopener">Speaker Recognition</a></span>
+          <span class="entry-date">Spring 2026 · MATLAB</span>
         </div>
-        <div class="entry-sub">Statistical Analysis Project</div>
-        <div class="entry-desc">Investigating whether autonomic physiological biomarkers can explain individual differences in self-control and their association with cognitive behaviors using statistical inference methods on a large-scale public dataset.</div>
+        <div class="entry-sub">Digital Signal Processing Lab</div>
+        <div class="entry-desc">Built a speaker recognition pipeline with speech preprocessing, MFCC and pitch features, FFT and spectrogram analysis, and KNN and SVM classification.</div>
+        <div class="entry-tools">Tools: MATLAB, Audio Toolbox, Signal Processing Toolbox, Statistics and Machine Learning Toolbox</div>
       </div>
-      <p style="margin-top:10px;" class="muted">The above list may not always reflect my latest research activities and projects.</p>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-02-emg-signal-classification" target="_blank" rel="noopener">EMG Signal Classification: Wrist vs. Arm</a></span>
+          <span class="entry-date">Fall 2024 · MATLAB</span>
+        </div>
+        <div class="entry-sub">Biosignal Lab</div>
+        <div class="entry-desc">Classified EMG signals using signal filtering, feature extraction, and a KNN classifier implemented from scratch, evaluated with cross-validation.</div>
+        <div class="entry-tools">Tools: MATLAB, Signal Processing Toolbox, Statistics and Machine Learning Toolbox</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title"><a class="link" href="https://github.com/MatNemati/undergrad-projects/tree/main/project-01-financial-tracker" target="_blank" rel="noopener">Financial Tracker</a></span>
+          <span class="entry-date">Fall 2021 · Python</span>
+        </div>
+        <div class="entry-sub">Fundamentals of Computer and Programming course</div>
+        <div class="entry-desc">Developed a desktop financial tracking application with a Tkinter GUI, calendar-based date input, file handling, input validation, and exception handling.</div>
+        <div class="entry-tools">Tools: VS Code, Tkinter, tkcalendar, datetime</div>
+      </div>
+      <p style="margin-top:10px;" class="muted">Selected projects only. Code and the full list are available in the <a class="link" href="https://github.com/MatNemati/undergrad-projects" target="_blank" rel="noopener">GitHub repository</a>.</p>
     </div>
 
     <div class="section">
@@ -380,6 +438,7 @@
       <div>Usually going by <b>MatNemati</b> across platforms</div>
       <div class="contact"><a href="mailto:MatNemati@gmail.com">MatNemati@gmail.com</a></div>
     </div>
+
   </div>
 
 <script>
