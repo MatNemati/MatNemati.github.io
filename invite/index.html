@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>یک دعوت مخصوص</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f1eff0; --card:#ffffff; --ink:#1d1417; --muted:#6f5f66;
+    --lily:#b3122b; --lily2:#8a0c20; --leaf:#2f5d46;
+    --chip:#f8f4f5; --line:#e2d3d7; --on-lily:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17110f; --card:#231a1d; --ink:#f4eaec; --muted:#b9a6ac;
+      --lily:#d92a45; --lily2:#a3152b; --leaf:#5d9a7b;
+      --chip:#2e2327; --line:#45353a; --on-lily:#ffffff;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+    font-family:"Vazirmatn",Tahoma,sans-serif; line-height:1.9;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    position:relative; overflow-x:hidden;
+  }
+  .bg-lily{position:fixed; width:420px; height:420px; left:-140px; bottom:-140px; opacity:.07; pointer-events:none}
+  .card{
+    position:relative; width:100%; max-width:460px; background:var(--card);
+    border-radius:6px; padding:30px 24px 28px; text-align:center;
+    border:1px solid var(--line); border-top:4px solid var(--lily);
+  }
+  .lily{width:64px; height:64px; display:block; margin:0 auto 6px}
+  .mascot{font-size:56px; line-height:1.2; display:flex; justify-content:center; align-items:center; gap:2px}
+  .mascot .knife{font-size:60px; transform:rotate(-25deg); display:inline-block}
+  h1{font-size:24px; font-weight:800; margin:6px 0 4px}
+  p{margin:0 0 16px; color:var(--muted)}
+  .row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center}
+  .chip,.btn{
+    font:inherit; cursor:pointer; border-radius:4px; border:1px solid var(--line);
+    background:var(--chip); color:var(--ink); padding:9px 16px;
+    transition:border-color .15s, background .15s;
+  }
+  .chip:hover,.chip:focus-visible{border-color:var(--lily); outline:none}
+  .chip.on{background:var(--lily); border-color:var(--lily); color:var(--on-lily)}
+  .chip.locked{opacity:.55; cursor:not-allowed; border-style:dashed}
+  .chip.locked:hover{border-color:var(--line)}
+  .btn.yes{background:var(--lily); border-color:var(--lily); color:var(--on-lily); font-weight:800; font-size:18px; padding:11px 34px}
+  .btn.yes:hover:not(:disabled){background:var(--lily2)}
+  .btn:disabled{opacity:.4; cursor:not-allowed}
+  .btn.no{transform-origin:0 0; touch-action:none; position:relative; z-index:5}
+  .btn.no.running{position:fixed; transition:left .22s ease, top .22s ease, transform .22s ease}
+  .nav{margin-top:22px}
+  .nav .btn.yes{font-size:16px; padding:9px 26px}
+  .sep{height:1px; background:var(--line); margin:18px 0}
+  .field{font:inherit; width:100%; padding:9px 12px; border-radius:4px; border:1px solid var(--line); background:var(--chip); color:var(--ink); text-align:center}
+  .field:focus{outline:2px solid var(--lily); outline-offset:0}
+  .msg{color:var(--lily); font-weight:600; margin-top:14px; min-height:30px}
+  .final{font-size:19px; font-weight:800; margin:6px 0 10px}
+  .sum{background:var(--chip); border:1px solid var(--line); border-radius:4px; padding:8px 14px; margin:14px 0 0; text-align:right}
+  .srow{display:flex; justify-content:space-between; gap:10px; align-items:baseline; padding:4px 0}
+  .srow + .srow{border-top:1px solid var(--line)}
+  .link{background:none; border:0; color:var(--lily); font:inherit; font-size:13px; cursor:pointer; text-decoration:underline; white-space:nowrap}
+  .status{font-size:12px; color:var(--muted); margin-top:16px; min-height:20px}
+  .status a{color:var(--lily)}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="lily" viewBox="0 0 200 200">
+    <g>
+      <path d="M100 100 C 76 68, 78 28, 100 6 C 122 28, 124 68, 100 100Z" fill="var(--lily)"/>
+      <path d="M100 100 C 76 68, 78 28, 100 6 C 122 28, 124 68, 100 100Z" fill="var(--lily2)" transform="rotate(60 100 100)"/>
+      <path d="M100 100 C 76 68, 78 28, 100 6 C 122 28, 124 68, 100 100Z" fill="var(--lily)" transform="rotate(120 100 100)"/>
+      <path d="M100 100 C 76 68, 78 28, 100 6 C 122 28, 124 68, 100 100Z" fill="var(--lily2)" transform="rotate(180 100 100)"/>
+      <path d="M100 100 C 76 68, 78 28, 100 6 C 122 28, 124 68, 100 100Z" fill="var(--lily)" transform="rotate(240 100 100)"/>
+      <path d="M100 100 C 76 68, 78 28, 100 6 C 122 28, 124 68, 100 100Z" fill="var(--lily2)" transform="rotate(300 100 100)"/>
+      <g stroke="var(--leaf)" stroke-width="3" stroke-linecap="round">
+        <path d="M100 100 L100 52"/><path d="M100 100 L141 76"/><path d="M100 100 L59 76"/>
+      </g>
+      <g fill="var(--ink)"><circle cx="100" cy="50" r="4"/><circle cx="142" cy="75" r="4"/><circle cx="58" cy="75" r="4"/></g>
+    </g>
+  </symbol>
+</svg>
+<svg class="bg-lily" aria-hidden="true"><use href="#lily"/></svg>
+
+<main class="card" id="app" aria-live="polite"></main>
+
+<script>
+/* ===== تنظیمات ===== */
+const EMAIL = "matnemati@gmail.com";
+const PASS  = "ایمان";
+
+const WRONG = [
+  "یعنی نمی‌دونی؟ یکم دقیق‌تر فکر کن",
+  "می‌دونی، اسمشو فارسی و بدون هیچ چیزی قبل و بعدش بنویس",
+  "تپلی تپلی",
+  "بازوعامو ببین",
+  "فقط اسمشو بنویس",
+  "یعنی نمی‌دونی؟ دقیق‌تر فکر کن",
+  "تا رمز رو نزنی فرم اصلی برات باز نمی‌شه",
+  "این فقط یه رمزه که مطمئن بشم خودتی",
+  "میمان؟ چه اسمی به ذهنت اومد همونو بنویس",
+  "خیلی پیگیری ها!",
+  "دیگه دارم شک می‌کنم که خودت اینو باز کردی",
+  "دیگه دارم ناامید می‌شم که خودتی"
+];
+
+const DAYS = ["جمعه ۲۴ مهر","یکشنبه ۲۶ مهر","دوشنبه ۲۷ مهر","سه‌شنبه ۲۸ مهر","پنج‌شنبه ۳۰ مهر"];
+const TIMES = ["۷ صبح","۹ صبح","۱۱ صبح","۱ بعدازظهر","۲ بعدازظهر","۳ بعدازظهر","۴ بعدازظهر","۵ بعدازظهر"];
+const OWN = "به انتخاب من";
+const TYPES = ["کافه","ناهار","صبحانه","طبیعت","بستنی و پیاده‌روی", OWN];
+const LOCKED = ["بازی و تفریح","شهربازی","موزه و گالری","سینما","کوه","دزدی (مرحله آخر)"];
+const NO_TEXTS = ["نه","مطمئنی؟","دوباره فکر کن","نشد که!","نزن دیگه","بی‌فایده‌ست"];
+const MAX_DODGES = 25;
+
+const state = {stage:"gate", wrong:0, step:0, day:null, time:null, types:new Set(),
+               dodges:0, lastFlee:0, editing:false, sent:0};
+const app = document.getElementById("app");
+const head = '<svg class="lily" aria-hidden="true"><use href="#lily"/></svg>';
+const mascot = '<div class="mascot" aria-hidden="true"><span>🐥</span><span class="knife">🔪</span></div>';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => s.replace(/[\u200c\u200f\u200e]/g,"").replace(/ي/g,"ی").replace(/ك/g,"ک").trim();
+
+function render(){
+  if(state.stage==="gate") return renderGate();
+  if(state.stage==="ok") return renderOk();
+  const s = state.step;
+  if(s===0) return renderInvite();
+  if(s===1) return renderDay();
+  if(s===2) return renderTime();
+  if(s===3) return renderTypes();
+  renderFinal();
+}
+function go(n){ state.step=n; render(); if(n===4) submit(); }
+
+/* ---------- رمز ---------- */
+function renderGate(){
+  app.innerHTML = head+'<p style="margin:0">رمز ورود:</p><h1 style="margin-bottom:16px">اسم میمان چیه؟</h1>'+
+    '<div class="row"><input class="field" id="pw" style="max-width:240px" autocomplete="off">'+
+    '<button class="btn yes" id="pwok" style="font-size:16px;padding:9px 22px">بررسی</button></div>'+
+    '<div class="msg" id="pwmsg" role="alert"></div>';
+  const pw = document.getElementById("pw"); pw.focus();
+  const check = ()=>{
+    if(norm(pw.value) === PASS){ state.stage="ok"; render(); return; }
+    document.getElementById("pwmsg").textContent = WRONG[state.wrong % WRONG.length];
+    state.wrong++; pw.select();
+  };
+  document.getElementById("pwok").onclick = check;
+  pw.addEventListener("keydown", e=>{ if(e.key==="Enter") check(); });
+}
+function renderOk(){
+  app.innerHTML = head+mascot+'<div class="final">از اولم می‌دونستم که می‌دونستی همینه 😄</div>'+
+    '<div class="nav"><button class="btn yes" id="open">باز کردن فرم</button></div>';
+  document.getElementById("open").onclick = ()=>{ state.stage="form"; state.step=0; render(); };
+}
+
+/* ---------- مرحله‌ی اول: آره / نه ---------- */
+function renderInvite(){
+  app.innerHTML = head+mascot+
+    '<h1>اسپیشیول کوچوک،</h1><p>یه قرار دعوت برات دارم. میای؟</p>'+
+    '<div class="row" id="ans"><button class="btn yes" id="yes">آره</button><button class="btn no" id="no">نه</button></div>';
+  document.getElementById("yes").onclick = ()=>go(1);
+  setupNo(document.getElementById("no"));
+}
+
+/* ---------- ناوبری مراحل ---------- */
+function valid(s){ return s===1 ? !!state.day : s===2 ? !!state.time : s===3 ? state.types.size>0 : true; }
+function nav(s){
+  if(state.editing) return '<div class="row nav"><button class="btn yes" id="next">ذخیره و برگشت</button></div>';
+  return '<div class="row nav">'+(s>1?'<button class="chip" id="prev">قبلی</button>':'')+
+    '<button class="btn yes" id="next">'+(s===3?'تأیید و ارسال':'بعدی')+'</button></div>';
+}
+function wireNav(){
+  const next = document.getElementById("next"), prev = document.getElementById("prev");
+  next.disabled = !valid(state.step);
+  next.onclick = ()=>{
+    if(!valid(state.step)) return;
+    if(state.editing){ state.editing=false; go(4); } else go(state.step+1);
+  };
+  if(prev) prev.onclick = ()=>go(state.step-1);
+}
+const refreshNext = ()=>{ const n=document.getElementById("next"); if(n) n.disabled = !valid(state.step); };
+
+function chips(list, isOn, onClick, boxId){
+  const box = document.getElementById(boxId || "opts");
+  const paint = ()=>[...box.children].forEach((b,i)=>{ const on=isOn(list[i]); b.classList.toggle("on",on); b.setAttribute("aria-pressed",on); });
+  list.forEach(v=>{
+    const b = document.createElement("button"); b.className="chip"; b.textContent=v;
+    b.onclick = ()=>{ onClick(v); paint(); refreshNext(); };
+    box.appendChild(b);
+  });
+  paint();
+  return paint;
+}
+
+function renderDay(){
+  app.innerHTML = head+'<h1>کدوم روز؟</h1><p>یکی رو انتخاب کن.</p><div class="row" id="opts"></div>'+nav(1);
+  chips(DAYS, v=>state.day===v, v=>{state.day=v});
+  wireNav();
+}
+function renderTime(){
+  app.innerHTML = head+'<h1>چه ساعتی؟</h1><p>یکی رو انتخاب کن یا ساعت دلخواهت رو بنویس.</p><div class="row" id="opts"></div>'+
+    '<div class="sep"></div><div class="row"><input class="field" id="ct" style="max-width:260px" placeholder="ساعت دلخواه (مثلا ۶ عصر)"></div>'+nav(2);
+  const ct = document.getElementById("ct");
+  if(state.time && !TIMES.includes(state.time)) ct.value = state.time;
+  const paint = chips(TIMES, v=>state.time===v, v=>{state.time=v; ct.value=""});
+  ct.oninput = ()=>{ state.time = ct.value.trim() || null; paint(); refreshNext(); };
+  wireNav();
+}
+function renderTypes(){
+  app.innerHTML = head+'<h1>چه جوری بگذره؟</h1><p>می‌تونی چندتا رو با هم انتخاب کنی، راحت باش.</p><div class="row" id="opts"></div>'+
+    '<div class="sep"></div><p style="margin-bottom:10px">اینا تو مرحله‌های بعد باز می‌شن:</p><div class="row" id="lk"></div>'+nav(3);
+  chips(TYPES, v=>state.types.has(v), v=>{ state.types.has(v) ? state.types.delete(v) : state.types.add(v); });
+  const lk = document.getElementById("lk");
+  LOCKED.forEach(t=>{ const b=document.createElement("button"); b.className="chip locked"; b.disabled=true; b.textContent="🔒 "+t; lk.appendChild(b); });
+  wireNav();
+}
+
+/* ---------- پیام آخر ---------- */
+function typesText(forMail){
+  return [...state.types].map(t=> t===OWN && forMail ? "به انتخاب متین" : t).join("، ");
+}
+function renderFinal(){
+  const rows = [["روز",state.day,1],["ساعت",state.time,2],["نوع قرار",typesText(false),3]];
+  app.innerHTML = head+mascot+
+    '<div class="final">درخواست دعوت شما مورد بررسی قرار گرفت.</div>'+
+    '<p>با لباس مناسب، کفش مناسب و لبی خندون بیا.<br>کوچوک 😄</p>'+
+    '<div class="sum">'+rows.map(r=>'<div class="srow"><span><b>'+r[0]+':</b> '+esc(r[1])+'</span><button class="link" data-edit="'+r[2]+'">ویرایش</button></div>').join("")+'</div>'+
+    '<div class="status" id="st">در حال ثبت…</div>';
+}
+
+async function submit(){
+  const st = ()=>document.getElementById("st");
+  const subject = "پاسخ دعوت اسپیشیول کوچوک"+(state.sent ? " (ویرایش‌شده)" : "");
+  const body = {_subject:subject, _template:"table", روز:state.day, ساعت:state.time, نوع_قرار:typesText(true)};
+  state.sent++;
+  try{
+    const r = await fetch("https://formsubmit.co/ajax/"+EMAIL, {
+      method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"}, body:JSON.stringify(body)
+    });
+    if(!r.ok) throw new Error();
+    if(st()) st().textContent = "انتخاب‌هات ثبت شد ✓";
+  }catch(e){
+    if(st()) st().textContent = "";
+    console.warn("ارسال ایمیل انجام نشد", e);
+  }
+}
+
+app.addEventListener("click", e=>{
+  const ed = e.target.closest("[data-edit]");
+  if(ed){ state.editing = true; go(Number(ed.dataset.edit)); }
+});
+
+/* ---------- دکمه‌ی «نه» ---------- */
+function setupNo(btn){
+  const flee = e=>{
+    if(e) e.preventDefault();
+    const now = Date.now();
+    if(now - state.lastFlee < 250 || state.dodges >= MAX_DODGES) return;
+    state.lastFlee = now;
+    state.dodges++;
+    const scale = Math.max(0.02, Math.pow(0.85, state.dodges));
+    btn.classList.add("running");
+    btn.style.transform = "scale("+scale+")";
+    const w = btn.offsetWidth*scale, h = btn.offsetHeight*scale, pad = 10;
+    btn.style.left = (pad + Math.random()*Math.max(0, window.innerWidth - w - 2*pad))+"px";
+    btn.style.top  = (pad + Math.random()*Math.max(0, window.innerHeight - h - 2*pad))+"px";
+    btn.textContent = NO_TEXTS[state.dodges % NO_TEXTS.length];
+    if(state.dodges >= MAX_DODGES) setTimeout(()=>btn.remove(), 500);
+  };
+  ["pointerenter","pointerdown","touchstart","focus","click"].forEach(ev=>btn.addEventListener(ev, flee, {passive:false}));
+}
+
+render();
+</script>
+</body>
+</html>
